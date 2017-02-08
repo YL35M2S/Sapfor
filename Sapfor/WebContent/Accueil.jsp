@@ -7,6 +7,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-		coucou les guuuss
+		coucou les guuus
 </body>
 </html>
