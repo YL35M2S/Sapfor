@@ -9,30 +9,29 @@ import cci.caos.repository.Session;
 public class SapforServer {
 
     Map<Integer, Session>       sessions;
-    private static SapforServer session;
+    private static SapforServer sessionServer;
 
     public SapforServer() {
         sessions = new HashMap<Integer, Session>();
         sessions.put( 1, new Session( 1, "Test1", new Date( "06/02/2017" ), new Date( "10/02/2017" ), true ) );
+        sessions.put( 2, new Session( 2, "FDF1", new Date( "06/02/2017" ), new Date( "17/02/2017" ), true ) );
+        sessions.put( 3, new Session( 3, "SAP1", new Date( "30/01/2017" ), new Date( "3/02/2017" ), true ) );
     }
 
-    public static SapforServer getSession() {
-        if ( session == null ) {
-            session = new SapforServer();
+    public static SapforServer getSessionServer() {
+        if ( sessionServer == null ) {
+            sessionServer = new SapforServer();
         }
-        return session;
+        return sessionServer;
     }
 
     public Session getSessionById( int id ) {
-        Session res = new Session();
+        Session s = null;
         for ( Map.Entry<Integer, Session> entry : sessions.entrySet() ) {
             if ( (int) ( entry.getKey() ) == id ) {
-                res.setId( entry.getValue().getId() );
-                res.setNom( entry.getValue().getNom() );
-                res.setDateFin( entry.getValue().getDateFin() );
-                res.setDateDebut( entry.getValue().getDateDebut() );
+                s = entry.getValue();
             }
         }
-        return res;
+        return s;
     }
 }

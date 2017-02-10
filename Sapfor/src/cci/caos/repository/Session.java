@@ -2,6 +2,9 @@ package cci.caos.repository;
 
 import java.util.Date;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class Session {
     private int     id;
     private String  nom;
@@ -67,6 +70,11 @@ public class Session {
 
     public boolean fermer() {
         return this.ouverteInscription = false;
+    }
+
+    public boolean fermerCandidature() {
+        this.ouverteInscription = false;
+        return true;
     }
 
 }

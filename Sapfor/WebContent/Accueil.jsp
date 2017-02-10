@@ -7,6 +7,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-		coucou les guuus
+<a href="http://localhost:8080/Sapfor/rest/session/19041975/fermerCandidature?Session=1">Fermer Candidature sur session 1</a><br/>
+<a href="http://localhost:8080/Sapfor/rest/session/sessions?Session=1">Voir session 1</a>
 </body>
 </html>
