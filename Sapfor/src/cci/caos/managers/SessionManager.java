@@ -34,7 +34,7 @@ public class SessionManager {
     @Produces( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON } )
     public Session listeSession( @QueryParam( "Session" ) String idSession ) {
         int ids = Integer.parseInt( idSession );
-        Session s = SapforServer.getSession().getSessionById( ids );
+        Session s = SapforServer.getSessionServer().getSessionById( ids );
         return s;
     }
 
@@ -42,7 +42,7 @@ public class SessionManager {
     @Path( "{uuid}/fermerCandidature" )
     public boolean fermerCandidature( @PathParam( "uuid" ) String id, @QueryParam( "Session" ) String idSession ) {
         int ids = Integer.parseInt( idSession );
-        return SapforServer.getSession().getSessionById( ids ).fermerCandidature();
+        return SapforServer.getSessionServer().getSessionById( ids ).fermerCandidature();
     }
 
     /*
