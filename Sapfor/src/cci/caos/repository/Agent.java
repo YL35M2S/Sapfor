@@ -27,10 +27,10 @@ public class Agent {
 	   
 	    public Agent(){}
 	   
-	    public Agent(String nom, String mdp, String matricule, List listeUV, List listeAptitude, Boolean gestionnaire) {
+	    public Agent(String nom, String motdepasse, String matricule, List listeUV, List listeAptitude, Boolean gestionnaire) {
 		super();
 		this.nom = nom;
-		this.mdp = mdp;
+		this.mdp = motdepasse;
 		this.matricule = matricule;
 		this.listeUV = listeUV;
 		this.listeAptitude = listeAptitude;
