@@ -9,7 +9,7 @@ import cci.caos.repository.Session;
 public class SapforServer {
 
     Map<Integer, Session>       sessions;
-    private static SapforServer session;
+    private static SapforServer sessionServer;
 
     public SapforServer() {
         sessions = new HashMap<Integer, Session>();
@@ -18,11 +18,11 @@ public class SapforServer {
         sessions.put( 3, new Session( 3, "SAP1", new Date( "30/01/2017" ), new Date( "3/02/2017" ), true ) );
     }
 
-    public static SapforServer getSession() {
-        if ( session == null ) {
-            session = new SapforServer();
+    public static SapforServer getSessionServer() {
+        if ( sessionServer == null ) {
+            sessionServer = new SapforServer();
         }
-        return session;
+        return sessionServer;
     }
 
     public Session getSessionById( int id ) {
