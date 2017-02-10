@@ -1,5 +1,6 @@
 package cci.caos.repository;
-import java.util.*;
+import java.util.List;
+
 
 public class Agent {
 
@@ -22,10 +23,11 @@ public class Agent {
 	   /** @pdRoleInfo migr=no name=Aptitude assc=estTitulaire coll=java.util.Collection impl=java.util.HashSet mult=0..* */
 	   public java.util.Collection<Aptitude> estPossedee;
 	   
+	   /*Constructeurs*/
 	   
+	    public Agent(){}
 	   
-	   
-	   public Agent(String nom, String mdp, String matricule, List listeUV, List listeAptitude, Boolean gestionnaire) {
+	    public Agent(String nom, String mdp, String matricule, List listeUV, List listeAptitude, Boolean gestionnaire) {
 		super();
 		this.nom = nom;
 		this.mdp = mdp;
@@ -35,7 +37,7 @@ public class Agent {
 		this.gestionnaire = gestionnaire;
 	}
 
-	   /*Accesseurs et Modificateurs */
+	   /*Accesseurs et Modificateurs  */
 	   
 	   
 	   public String getNom() {
