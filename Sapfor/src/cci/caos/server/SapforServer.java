@@ -14,6 +14,7 @@ import cci.caos.repository.Uv;
 public class SapforServer {
 
     Map<Integer, Session>       sessions;
+    private Map<String, Agent> uuid_agents;
     private static SapforServer sessionServer;
     
     public SapforServer() {
@@ -39,18 +40,13 @@ public class SapforServer {
         }
         return s;
     }
-    
-    public Agent getAgentbyUUID(String uuid) {
-    	//TODO
-    	return null;
-    }
-    
+ 
     public List<Session> getSessionsAccessibles(String uuid) {
     	/*
     	 * Pour l'instant on récupère les sessions accessibles en tant que candidat
     	 * A rajouter: les sessions accessibles en tant que formateur (posséder l'UV cette session + liste d'UV requises pour être formateur)
     	 */
-    	Agent agent = getAgentbyUUID(uuid);
+    	Agent agent = uuid_agents.get(uuid);
     	List<Session> SessionsAccessibles = new ArrayList<Session>();
     	
     	for (Integer mapKey : sessions.keySet()) { // Pour chaque session existante
