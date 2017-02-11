@@ -26,8 +26,7 @@ public class Agent {
 	}
 
 	   /*Accesseurs et Modificateurs  */
-	   
-	   
+
 	   public String getNom() {
 			return nom;
 		}

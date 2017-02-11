@@ -1,5 +1,7 @@
 package cci.caos.managers;
 
+import java.util.List;
+
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -7,6 +9,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
+import cci.caos.repository.Agent;
 import cci.caos.repository.Session;
 import cci.caos.server.SapforServer;
 
@@ -44,6 +47,14 @@ public class SessionManager {
         int ids = Integer.parseInt( idSession );
         return SapforServer.getSessionServer().getSessionById( ids ).fermerCandidature();
     }
+    
+    @GET
+    @Path("{uuid}/accessible")
+    List<Session> getLACC(@PathParam("uuid") String id ) {
+    	SapforServer server = SapforServer.getSessionServer();
+    	return server.getSessionsAccessibles(id);
+    }
+
 
     /*
      * @GET

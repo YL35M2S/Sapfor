@@ -10,6 +10,7 @@ public class Session {
     private String  nom;
     private Date    dateDebut, dateFin;
     private boolean ouverteInscription;
+    private Uv uv;
 
     /* Constructeurs */
     public Session() {
@@ -76,5 +77,13 @@ public class Session {
         this.ouverteInscription = false;
         return true;
     }
+
+	public Uv getUv() {
+		return uv;
+	}
+
+	public void setUv(Uv uv) {
+		this.uv = uv;
+	}
 
 }
