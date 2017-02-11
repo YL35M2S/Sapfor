@@ -8,6 +8,9 @@
 </head>
 <body>
 <a href="http://localhost:8080/Sapfor/rest/session/19041975/fermerCandidature?Session=1">Fermer Candidature sur session 1</a><br/>
-<a href="http://localhost:8080/Sapfor/rest/session/sessions?Session=1">Voir session 1</a>
+<a href="http://localhost:8080/Sapfor/rest/session/sessions?Session=1">Voir session 1</a><br/>
+<a href="http://localhost:8080/Sapfor/rest/session/listeCandidature?Session=1">Voir Candidature Session 1</a><br/>
+<a href="http://localhost:8080/Sapfor/rest/uv/uvs?Uv=1">Voir UV 1</a><br/>
+
 </body>
 </html>

@@ -1,37 +1,44 @@
 package cci.caos.repository;
-import java.util.*;
 
+import java.util.List;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class Aptitude {
-	
-	public String nom;
-	public List<Uv> listeUV;	
-	
-	 /*Constructeurs*/
-	
-	public Aptitude(){}
-	
 
-	/* Accesseurs et Modificateurs */
-	
-	public String getNom() {
-		return nom;
-	}
+    private String   nom;
+    private List<Uv> listeUV;
 
-	public void setNom(String nom) {
-		this.nom = nom;
-	}
+    /* Constructeurs */
 
-	public List<Uv> getListeUV() {
-		return listeUV;
-	}
+    public Aptitude() {
+    }
 
-	public void setListeUV(List<Uv> listeUV) {
-		this.listeUV = listeUV;
-	}
-	
-	/*Ajoute une Uv prérequise à l'aptitude*/
-	public void ajouterUv(Uv u){
-		this.listeUV.add(u); 
-	}
+    public Aptitude( String nom, List<Uv> listeUV ) {
+        this.nom = nom;
+        this.listeUV = listeUV;
+    }
+
+    /* Accesseurs et Modificateurs */
+    public String getNom() {
+        return nom;
+    }
+
+    public void setNom( String nom ) {
+        this.nom = nom;
+    }
+
+    public List<Uv> getListeUV() {
+        return listeUV;
+    }
+
+    public void setListeUV( List<Uv> listeUV ) {
+        this.listeUV = listeUV;
+    }
+
+    /* Ajoute une Uv prérequise à l'aptitude */
+    public void ajouterUv( Uv u ) {
+        this.listeUV.add( u );
+    }
 }
