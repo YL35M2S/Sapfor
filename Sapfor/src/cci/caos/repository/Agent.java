@@ -1,86 +1,89 @@
 package cci.caos.repository;
+
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlRootElement;
 
+@XmlRootElement
 public class Agent {
 
-	   public String nom;
-	   public String mdp;
-	   public String matricule;
-	   public List<Uv> listeUV;
-	   public List<Aptitude> listeAptitude;
-	   public Boolean gestionnaire;
+    private String         nom;
+    private String         mdp;
+    private String         matricule;
+    private List<Uv>       listeUV;
+    private List<Aptitude> listeAptitude;
+    private Boolean        gestionnaire;
 
-	   
-	   /*Constructeurs*/
-	   
-	    public Agent(){}
-	   
-	    public Agent(String nom, String motdepasse, String matricule, Boolean gestionnaire) {
-		this.nom = nom;
-		this.mdp = motdepasse;
-		this.matricule = matricule;
-		this.gestionnaire = gestionnaire;
-	}
+    /* Constructeurs */
 
-	   /*Accesseurs et Modificateurs  */
+    public Agent() {
+    }
 
-	   public String getNom() {
-			return nom;
-		}
+    public Agent( String nom, String motdepasse, String matricule, Boolean gestionnaire ) {
+        this.nom = nom;
+        this.mdp = motdepasse;
+        this.matricule = matricule;
+        this.gestionnaire = gestionnaire;
+    }
 
-		public void setNom(String nom) {
-			this.nom = nom;
-		}
+    /* Accesseurs et Modificateurs */
 
-		public String getMdp() {
-			return mdp;
-		}
+    public String getNom() {
+        return nom;
+    }
 
-		public void setMdp(String mdp) {
-			this.mdp = mdp;
-		}
+    public void setNom( String nom ) {
+        this.nom = nom;
+    }
 
-		public String getMatricule() {
-			return matricule;
-		}
+    public String getMdp() {
+        return mdp;
+    }
 
-		public void setMatricule(String matricule) {
-			this.matricule = matricule;
-		}
+    public void setMdp( String mdp ) {
+        this.mdp = mdp;
+    }
 
-		public List<Uv> getListeUV() {
-			return listeUV;
-		}
+    public String getMatricule() {
+        return matricule;
+    }
 
-		public void setListeUV(List<Uv> listeUV) {
-			this.listeUV = listeUV;
-		}
-		
-		/*Ajouter une Uv à un agent*/
-		public void ajouterUv(Uv u){
-			this.listeUV.add(u);
-		}
+    public void setMatricule( String matricule ) {
+        this.matricule = matricule;
+    }
 
-		public List<Aptitude> getListeAptitude() {
-			return listeAptitude;
-		}
+    public List<Uv> getListeUV() {
+        return listeUV;
+    }
 
-		public void setListeAptitude(List<Aptitude> listeAptitude) {
-			this.listeAptitude = listeAptitude;
-		}
-		
-		/*Ajoute une aptitude à un agent*/
-		public void ajouterAptitude(Aptitude ap){
-			this.listeAptitude.add(ap);
-		}
-		
-		public Boolean getGestionnaire() {
-			return gestionnaire;
-		}
+    public void setListeUV( List<Uv> listeUV ) {
+        this.listeUV = listeUV;
+    }
 
-		public void setGestionnaire(Boolean gestionnaire) {
-			this.gestionnaire = gestionnaire;
-		}
+    /* Ajouter une Uv à un agent */
+    public void ajouterUv( Uv u ) {
+        this.listeUV.add( u );
+    }
+
+    public List<Aptitude> getListeAptitude() {
+        return listeAptitude;
+    }
+
+    public void setListeAptitude( List<Aptitude> listeAptitude ) {
+        this.listeAptitude = listeAptitude;
+    }
+
+    /* Ajoute une aptitude à un agent */
+    public void ajouterAptitude( Aptitude ap ) {
+        this.listeAptitude.add( ap );
+    }
+
+    public Boolean getGestionnaire() {
+        return gestionnaire;
+    }
+
+    public void setGestionnaire( Boolean gestionnaire ) {
+        this.gestionnaire = gestionnaire;
+    }
 
 }
