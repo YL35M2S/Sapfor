@@ -1,32 +1,27 @@
 package cci.caos.repository;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 public class Session {
-    private int               id;
-    private String            nom;
-    private Date              dateDebut, dateFin;
-    private boolean           ouverteInscription;
-    private Uv                uv;
-    private List<Candidature> candidats;
+    private int     id;
+    private String  nom;
+    private Date    dateDebut, dateFin;
+    private boolean ouverteInscription;
+    private Uv uv;
 
     /* Constructeurs */
     public Session() {
     }
 
-    public Session( int id, String n, Date dd, Date df, boolean b, Uv uv ) {
+    public Session( int id, String n, Date dd, Date df, boolean b ) {
         this.id = id;
         this.nom = n;
         this.dateDebut = dd;
         this.dateFin = df;
         this.ouverteInscription = b;
-        this.uv = uv;
-        candidats = new ArrayList<Candidature>();
     }
 
     /* Accesseurs et Modificateurs */
@@ -36,14 +31,6 @@ public class Session {
 
     public void setId( int id ) {
         this.id = id;
-    }
-
-    public String getNom() {
-        return nom;
-    }
-
-    public void setNom( String nom ) {
-        this.nom = nom;
     }
 
     public Date getDateDebut() {
@@ -70,44 +57,33 @@ public class Session {
         this.ouverteInscription = ouverteInscription;
     }
 
-    public Uv getUv() {
-        return uv;
+    public String getNom() {
+        return nom;
     }
 
-    public void setUv( Uv uv ) {
-        this.uv = uv;
+    public void setNom( String nom ) {
+        this.nom = nom;
     }
 
-    public List<Candidature> getCandidats() {
-        return candidats;
+    public String presenteToi() {
+        return this.nom;
     }
 
-    public void setCandidats( List<Candidature> candidats ) {
-        this.candidats = candidats;
+    public boolean fermer() {
+        return this.ouverteInscription = false;
     }
 
-    /* Fonctions Specifiques */
-    /**
-     * Permet de cloturer les inscriptions a la session
-     * 
-     * @return Vrai si la cloture s'est deroulée correctement
-     */
     public boolean fermerCandidature() {
         this.ouverteInscription = false;
-        if ( this.ouverteInscription == false ) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * Permet de mettre à jour la liste des candidatures à la session
-     * 
-     * @return Vrai si la cloture s'est deroulée correctement
-     */
-    public boolean modifierListeCandidats( List<Candidature> candidatures ) {
-        this.candidats = candidatures;
         return true;
     }
+
+	public Uv getUv() {
+		return uv;
+	}
+
+	public void setUv(Uv uv) {
+		this.uv = uv;
+	}
+
 }
