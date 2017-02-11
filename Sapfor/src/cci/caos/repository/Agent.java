@@ -1,5 +1,6 @@
 package cci.caos.repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -7,6 +8,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class Agent {
 
+    private int            id;
     private String         nom;
     private String         mdp;
     private String         matricule;
@@ -19,14 +21,25 @@ public class Agent {
     public Agent() {
     }
 
-    public Agent( String nom, String motdepasse, String matricule, Boolean gestionnaire ) {
+    public Agent( int id, String nom, String motdepasse, String matricule, Boolean gestionnaire ) {
+        this.id = id;
         this.nom = nom;
         this.mdp = motdepasse;
         this.matricule = matricule;
         this.gestionnaire = gestionnaire;
+        this.listeUV = new ArrayList<Uv>();
+        this.listeAptitude = new ArrayList<Aptitude>();
     }
 
     /* Accesseurs et Modificateurs */
+
+    public int getId() {
+        return id;
+    }
+
+    public void setNom( int id ) {
+        this.id = id;
+    }
 
     public String getNom() {
         return nom;

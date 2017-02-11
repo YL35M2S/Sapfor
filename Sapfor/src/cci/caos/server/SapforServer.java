@@ -39,20 +39,29 @@ public class SapforServer {
         Uv uv1 = new Uv( 1, "UV_INC1", 5, 3, 12, "Rennes" );
         Uv uv2 = new Uv( 2, "UV_FDF1", 10, 3, 12, "Rennes" );
         Uv uv3 = new Uv( 3, "UV_SAR1", 5, 3, 12, "Rennes" );
+        Uv uv4 = new Uv( 3, "UV_WJK2", 5, 3, 12, "Rennes" );
+        Uv uv5 = new Uv( 3, "UV_WJK1", 5, 3, 12, "Rennes" );
         // Avec prérequis
         uv1.getListePrerequis().add( uv2 );
         uv1.getListePrerequis().add( uv3 );
         uv2.getListePrerequis().add( uv3 );
+        uv4.getListePrerequis().add( uv5 );
 
         // Creation d'agents
-        Agent a1 = new Agent( "ATREUILLIER", "mdp", "19041975", true );
-        Agent a2 = new Agent( "LTREUILLIER", "mdp", "15122010", false );
-        Agent a3 = new Agent( "NTREUILLIER", "mdp", "09102013", false );
+        Agent a1 = new Agent( 1, "ATREUILLIER", "mdp", "19041975", true );
+        Agent a2 = new Agent( 2, "LTREUILLIER", "mdp", "15122010", false );
+        Agent a3 = new Agent( 3, "NTREUILLIER", "mdp", "09102013", false );
+
+        a2.ajouterUv( uv3 );
+        a3.ajouterUv( uv2 );
+        a3.ajouterUv( uv3 );
         agents.put( 1, a1 );
         agents.put( 2, a2 );
         agents.put( 3, a3 );
 
         connexions.put( "19041975", a1 );
+        connexions.put( "15122010", a2 );
+        connexions.put( "09102013", a3 );
 
         // Creation de session
         Session s1 = null;
@@ -106,24 +115,17 @@ public class SapforServer {
          * (posséder l'UV cette session + liste d'UV requises pour être
          * formateur)
          */
-        Agent agent = uuid_agents.get( uuid );
+        Agent agent = connexions.get( uuid );
         List<Session> SessionsAccessibles = new ArrayList<Session>();
 
-        for ( Integer mapKey : sessions.keySet() ) { // Pour chaque session
-                                                     // existante
-            List<Uv> listeUvPrerequis = sessions.get( mapKey ).getUv().getListePrerequis(); // Pour
-                                                                                            // chaque
-                                                                                            // session
-                                                                                            // on
-                                                                                            // récupère
-                                                                                            // les
-                                                                                            // UV
-                                                                                            // requises
-            int nombreUvRequises = listeUvPrerequis.size(); // nombre d'UV
-                                                            // requises pour
-                                                            // cette session
-            int nombreUvPossede = 0; // futur nombre de ces UV possédées par
-                                     // l'agent
+        // Pour chaque session existante
+        for ( Integer mapKey : sessions.keySet() ) {
+            // Pour chaque session on récupère les UV requises
+            List<Uv> listeUvPrerequis = sessions.get( mapKey ).getUv().getListePrerequis();
+            // nombre d'UV requises pour cette session
+            int nombreUvRequises = listeUvPrerequis.size();
+            // futur nombre de ces UV possédées par l'agent
+            int nombreUvPossede = 0;
             Iterator<Uv> it = listeUvPrerequis.iterator();
             Iterator<Uv> it2 = agent.getListeUV().iterator();
 
@@ -180,4 +182,13 @@ public class SapforServer {
         return a;
     }
 
+    public Agent getAgentById( int id ) {
+        Agent a = null;
+        for ( Map.Entry<Integer, Agent> entry : agents.entrySet() ) {
+            if ( entry.getKey() == id ) {
+                a = entry.getValue();
+            }
+        }
+        return a;
+    }
 }

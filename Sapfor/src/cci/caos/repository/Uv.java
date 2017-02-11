@@ -81,6 +81,14 @@ public class Uv {
         this.listePrerequis = listePrerequis;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId( int id ) {
+        this.id = id;
+    }
+
     /* ajout d'une Uv prérequise pour avoir l'UV */
     public void ajouterUv( Uv prerequis ) {
         this.listePrerequis.add( prerequis );
