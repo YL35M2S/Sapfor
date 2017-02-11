@@ -16,12 +16,10 @@ public class Agent {
 	   
 	    public Agent(){}
 	   
-	    public Agent(String nom, String motdepasse, String matricule, List<Uv> listeUV, List<Aptitude> listeAptitude, Boolean gestionnaire) {
+	    public Agent(String nom, String motdepasse, String matricule, Boolean gestionnaire) {
 		this.nom = nom;
 		this.mdp = motdepasse;
 		this.matricule = matricule;
-		this.listeUV = listeUV;
-		this.listeAptitude = listeAptitude;
 		this.gestionnaire = gestionnaire;
 	}
 
@@ -58,6 +56,11 @@ public class Agent {
 		public void setListeUV(List<Uv> listeUV) {
 			this.listeUV = listeUV;
 		}
+		
+		/*Ajouter une Uv à un agent*/
+		public void ajouterUv(Uv u){
+			this.listeUV.add(u);
+		}
 
 		public List<Aptitude> getListeAptitude() {
 			return listeAptitude;
@@ -66,7 +69,12 @@ public class Agent {
 		public void setListeAptitude(List<Aptitude> listeAptitude) {
 			this.listeAptitude = listeAptitude;
 		}
-
+		
+		/*Ajoute une aptitude à un agent*/
+		public void ajouterAptitude(Aptitude ap){
+			this.listeAptitude.add(ap);
+		}
+		
 		public Boolean getGestionnaire() {
 			return gestionnaire;
 		}

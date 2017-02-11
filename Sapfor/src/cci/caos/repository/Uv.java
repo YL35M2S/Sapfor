@@ -8,24 +8,24 @@ public class Uv {
 	 public int nombrePlaceMin;
 	 public int nombrePlaceMax;
 	 public List<Uv> listePrerequis;
-	 //public String lieux;
-	 
+	 public String lieu;
+ 
 	/*Constructeurs*/
 	
 	 public Uv(){}
 	 
-	 public Uv(String nom, String duree, int nombrePlaceMin, int nombrePlaceMax) {
+	 public Uv(String nom, String duree, int nombrePlaceMin, int nombrePlaceMax, String lieu) {
 			super();
 			this.nom = nom;
 			this.duree = duree;
 			this.nombrePlaceMin = nombrePlaceMin;
 			this.nombrePlaceMax = nombrePlaceMax;
+			this.lieu = lieu; 
 		}
 	
-
 	/* Accesseurs et Modificateurs */
 
-	 public String getNom() {
+	 	public String getNom() {
 			return nom;
 		}
 
@@ -57,6 +57,14 @@ public class Uv {
 			this.nombrePlaceMax = nombrePlaceMax;
 		}
 
+		public String getLieu() {
+			return lieu;
+		}
+
+		public void setLieu(String lieu) {
+			this.lieu = lieu;
+		}
+		
 		public List<Uv> getListePrerequis() {
 			return listePrerequis;
 		}
@@ -65,5 +73,13 @@ public class Uv {
 			this.listePrerequis = listePrerequis;
 		}
 
+		/*ajout d'une Uv prérequise pour avoir l'UV*/ 
+		public void ajouterUv(Uv prerequis){
+			this.listePrerequis.add(prerequis); 
+		}
 		
+		/*retrait d'une Uv prérequise pour avoir l'Uv*/
+		public void retirerUv(Uv u){
+			this.listePrerequis.remove(u); 
+		}
 }
