@@ -10,8 +10,8 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -97,15 +97,10 @@ public class SessionTest {
     }
     
     @Test
-    /*
-     * Non terminé, il faut récupérer les données en json envoyées par le serveur
-     * et les comparer avec liste_session_attendue qui est un format json converti en String
-     */
     public void testGetSessionsAccessiblesOK() throws IOException {
     	Client client = ClientBuilder.newClient();
         WebTarget target = client.target( "http://localhost:8080" ).path( "Sapfor/rest" );   
         
-        /*
         Uv uv3 = new Uv( 3, "UV_SAR1", 5, 3, 12, "Rennes" );
         Session s3 = null;
         try {
@@ -120,13 +115,16 @@ public class SessionTest {
         liste_session_attendue.add(s3);
         
         ObjectMapper mapper = new ObjectMapper();
-        // Conversion de la liste en format String correspondant à un format json
-        String s3_json = mapper.writeValueAsString(liste_session_attendue);
-        */
-        
+        // Conversion de la liste en String correspondant à un format json
+        String liste_session_attendue_json = mapper.writeValueAsString(liste_session_attendue);
+
+        // Récupération et conversion de la liste envoyée par le serveur (au format json) en String
+        Response response = target.path( "session").path("19041975/accessible").request().get();
+        String liste_session_accessible_json = response.readEntity(String.class);
+
         Assert.assertEquals(
-        		200,
-        		target.path( "session").path("19041975/accessible").request().get().getStatus());
+        		liste_session_attendue_json,
+        		liste_session_accessible_json);
     }
     
 }
