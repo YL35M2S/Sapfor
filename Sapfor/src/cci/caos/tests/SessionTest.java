@@ -3,15 +3,20 @@ package cci.caos.tests;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 
 import org.junit.Assert;
 import org.junit.Test;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import cci.caos.repository.Session;
 import cci.caos.repository.Uv;
@@ -90,4 +95,38 @@ public class SessionTest {
                         .request( MediaType.APPLICATION_XML )
                         .post( Entity.xml( current ) ).getStatus() );
     }
+    
+    @Test
+    /*
+     * Non terminé, il faut récupérer les données en json envoyées par le serveur
+     * et les comparer avec liste_session_attendue qui est un format json converti en String
+     */
+    public void testGetSessionsAccessiblesOK() throws IOException {
+    	Client client = ClientBuilder.newClient();
+        WebTarget target = client.target( "http://localhost:8080" ).path( "Sapfor/rest" );   
+        
+        /*
+        Uv uv3 = new Uv( 3, "UV_SAR1", 5, 3, 12, "Rennes" );
+        Session s3 = null;
+        try {
+            s3 = new Session( 3, "SAR1", new SimpleDateFormat( "dd/MM/yyyy" ).parse( "30/01/2017" ),
+                    new SimpleDateFormat( "dd/MM/yyyy" ).parse( "3/02/2017" ), true, uv3 );
+
+        } catch ( ParseException e ) {
+            e.printStackTrace();
+        }
+        
+        List<Session> liste_session_attendue = new ArrayList<Session>();
+        liste_session_attendue.add(s3);
+        
+        ObjectMapper mapper = new ObjectMapper();
+        // Conversion de la liste en format String correspondant à un format json
+        String s3_json = mapper.writeValueAsString(liste_session_attendue);
+        */
+        
+        Assert.assertEquals(
+        		200,
+        		target.path( "session").path("19041975/accessible").request().get().getStatus());
+    }
+    
 }

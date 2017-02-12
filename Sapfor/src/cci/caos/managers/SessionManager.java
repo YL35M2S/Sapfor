@@ -61,9 +61,13 @@ public class SessionManager {
     @Path( "{uuid}/accessible" )
     // Ajout du @Produces
     @Produces( { MediaType.APPLICATION_JSON } )
-    public List<Session> getLACC( @PathParam( "uuid" ) String id ) {
+    public List<Session> getLACC( @PathParam( "uuid" ) String uuid ) {
         SapforServer server = SapforServer.getSessionServer();
-        return server.getSessionsAccessibles( id );
+        if (server.isConnectedByUUID(uuid)) {
+        	return server.getSessionsAccessibles( uuid );
+        } else {
+        	return null;
+        }
     }
 
     // POUR L'EXEMPLE
