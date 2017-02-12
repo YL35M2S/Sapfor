@@ -20,6 +20,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import cci.caos.repository.Session;
 import cci.caos.repository.Uv;
+import cci.caos.server.SapforServer;
 
 public class SessionTest {
 
@@ -97,22 +98,15 @@ public class SessionTest {
     }
     
     @Test
+    // Resultat Attendu: Liste avec la session d'id 3
     public void testGetSessionsAccessiblesOK() throws IOException {
     	Client client = ClientBuilder.newClient();
         WebTarget target = client.target( "http://localhost:8080" ).path( "Sapfor/rest" );   
-        
-        Uv uv3 = new Uv( 3, "UV_SAR1", 5, 3, 12, "Rennes" );
-        Session s3 = null;
-        try {
-            s3 = new Session( 3, "SAR1", new SimpleDateFormat( "dd/MM/yyyy" ).parse( "30/01/2017" ),
-                    new SimpleDateFormat( "dd/MM/yyyy" ).parse( "3/02/2017" ), true, uv3 );
 
-        } catch ( ParseException e ) {
-            e.printStackTrace();
-        }
+        SapforServer server = SapforServer.getSessionServer();
         
         List<Session> liste_session_attendue = new ArrayList<Session>();
-        liste_session_attendue.add(s3);
+        liste_session_attendue.add(server.getSessionById(3));
         
         ObjectMapper mapper = new ObjectMapper();
         // Conversion de la liste en String correspondant à un format json
@@ -127,4 +121,21 @@ public class SessionTest {
         		liste_session_accessible_json);
     }
     
+    @Test
+    // Resultat Attendu: liste vide
+    public void testGetSessionsAccessiblesOK_2() throws IOException {
+    	Client client = ClientBuilder.newClient();
+        WebTarget target = client.target( "http://localhost:8080" ).path( "Sapfor/rest" );    
+        List<Session> liste_session_attendue = new ArrayList<Session>();
+        
+        ObjectMapper mapper = new ObjectMapper();
+        String liste_session_attendue_json = mapper.writeValueAsString(liste_session_attendue);
+
+        Response response = target.path( "session").path("06091991/accessible").request().get();
+        String liste_session_accessible_json = response.readEntity(String.class);
+
+        Assert.assertEquals(
+        		liste_session_attendue_json,
+        		liste_session_accessible_json);
+    }
 }

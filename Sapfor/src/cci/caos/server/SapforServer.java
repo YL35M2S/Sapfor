@@ -39,19 +39,23 @@ public class SapforServer {
         Uv uv1 = new Uv( 1, "UV_INC1", 5, 3, 12, "Rennes" );
         Uv uv2 = new Uv( 2, "UV_FDF1", 10, 3, 12, "Rennes" );
         Uv uv3 = new Uv( 3, "UV_SAR1", 5, 3, 12, "Rennes" );
-        Uv uv4 = new Uv( 3, "UV_WJK2", 5, 3, 12, "Rennes" );
-        Uv uv5 = new Uv( 3, "UV_WJK1", 5, 3, 12, "Rennes" );
+        Uv uv4 = new Uv( 4, "UV_WJK2", 5, 3, 12, "Rennes" );
+        Uv uv5 = new Uv( 5, "UV_WJK1", 5, 3, 12, "Rennes" );
+        Uv uv6 = new Uv( 6, "UV_AJH", 5, 3, 12, "Rennes" );
         // Avec prérequis
         uv1.getListePrerequis().add( uv2 );
         uv1.getListePrerequis().add( uv3 );
         uv2.getListePrerequis().add( uv3 );
+        uv3.getListePrerequis().add( uv6 );
         uv4.getListePrerequis().add( uv5 );
 
         // Creation d'agents
         Agent a1 = new Agent( 1, "ATREUILLIER", "mdp", "19041975", true );
         Agent a2 = new Agent( 2, "LTREUILLIER", "mdp", "15122010", false );
         Agent a3 = new Agent( 3, "NTREUILLIER", "mdp", "09102013", false );
-
+        Agent a4 = new Agent( 4, "FDESCAVES", "mdp", "06091991", false );
+        
+        a1.ajouterUv( uv6 );
         a2.ajouterUv( uv3 );
         a3.ajouterUv( uv2 );
         a3.ajouterUv( uv3 );
@@ -62,6 +66,7 @@ public class SapforServer {
         connexions.put( "19041975", a1 );
         connexions.put( "15122010", a2 );
         connexions.put( "09102013", a3 );
+        connexions.put( "06091991", a4 );
 
         // Creation de session
         Session s1 = null;
