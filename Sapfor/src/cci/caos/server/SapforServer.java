@@ -42,7 +42,7 @@ public class SapforServer {
         Uv uv4 = new Uv( 4, "UV_WJK2", 5, 3, 12, "Rennes" );
         Uv uv5 = new Uv( 5, "UV_WJK1", 5, 3, 12, "Rennes" );
         Uv uv6 = new Uv( 6, "UV_AJH", 5, 3, 12, "Rennes" );
-        // Avec prérequis
+        // Avec prÃ©requis
         uv1.getListePrerequis().add( uv2 );
         uv1.getListePrerequis().add( uv3 );
         uv2.getListePrerequis().add( uv3 );
@@ -115,9 +115,9 @@ public class SapforServer {
 
     public List<Session> getSessionsAccessibles( String uuid ) {
         /*
-         * Pour l'instant on récupère les sessions accessibles en tant que
+         * Pour l'instant on rÃ©cupÃ¨re les sessions accessibles en tant que
          * candidat A rajouter: les sessions accessibles en tant que formateur
-         * (posséder l'UV cette session + liste d'UV requises pour être
+         * (possÃ©der l'UV cette session + liste d'UV requises pour Ãªtre
          * formateur)
          */
         Agent agent = connexions.get( uuid );
@@ -125,11 +125,11 @@ public class SapforServer {
 
         // Pour chaque session existante
         for ( Integer mapKey : sessions.keySet() ) {
-            // Pour chaque session on récupère les UV requises
+            // Pour chaque session on rÃ©cupÃ¨re les UV requises
             List<Uv> listeUvPrerequis = sessions.get( mapKey ).getUv().getListePrerequis();
             // nombre d'UV requises pour cette session
             int nombreUvRequises = listeUvPrerequis.size();
-            // futur nombre de ces UV possédées par l'agent
+            // futur nombre de ces UV possÃ©dÃ©es par l'agent
             int nombreUvPossede = 0;
             Iterator<Uv> it = listeUvPrerequis.iterator();
             Iterator<Uv> it2 = agent.getListeUV().iterator();
@@ -138,17 +138,17 @@ public class SapforServer {
                                      // session
                 Uv UvRequise = it.next();
 
-                while ( it2.hasNext() ) { // Pour chacune des UV possédée par
+                while ( it2.hasNext() ) { // Pour chacune des UV possÃ©dÃ©e par
                                           // l'agent
                     Uv UvAgent = it2.next();
 
                     if ( UvRequise.getNom().compareTo( UvAgent.getNom() ) == 0 ) {
-                        nombreUvPossede++; // Il possède l'UV
+                        nombreUvPossede++; // Il possÃ¨de l'UV
                         break;
                     }
                 }
             }
-            if ( nombreUvRequises == nombreUvPossede ) { // Si il possède toutes
+            if ( nombreUvRequises == nombreUvPossede ) { // Si il possÃ¨de toutes
                                                          // les UV requises
                 SessionsAccessibles.add( sessions.get( mapKey ) );
             }
@@ -196,4 +196,13 @@ public class SapforServer {
         }
         return a;
     }
+    public List<Session> getListeSessionsFermees(){
+    	List<Session> listefermees= new ArrayList<Session>();
+    	for (Map.Entry<Integer, Session>entry : sessions.entrySet()){
+    		if(sessions.isOuverteInscription()==false){
+    			listeFermees.add( sessions.get( mapKey );
+    		}
+    	}
+    	return listeFermees;
+    } 
 }
