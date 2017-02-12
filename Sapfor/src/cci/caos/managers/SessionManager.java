@@ -111,4 +111,28 @@ public class SessionManager {
         return Response.ok( entity ).build();
     }
 
+
+
+
+    @GET
+    @Path( "{uuid}/retirerCandidature" )
+    public boolean retirerCandidature( @PathParam( "uuid" ) String id, @QueryParam( "Session" ) String idSession ) {
+            int ids = Integer.parseInt( idSession );
+    		int ida = Integer.parseInt( id );
+            if ( SapforServer.getSessionServer().isConnectedByUUID( uuid )
+                    && SapforServer.getSessionServer().getAgentByUUID( uuid ).getCandidats() ) {
+               return SapforServer.getSessionServer().getSessionById( ids ).retirerCandidature( ida );
+            } else {
+            	System.out.println("Demande refusée");
+            }
+
+        }
+    	
+    	
+    @GET
+    @Path( "listefermee" )
+    List<Session> getClosedSession(){
+            return 	SapforServer.getSession().getSessionById( ids ).getListeSessionsFermees();
+    		
+        }
 }

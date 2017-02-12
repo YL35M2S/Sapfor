@@ -14,6 +14,7 @@ public class Session {
     private boolean           ouverteInscription;
     private Uv                uv;
     private List<Candidature> candidats;
+    private List<Session>	listeFermees;
 
     /* Constructeurs */
     public Session() {
@@ -27,6 +28,7 @@ public class Session {
         this.ouverteInscription = b;
         this.uv = uv;
         this.candidats = new ArrayList<Candidature>();
+        this.listeFermees = new ArrayList<Session>();
     }
 
     /* Accesseurs et Modificateurs */
@@ -106,5 +108,16 @@ public class Session {
         this.candidats = candidatures;
         return true;
     }
+    
+    
+    public boolean retirerCandidature(int ida){
+    	this.candidats.remove(ida);
+    	return true;
+    	 
+    }
+
+    public List<Session> getListeSessionsFermees(){
+    	return listeFermee;
+    } 
 
 }
