@@ -14,7 +14,7 @@ public class Session {
     private boolean           ouverteInscription;
     private Uv                uv;
     private List<Candidature> candidats;
-    private List<Session>	listeFermees;
+   
 
     /* Constructeurs */
     public Session() {
@@ -28,7 +28,6 @@ public class Session {
         this.ouverteInscription = b;
         this.uv = uv;
         this.candidats = new ArrayList<Candidature>();
-        this.listeFermees = new ArrayList<Session>();
     }
 
     /* Accesseurs et Modificateurs */
@@ -92,7 +91,7 @@ public class Session {
     /**
      * Permet de cloturer la session aux candidatures
      * 
-     * @return Vrai si la cloture s'est deroulée correctement
+     * @return Vrai si la cloture s'est deroulÃ©e correctement
      */
     public boolean fermerCandidature() {
         this.ouverteInscription = false;
@@ -100,9 +99,9 @@ public class Session {
     }
 
     /**
-     * Permet de mettre à jour la liste des candidatures à la session
+     * Permet de mettre Ã  jour la liste des candidatures Ã  la session
      * 
-     * @return Vrai si la mise a jour s'est deroulée correctement
+     * @return Vrai si la mise a jour s'est deroulÃ©e correctement
      */
     public boolean modifierListeCandidats( List<Candidature> candidatures ) {
         this.candidats = candidatures;
@@ -114,10 +113,6 @@ public class Session {
     	this.candidats.remove(ida);
     	return true;
     	 
-    }
-
-    public List<Session> getListeSessionsFermees(){
-    	return listeFermee;
     } 
 
 }
