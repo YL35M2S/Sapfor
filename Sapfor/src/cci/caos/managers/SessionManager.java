@@ -83,7 +83,7 @@ public class SessionManager {
     }
 
     // POUR L'EXEMPLE
-    // Creation d'une session à partir d'une entrée au format XML
+    // Creation d'une session Ã  partir d'une entrÃ©e au format XML
     // http://localhost:8080/rest/session/createSession
     @POST
     @Path( "createSession" )
@@ -97,7 +97,7 @@ public class SessionManager {
     }
 
     // POUR L'EXEMPLE
-    // Liste les candidatures à une session au format XML
+    // Liste les candidatures Ã  une session au format XML
     // http://localhost:8080/rest/session/listeCandidatures?Session=1
     @GET
     @Path( "listeCandidature" )
@@ -123,7 +123,7 @@ public class SessionManager {
                     && SapforServer.getSessionServer().getAgentByUUID( uuid ).getCandidats() ) {
                return SapforServer.getSessionServer().getSessionById( ids ).retirerCandidature( ida );
             } else {
-            	System.out.println("Demande refusée");
+            	System.out.println("Demande refusÃ©e");
             }
 
         }
@@ -131,6 +131,7 @@ public class SessionManager {
     	
     @GET
     @Path( "listefermee" )
+    @Produces( { MediaType.APPLICATION_JSON } )
     List<Session> getClosedSession(){
             return 	SapforServer.getSession().getSessionById( ids ).getListeSessionsFermees();
     		
