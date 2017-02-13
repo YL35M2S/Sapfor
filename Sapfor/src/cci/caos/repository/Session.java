@@ -2,6 +2,7 @@ package cci.caos.repository;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -108,11 +109,20 @@ public class Session {
         return true;
     }
     
-    
-    public boolean retirerCandidature(int ida){
-    	this.candidats.remove(ida);
-    	return true;
-    	 
-    } 
-
+    /**
+     * 
+     * @param id: id d'un agent
+     * @return True si la candidature a bien été retirée
+     */
+    public boolean retirerCandidature(int idAgent){
+    	Iterator<Candidature> it = candidats.iterator();
+    	while (it.hasNext()) {
+    		Candidature elemCourant = it.next();
+    		if (elemCourant.getAgent().getId()==idAgent) {
+    			return candidats.remove(elemCourant);
+    		}	
+    	}
+    	return false;
+    }
+  
 }

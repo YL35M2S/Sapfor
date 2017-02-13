@@ -14,6 +14,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import cci.caos.repository.Agent;
 import cci.caos.repository.Candidature;
 import cci.caos.repository.Session;
 import cci.caos.server.SapforServer;
@@ -116,24 +117,22 @@ public class SessionManager {
 
     @GET
     @Path( "{uuid}/retirerCandidature" )
-    public boolean retirerCandidature( @PathParam( "uuid" ) String id, @QueryParam( "Session" ) String idSession ) {
-            int ids = Integer.parseInt( idSession );
-    		int ida = Integer.parseInt( id );
-            if ( SapforServer.getSessionServer().isConnectedByUUID( uuid )
-                    && SapforServer.getSessionServer().getAgentByUUID( uuid ).getCandidats() ) {
-               return SapforServer.getSessionServer().getSessionById( ids ).retirerCandidature( ida );
+    public boolean retirerCandidature( @PathParam( "uuid" ) String uuid, @QueryParam( "Session" ) String idSession ) {
+    	SapforServer server = SapforServer.getSessionServer();
+    	int ids = Integer.parseInt( idSession );
+            if ( server.isConnectedByUUID( uuid )) {
+                int idAgent = server.getAgentByUUID(uuid).getId();
+                return server.getSessionById( ids ).retirerCandidature(idAgent);
             } else {
-            	System.out.println("Demande refusée");
+            	return false;
             }
-
-        }
+    }
     	
     	
     @GET
     @Path( "listefermee" )
     @Produces( { MediaType.APPLICATION_JSON } )
     List<Session> getClosedSession(){
-            return 	SapforServer.getSession().getSessionById( ids ).getListeSessionsFermees();
-    		
+            return 	SapforServer.getSessionServer().getListeSessionsFermees();
         }
 }

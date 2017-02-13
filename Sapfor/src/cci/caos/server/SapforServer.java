@@ -197,10 +197,10 @@ public class SapforServer {
         return a;
     }
     public List<Session> getListeSessionsFermees(){
-    	List<Session> listefermees= new ArrayList<Session>();
-    	for (Map.Entry<Integer, Session>entry : sessions.entrySet()){
-    		if(sessions.isOuverteInscription()==false){
-    			listeFermees.add( sessions.get( mapKey );
+    	List<Session> listeFermees= new ArrayList<Session>();
+    	for (Map.Entry<Integer, Session> entry : sessions.entrySet()){
+    		if(entry.getValue().isOuverteInscription()==false){
+    			listeFermees.add(entry.getValue());
     		}
     	}
     	return listeFermees;
