@@ -135,4 +135,13 @@ public class SessionManager {
     List<Session> getClosedSession(){
             return 	SapforServer.getSessionServer().getListeSessionsFermees();
         }
+    
+    @GET
+    @Path( "listeOuvertes" )
+    @Produces( { MediaType.APPLICATION_XML } )
+    public List<Session> getOpenedSession(){
+            return 	SapforServer.getSessionServer().getListeSessionsOuvertes();
+        }
+    
+    
 }

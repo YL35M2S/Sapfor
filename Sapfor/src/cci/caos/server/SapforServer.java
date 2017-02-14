@@ -205,4 +205,16 @@ public class SapforServer {
     	}
     	return listeFermees;
     } 
+    
+	public List<Session> getListeSessionsOuvertes(){
+    	List<Session> listeOuvertes= new ArrayList<Session>();
+    	for (Map.Entry<Integer, Session> entry : sessions.entrySet()){
+    		if(entry.getValue().isOuverteInscription()==true){
+    			listeOuvertes.add(entry.getValue());
+    		}
+    	}
+    	return listeOuvertes;
+    } 
+	
+	
 }

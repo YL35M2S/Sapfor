@@ -14,6 +14,7 @@
 <a href="http://localhost:8080/Sapfor/rest/agent/agents?Agent=1">Voir Agent 1</a><br/>
 <a href="http://localhost:8080/Sapfor/rest/agent/agents?Agent=2">Voir Agent 2</a><br/>
 <a href="http://localhost:8080/Sapfor/rest/agent/agents?Agent=3">Voir Agent 3</a><br/>
+<a href="http://localhost:8080/Sapfor/rest/session/listeOuvertes">Voir sessions ouvertes</a><br/>
 
 </body>
 </html>
