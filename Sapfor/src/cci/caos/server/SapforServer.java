@@ -7,6 +7,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
+
+import org.jasypt.util.password.ConfigurablePasswordEncryptor;
 
 import cci.caos.repository.Agent;
 import cci.caos.repository.Aptitude;
@@ -54,6 +57,7 @@ public class SapforServer {
         Agent a2 = new Agent( 2, "LTREUILLIER", "mdp", "15122010", false );
         Agent a3 = new Agent( 3, "NTREUILLIER", "mdp", "09102013", false );
         Agent a4 = new Agent( 4, "FDESCAVES", "mdp", "06091991", false );
+        Agent a5 = new Agent( 5, "MDESCAVES", "max", "06091990", false );
         
         a1.ajouterUv( uv6 );
         a2.ajouterUv( uv3 );
@@ -62,7 +66,9 @@ public class SapforServer {
         agents.put( 1, a1 );
         agents.put( 2, a2 );
         agents.put( 3, a3 );
-
+        agents.put( 4, a4 );
+        agents.put( 5, a5 );
+        
         connexions.put( "19041975", a1 );
         connexions.put( "15122010", a2 );
         connexions.put( "09102013", a3 );
@@ -216,5 +222,21 @@ public class SapforServer {
     	return listeOuvertes;
     } 
 	
+	public String getConnexionAgent(String matricule, String password) {
+		ConfigurablePasswordEncryptor passwordEncryptor = new ConfigurablePasswordEncryptor();
+		passwordEncryptor.setAlgorithm( "SHA-256" );
+		passwordEncryptor.setPlainDigest( false );
+		
+		for (Map.Entry<Integer, Agent> entry : agents.entrySet()){
+			if (entry.getValue().getMatricule().compareTo(matricule)==0) {
+				if (passwordEncryptor.checkPassword(password, entry.getValue().getMdp())) {
+					String uuid = UUID.randomUUID().toString();
+					connexions.put(uuid, entry.getValue());
+					return uuid; // Si la connexion est réussie
+				}
+			}
+    	}
+		return null; // Si la connexion a échouée
+    }
 	
 }

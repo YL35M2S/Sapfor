@@ -11,6 +11,8 @@ import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedHashMap;
+import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 
 import org.junit.Assert;
@@ -57,7 +59,7 @@ public class SessionTest {
         Uv uv1 = new Uv( 1, "UV_INC1", 5, 3, 12, "Rennes" );
         Uv uv2 = new Uv( 2, "UV_FDF1", 10, 3, 12, "Rennes" );
         Uv uv3 = new Uv( 3, "UV_SAR1", 5, 3, 12, "Rennes" );
-        // Avec prérequis
+        // Avec prï¿½requis
         uv1.getListePrerequis().add( uv2 );
         uv1.getListePrerequis().add( uv3 );
 
@@ -99,7 +101,7 @@ public class SessionTest {
     
     @Test
     // Resultat Attendu: Liste avec la session d'id 3
-    public void testGetSessionsAccessiblesOK() throws IOException {
+    public void testGetListeSessionsAccessiblesOK() throws IOException {
     	Client client = ClientBuilder.newClient();
         WebTarget target = client.target( "http://localhost:8080" ).path( "Sapfor/rest" );   
 
@@ -109,10 +111,10 @@ public class SessionTest {
         liste_session_attendue.add(server.getSessionById(3));
         
         ObjectMapper mapper = new ObjectMapper();
-        // Conversion de la liste en String correspondant à un format json
+        // Conversion de la liste en String correspondant ï¿½ un format json
         String liste_session_attendue_json = mapper.writeValueAsString(liste_session_attendue);
 
-        // Récupération et conversion de la liste envoyée par le serveur (au format json) en String
+        // Rï¿½cupï¿½ration et conversion de la liste envoyï¿½e par le serveur (au format json) en String
         Response response = target.path( "session").path("19041975/accessible").request().get();
         String liste_session_accessible_json = response.readEntity(String.class);
 
@@ -120,10 +122,10 @@ public class SessionTest {
         		liste_session_attendue_json,
         		liste_session_accessible_json);
     }
-    
+
     @Test
     // Resultat Attendu: liste vide
-    public void testGetSessionsAccessiblesOK_2() throws IOException {
+    public void testGetListeSessionsAccessiblesOK_2() throws IOException {
     	Client client = ClientBuilder.newClient();
         WebTarget target = client.target( "http://localhost:8080" ).path( "Sapfor/rest" );    
         List<Session> liste_session_attendue = new ArrayList<Session>();
@@ -138,4 +140,18 @@ public class SessionTest {
         		liste_session_attendue_json,
         		liste_session_accessible_json);
     }
+    
+    @Test
+    // Resultat Attendu: Status FORBIDDEN (403)
+    public void testGetListeSessionsAccessiblesNOK() {
+    	Client client = ClientBuilder.newClient();
+        WebTarget target = client.target( "http://localhost:8080" ).path( "Sapfor/rest" );    
+
+        Response response = target.path( "session").path("000000/accessible").request().get();
+
+        Assert.assertEquals(
+        		403,
+        		response.getStatus());
+    }
+  
 }

@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.jasypt.util.password.ConfigurablePasswordEncryptor;
+
 @XmlRootElement
 public class Agent {
 
@@ -22,9 +24,13 @@ public class Agent {
     }
 
     public Agent( int id, String nom, String motdepasse, String matricule, Boolean gestionnaire ) {
-        this.id = id;
+    	ConfigurablePasswordEncryptor passwordEncryptor = new ConfigurablePasswordEncryptor();
+		passwordEncryptor.setAlgorithm( "SHA-256" );
+		passwordEncryptor.setPlainDigest( false );
+		String HashMotDePasse = passwordEncryptor.encryptPassword( motdepasse );
+    	this.id = id;
         this.nom = nom;
-        this.mdp = motdepasse;
+        this.mdp = HashMotDePasse;
         this.matricule = matricule;
         this.gestionnaire = gestionnaire;
         this.listeUV = new ArrayList<Uv>();
@@ -73,7 +79,7 @@ public class Agent {
         this.listeUV = listeUV;
     }
 
-    /* Ajouter une Uv à un agent */
+    /* Ajouter une Uv ï¿½ un agent */
     public void ajouterUv( Uv u ) {
         this.listeUV.add( u );
     }
@@ -86,7 +92,7 @@ public class Agent {
         this.listeAptitude = listeAptitude;
     }
 
-    /* Ajoute une aptitude à un agent */
+    /* Ajoute une aptitude ï¿½ un agent */
     public void ajouterAptitude( Aptitude ap ) {
         this.listeAptitude.add( ap );
     }

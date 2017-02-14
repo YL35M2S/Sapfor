@@ -60,14 +60,15 @@ public class SessionManager {
 
     @GET
     @Path( "{uuid}/accessible" )
-    // Ajout du @Produces
     @Produces( { MediaType.APPLICATION_JSON } )
-    public List<Session> getLACC( @PathParam( "uuid" ) String uuid ) {
+    public Response getListeSessionsAccessibles( @PathParam( "uuid" ) String uuid ) {
         SapforServer server = SapforServer.getSessionServer();
         if (server.isConnectedByUUID(uuid)) {
-        	return server.getSessionsAccessibles( uuid );
+        	List<Session> listSessions = server.getSessionsAccessibles( uuid );
+        	GenericEntity<List<Session>> listSessionsEntity = new GenericEntity<List<Session>>( listSessions ){};
+        	return Response.status(Status.OK).entity(listSessionsEntity).build();
         } else {
-        	return null;
+        	return Response.status(Status.FORBIDDEN).build();
         }
     }
 
@@ -132,7 +133,7 @@ public class SessionManager {
     @GET
     @Path( "listefermee" )
     @Produces( { MediaType.APPLICATION_JSON } )
-    List<Session> getClosedSession(){
+    public List<Session> getClosedSession(){
             return 	SapforServer.getSessionServer().getListeSessionsFermees();
         }
     
