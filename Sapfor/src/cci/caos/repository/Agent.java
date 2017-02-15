@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.jasypt.util.password.ConfigurablePasswordEncryptor;
 
 @XmlRootElement
-public class Agent {
+public class Agent implements Comparable {
 
     private int            id;
     private String         nom;
@@ -104,5 +104,15 @@ public class Agent {
     public void setGestionnaire( Boolean gestionnaire ) {
         this.gestionnaire = gestionnaire;
     }
+
+	@Override
+	public int compareTo(Object o) {
+		if (((Agent)o).getId()==this.getId()){
+			return 0;
+		}
+		else {
+			return -1;
+		}
+	}
 
 }

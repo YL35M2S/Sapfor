@@ -239,4 +239,26 @@ public class SapforServer {
 		return null; // Si la connexion a échouée
     }
 	
+	/* @parameter un uuid  
+	 * 
+	 * @return la liste des sessions dans lesquelles l'agent à candidater
+	 * 
+	 * Attention Agent compareTo(a) compare uniquement les id des agents. 
+	 * */
+	
+	public List<Session> getListeSession(String uuid){
+		List<Session> listeCandidature= new ArrayList<Session>();
+		Agent agentCherche = getAgentByUUID(uuid);
+		for (Map.Entry<Integer, Session> entry : sessions.entrySet()){
+			List<Candidature> l = entry.getValue().getCandidats();
+			Session e = entry.getValue();
+			for (Candidature candidature : l){
+				if(candidature.getAgent().compareTo(agentCherche)==0){
+					listeCandidature.add(e);
+				};
+			}
+		}
+		return listeCandidature;
+	}
+	
 }

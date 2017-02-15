@@ -94,7 +94,7 @@ public class SessionManager {
         Session s = session;
         return Response
                 .status( Status.OK )
-                .entity( session )
+                .entity( s )
                 .build();
     }
 
@@ -113,9 +113,28 @@ public class SessionManager {
         return Response.ok( entity ).build();
     }
 
+    /* Liste Candidature 
+     * 
+     * Liste les sessions auxquelles un candidat à candidater
+     * @return la liste des sessions accessibles
+     * */
+    
+    @GET
+    @Path("{uuid}")
+    @Produces( MediaType.APPLICATION_JSON )
+    public Response getListeCandidatures( @PathParam("uuid") String id){
+    	SapforServer server = SapforServer.getSessionServer();
+    	if (server.isConnectedByUUID(id)) {
+    		List<Session> listeCandidature = server.getListeSession(id);
+    		return Response.status(Status.OK).entity(listeCandidature).build();
+    	}
+    	else {
+    		return Response.status(Status.FORBIDDEN).build();
+    	}
+    }
 
 
-
+    /* Retirer Candidature */ 
     @GET
     @Path( "{uuid}/retirerCandidature" )
     public boolean retirerCandidature( @PathParam( "uuid" ) String uuid, @QueryParam( "Session" ) String idSession ) {
