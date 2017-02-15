@@ -162,6 +162,17 @@ public class SessionManager {
     public List<Session> getOpenedSession(){
             return 	SapforServer.getSessionServer().getListeSessionsOuvertes();
         }
-    
+    @GET
+    @Path( "{uuid}/candidater" )
+    public boolean deposerCandidature( @PathParam( "uuid" ) String uuid, @QueryParam( "Session" ) String idSession ) {
+    	SapforServer server = SapforServer.getSessionServer();
+    	int ids = Integer.parseInt( idSession );
+            if ( server.isConnectedByUUID( uuid )) {
+                int idAgent = server.getAgentByUUID(uuid).getId();
+                return server.getSessionById( ids ).deposerCandidature(idAgent);
+            } else {
+            	return false;
+            }
+    }
     
 }
