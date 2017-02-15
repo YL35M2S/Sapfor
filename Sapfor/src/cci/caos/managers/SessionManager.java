@@ -22,7 +22,6 @@ import cci.caos.server.SapforServer;
 @Path( "/session" )
 public class SessionManager {
 
-
     @GET
     @Path( "{uuid}/fermerCandidature" )
     public Response fermerCandidature( @PathParam( "uuid" ) String uuid, @QueryParam( "Session" ) String idSession ) {
@@ -39,7 +38,6 @@ public class SessionManager {
                     .build();
         }
     }
-
 
     @POST
     @Path( "{uuid}/modifierCandidats" )
@@ -59,7 +57,6 @@ public class SessionManager {
                     .build();
         }
     }
-
 
     @GET
     @Path( "{uuid}/accessible" )
@@ -101,7 +98,7 @@ public class SessionManager {
                 .build();
     }
 
-    // POUR L'EXEMPLE ****************************************************************************************************************************
+    // POUR L'EXEMPLE
     // Liste les candidatures à une session au format XML
     // http://localhost:8080/rest/session/listeCandidatures?Session=1
     @GET
@@ -116,7 +113,7 @@ public class SessionManager {
         return Response.ok( entity ).build();
     }
 
-    /* Liste Candidature ****************************************************************************************************************************
+    /* Liste Candidature
      * 
      * Liste les sessions auxquelles un agent à candidater
      * @return la liste des sessions accessibles
@@ -135,8 +132,6 @@ public class SessionManager {
     	}
     }
 
-
-    /* Retirer Candidature */ //****************************************************************************************************************************
     @GET
     @Path( "{uuid}/retirerCandidature" )
     public Response retirerCandidature( @PathParam( "uuid" ) String uuid, @QueryParam( "Session" ) String idSession ) {
@@ -159,8 +154,7 @@ public class SessionManager {
             	return Response.status(Status.FORBIDDEN).build();
             }
     }
-    	
-    	
+    		
     @GET
     @Path( "listefermee" )
     @Produces( { MediaType.APPLICATION_JSON } )
@@ -175,7 +169,6 @@ public class SessionManager {
             return 	SapforServer.getSessionServer().getListeSessionsOuvertes();
         }
     
-  //****************************************************************************************************************************
     @GET
     @Path( "{uuid}/candidater" ) 
     public Response deposerCandidature( @PathParam( "uuid" ) String uuid, @QueryParam( "Session" ) String idSession, @QueryParam( "Formateur" ) String role ) {
