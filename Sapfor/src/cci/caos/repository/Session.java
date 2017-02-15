@@ -14,7 +14,7 @@ public class Session {
     private Date              dateDebut, dateFin;
     private boolean           ouverteInscription;
     private Uv                uv;
-    private List<Candidature> candidats;
+
    
 
     /* Constructeurs */
@@ -28,7 +28,6 @@ public class Session {
         this.dateFin = df;
         this.ouverteInscription = b;
         this.uv = uv;
-        this.candidats = new ArrayList<Candidature>();
     }
 
     /* Accesseurs et Modificateurs */
@@ -80,13 +79,6 @@ public class Session {
         this.uv = uv;
     }
 
-    public List<Candidature> getCandidats() {
-        return candidats;
-    }
-
-    public void setCandidats( List<Candidature> candidats ) {
-        this.candidats = candidats;
-    }
 
     /* Fonctions Specifiques */
     /**
@@ -103,17 +95,17 @@ public class Session {
      * Permet de mettre à jour la liste des candidatures à la session
      * 
      * @return Vrai si la mise a jour s'est deroulée correctement
-     */
+    
     public boolean modifierListeCandidats( List<Candidature> candidatures ) {
         this.candidats = candidatures;
         return true;
-    }
+    } */
     
     /**
      * 
      * @param id: id d'un agent
      * @return True si la candidature a bien été retirée
-     */
+     
     public boolean retirerCandidature(int idAgent){
     	Iterator<Candidature> it = candidats.iterator();
     	while (it.hasNext()) {
@@ -124,5 +116,5 @@ public class Session {
     	}
     	return false;
     }
-  
+  */
 }

@@ -26,6 +26,7 @@ public class SapforServer {
     private Map<Integer, Agent>    agents;
     private Map<Integer, Stage>    stages;
     private Map<Integer, Aptitude> aptitudes;
+    private List<Candidature> listeCandidature;
 
     private Map<String, Agent>     uuid_agents;
     private static SapforServer    sessionServer;

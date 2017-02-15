@@ -8,8 +8,9 @@ public class Candidature {
     private Agent   agent;
     private int     statutCandidature;
     private boolean estFormateur;
+    private Session session;
 
-    /* Contructeurs */
+	/* Contructeurs */
     public Candidature() {
     }
 
@@ -43,5 +44,14 @@ public class Candidature {
     public void setEstFormateur( boolean estFormateur ) {
         this.estFormateur = estFormateur;
     }
+    
+    public Session getSession() {
+  		return session;
+  	}
+
+  	public void setSession(Session session) {
+  		this.session = session;
+  	}
+
 
 }
