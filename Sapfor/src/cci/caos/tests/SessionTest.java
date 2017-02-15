@@ -99,6 +99,7 @@ public class SessionTest {
                         .post( Entity.xml( current ) ).getStatus() );
     }
     
+/* A REFAIRE AVEC UNE LISTE DE CANDIDATURE
     @Test
     // Resultat Attendu: Liste avec la session d'id 3
     public void testGetListeSessionsAccessiblesOK() throws IOException {
@@ -140,6 +141,7 @@ public class SessionTest {
         		liste_session_attendue_json,
         		liste_session_accessible_json);
     }
+*/
     
     @Test
     // Resultat Attendu: Status FORBIDDEN (403)

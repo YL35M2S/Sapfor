@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ThreadLocalRandom;
 
 import org.jasypt.util.password.ConfigurablePasswordEncryptor;
 
@@ -26,7 +27,7 @@ public class SapforServer {
     private Map<Integer, Agent>    agents;
     private Map<Integer, Stage>    stages;
     private Map<Integer, Aptitude> aptitudes;
-    private List<Candidature> listeCandidature;
+    private Map<Integer, Candidature> candidatures;
 
     private Map<String, Agent>     uuid_agents;
     private static SapforServer    sessionServer;
@@ -38,7 +39,8 @@ public class SapforServer {
         agents = new HashMap<Integer, Agent>();
         stages = new HashMap<Integer, Stage>();
         aptitudes = new HashMap<Integer, Aptitude>();
-
+        candidatures = new HashMap<Integer, Candidature>();
+        
         // Creation des UV
         Uv uv1 = new Uv( 1, "UV_INC1", 5, 3, 12, "Rennes" );
         Uv uv2 = new Uv( 2, "UV_FDF1", 10, 3, 12, "Rennes" );
@@ -46,6 +48,18 @@ public class SapforServer {
         Uv uv4 = new Uv( 4, "UV_WJK2", 5, 3, 12, "Rennes" );
         Uv uv5 = new Uv( 5, "UV_WJK1", 5, 3, 12, "Rennes" );
         Uv uv6 = new Uv( 6, "UV_AJH", 5, 3, 12, "Rennes" );
+        Uv uv7 = new Uv( 7, "UV_FORM", 5, 3, 12, "Rennes" ); // Uv requise pour être formateur
+        Uv uv8 = new Uv( 8, "UV_FORM", 5, 3, 12, "Rennes" ); // Uv requise pour être formateur
+        
+        uvs.put( 1, uv1 );
+        uvs.put( 2, uv2 );
+        uvs.put( 3, uv3 );
+        uvs.put( 4, uv4 );
+        uvs.put( 5, uv5 );
+        uvs.put( 6, uv6 );
+        uvs.put( 7, uv7 );
+        uvs.put( 8, uv8 );
+        
         // Avec prérequis
         uv1.getListePrerequis().add( uv2 );
         uv1.getListePrerequis().add( uv3 );
@@ -91,16 +105,14 @@ public class SapforServer {
         } catch ( ParseException e ) {
             e.printStackTrace();
         }
+        
         sessions.put( 1, s1 );
         sessions.put( 2, s2 );
         sessions.put( 3, s3 );
 
-        uvs.put( 1, uv1 );
-        uvs.put( 2, uv2 );
-        uvs.put( 3, uv3 );
-
-        s1.getCandidats().add( new Candidature( a2, 2, false ) );
-        s1.getCandidats().add( new Candidature( a3, 2, false ) );
+        candidatures.put(1, new Candidature( a2, 2, false, s1 ));
+        candidatures.put(2, new Candidature( a3, 2, false, s1 ));
+        
     }
 
     public static SapforServer getSessionServer() {
@@ -120,49 +132,6 @@ public class SapforServer {
         return s;
     }
 
-    public List<Session> getSessionsAccessibles( String uuid ) {
-        /*
-         * Pour l'instant on récupère les sessions accessibles en tant que
-         * candidat A rajouter: les sessions accessibles en tant que formateur
-         * (posséder l'UV cette session + liste d'UV requises pour être
-         * formateur)
-         */
-        Agent agent = connexions.get( uuid );
-        List<Session> SessionsAccessibles = new ArrayList<Session>();
-
-        // Pour chaque session existante
-        for ( Integer mapKey : sessions.keySet() ) {
-            // Pour chaque session on récupère les UV requises
-            List<Uv> listeUvPrerequis = sessions.get( mapKey ).getUv().getListePrerequis();
-            // nombre d'UV requises pour cette session
-            int nombreUvRequises = listeUvPrerequis.size();
-            // futur nombre de ces UV possédées par l'agent
-            int nombreUvPossede = 0;
-            Iterator<Uv> it = listeUvPrerequis.iterator();
-            Iterator<Uv> it2 = agent.getListeUV().iterator();
-
-            while ( it.hasNext() ) { // Pour chacune des UV requises pour la
-                                     // session
-                Uv UvRequise = it.next();
-
-                while ( it2.hasNext() ) { // Pour chacune des UV possédée par
-                                          // l'agent
-                    Uv UvAgent = it2.next();
-
-                    if ( UvRequise.getNom().compareTo( UvAgent.getNom() ) == 0 ) {
-                        nombreUvPossede++; // Il possède l'UV
-                        break;
-                    }
-                }
-            }
-            if ( nombreUvRequises == nombreUvPossede ) { // Si il possède toutes
-                                                         // les UV requises
-                SessionsAccessibles.add( sessions.get( mapKey ) );
-            }
-        }
-        return SessionsAccessibles;
-    }
-
     public Uv getUvById( int id ) {
         Uv u = null;
         for ( Map.Entry<Integer, Uv> entry : uvs.entrySet() ) {
@@ -174,14 +143,14 @@ public class SapforServer {
     }
 
     public boolean isConnectedByUUID( String uuid ) {
-        boolean res = false;
+        boolean estConnecte = false;
         for ( Map.Entry<String, Agent> entry : connexions.entrySet() ) {
             if ( entry.getKey().compareTo( uuid ) == 0 ) {
-                res = true;
+                estConnecte = true;
                 break;
             }
         }
-        return res;
+        return estConnecte;
     }
 
     public Agent getAgentByUUID( String uuid ) {
@@ -203,6 +172,80 @@ public class SapforServer {
         }
         return a;
     }
+    
+    public List<Uv> getListeUvFormateur() {
+    	List<Uv> ListeUvFormateur = new ArrayList<Uv>();
+    	ListeUvFormateur.add(uvs.get(7));
+    	ListeUvFormateur.add(uvs.get(8));
+    	return ListeUvFormateur;
+    }
+    
+    public List<Candidature> getSessionsAccessibles( String uuid ) {
+        Agent agent = connexions.get( uuid );
+        List<Candidature> CandidaturesSessionsAccessibles = new ArrayList<Candidature>();
+    	List<Uv> listeUvRequiseFormateur = getListeUvFormateur();
+    	
+        // Pour chaque session existante sur le serveur
+        for ( Integer mapKey : sessions.keySet() ) {
+        	List<Uv> listeUvRequiseStagiaire = sessions.get( mapKey ).getUv().getListePrerequis();
+            // nombre d'UV requises en tant que Candidat pour cette session
+            int nombreUvRequisesStagiaire = listeUvRequiseStagiaire.size();
+            // futur nombre de ces UV en tant que Candidat possédées par l'agent
+            int nombreUvPossedeStagiaire = 0;
+            
+            int nombreUvRequiseFormateur = listeUvRequiseFormateur.size();
+            int nombreUvPossedeFormateur = 0;
+            boolean AgentPossedeUvSession = false;
+        	
+            Iterator<Uv> itListeUvRequisesStagiaire = listeUvRequiseStagiaire.iterator();
+            Iterator<Uv> itListeUvRequisesFormateur = listeUvRequiseFormateur.iterator();
+            
+            // Regarde si l'agent a les UV nécessaires pour être stagiaire
+            while (itListeUvRequisesStagiaire.hasNext()) {
+            	Uv UvRequiseStagiaire = itListeUvRequisesStagiaire.next();
+            	Iterator<Uv> itListeUvAgent = agent.getListeUV().iterator();
+            	
+            	while (itListeUvAgent.hasNext()) {
+            		Uv UvAgent = itListeUvAgent.next();
+            		
+            		if ( UvRequiseStagiaire.getNom().compareTo( UvAgent.getNom() ) == 0 ) {
+            			nombreUvPossedeStagiaire++; // Il possède l'UV
+                        break;
+                    }
+            	}
+            }
+            // Regarde si l'agent a les UV nécessaires pour être formateur
+            while (itListeUvRequisesFormateur.hasNext()) {
+            	Uv UvRequiseFormateur = itListeUvRequisesFormateur.next();
+            	Iterator<Uv> itListeUvAgent = agent.getListeUV().iterator();
+            	while (itListeUvAgent.hasNext()) {
+            		Uv UvAgent = itListeUvAgent.next();
+            		
+            		if (UvAgent.getNom().compareTo(sessions.get( mapKey ).getUv().getNom())==0) {
+            			AgentPossedeUvSession = true;
+            		}
+            		
+            		if (UvRequiseFormateur.getNom().compareTo(UvAgent.getNom())==0) {
+            			nombreUvPossedeFormateur++;
+            		}
+            	}
+            }
+            	
+            // Ajout candidature en tant que stagiaire
+            if ( nombreUvRequisesStagiaire == nombreUvPossedeStagiaire && !AgentPossedeUvSession  ) { 
+            	Candidature candidature = new Candidature(agent, -2, false, sessions.get( mapKey ));
+            	CandidaturesSessionsAccessibles.add(candidature);
+            }
+            
+            // Ajout candidature en tant que formateur
+            if ( nombreUvRequiseFormateur == nombreUvPossedeFormateur & AgentPossedeUvSession ) {
+            	Candidature candidature = new Candidature(agent, -2, true, sessions.get( mapKey ));
+            	CandidaturesSessionsAccessibles.add(candidature);
+            }
+        }
+        return CandidaturesSessionsAccessibles;
+    }
+    
     public List<Session> getListeSessionsFermees(){
     	List<Session> listeFermees= new ArrayList<Session>();
     	for (Map.Entry<Integer, Session> entry : sessions.entrySet()){
@@ -226,7 +269,7 @@ public class SapforServer {
 	public String getConnexionAgent(String matricule, String password) {
 		ConfigurablePasswordEncryptor passwordEncryptor = new ConfigurablePasswordEncryptor();
 		passwordEncryptor.setAlgorithm( "SHA-256" );
-		passwordEncryptor.setPlainDigest( false );
+		passwordEncryptor.setPlainDigest( true );
 		
 		for (Map.Entry<Integer, Agent> entry : agents.entrySet()){
 			if (entry.getValue().getMatricule().compareTo(matricule)==0) {
@@ -240,26 +283,81 @@ public class SapforServer {
 		return null; // Si la connexion a échouée
     }
 	
+	public List<Candidature> getListeCandidatures(int idSession) {
+		List<Candidature> listeCandidatures = new ArrayList<Candidature>();
+		for (Map.Entry<Integer, Candidature> entry : candidatures.entrySet()){
+			if(entry.getValue().getSession().getId()==idSession) {
+				listeCandidatures.add(entry.getValue());
+			}
+		}
+		return listeCandidatures;
+	}
+	
 	/* @parameter un uuid  
 	 * 
 	 * @return la liste des sessions dans lesquelles l'agent à candidater
 	 * 
 	 * Attention Agent compareTo(a) compare uniquement les id des agents. 
 	 * */
-	
 	public List<Session> getListeSession(String uuid){
-		List<Session> listeCandidature= new ArrayList<Session>();
+		List<Session> listeSessionsCandidat= new ArrayList<Session>();
 		Agent agentCherche = getAgentByUUID(uuid);
-		for (Map.Entry<Integer, Session> entry : sessions.entrySet()){
-			List<Candidature> l = entry.getValue().getCandidats();
-			Session e = entry.getValue();
-			for (Candidature candidature : l){
-				if(candidature.getAgent().compareTo(agentCherche)==0){
-					listeCandidature.add(e);
-				};
+		
+		for (Map.Entry<Integer, Candidature> entry : candidatures.entrySet()){
+			if (entry.getValue().getAgent().compareTo(agentCherche)==0) {
+				listeSessionsCandidat.add(entry.getValue().getSession());
 			}
 		}
-		return listeCandidature;
+		return listeSessionsCandidat;
 	}
 	
+	public boolean modifierListeCandidats(int idSession, List<Candidature> listeCandidature) {
+		Iterator<Candidature> itCandidature = listeCandidature.iterator();
+		
+		for (Map.Entry<Integer, Candidature> entry : candidatures.entrySet()){
+			while (itCandidature.hasNext()) {
+				Candidature CandidatureCourante = itCandidature.next();
+				if (CandidatureCourante.getAgent().compareTo(entry.getValue().getAgent())==0 && 
+						CandidatureCourante.getSession().getId()==entry.getValue().getSession().getId()) {
+					candidatures.put(entry.getKey(), CandidatureCourante); // Remplacement de la candidature
+				}
+			}	
+		}
+		// Temporaire
+		return true;
+	}
+	
+	public boolean retirerCandidature(int idAgent, int idSession) {
+		for (Map.Entry<Integer, Candidature> entry : candidatures.entrySet()){
+			if (entry.getValue().getAgent().getId()==idAgent) {
+				if (entry.getValue().getSession().getId()==idSession) {
+					candidatures.remove(entry.getKey());
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	public boolean deposerCandidature(int idAgent, int idSession, boolean estFormateur) {
+		boolean alreadyExist = false;
+		for (Map.Entry<Integer, Candidature> entry : candidatures.entrySet()){
+			if (entry.getValue().getAgent().getId()==idAgent) {
+				if (entry.getValue().getSession().getId()==idSession) {
+					alreadyExist = true;
+				}
+			}
+		}
+		if (!alreadyExist) {
+			int cle = ThreadLocalRandom.current().nextInt(1, 100000 + 1);
+			// Assure l'unicité de la clé dans la hashMap
+			while(candidatures.containsKey(cle)) {
+				cle = ThreadLocalRandom.current().nextInt(1, 100000 + 1);
+			}
+			candidatures.put(cle, new Candidature( getAgentById(idAgent), -2, estFormateur ,getSessionById(idSession) ));
+			return true;
+		} else {
+			return false;
+		}
+	}
 }

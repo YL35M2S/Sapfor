@@ -15,6 +15,8 @@
 <a href="http://localhost:8080/Sapfor/rest/agent/agents?Agent=2">Voir Agent 2</a><br/>
 <a href="http://localhost:8080/Sapfor/rest/agent/agents?Agent=3">Voir Agent 3</a><br/>
 <a href="http://localhost:8080/Sapfor/rest/session/listeOuvertes">Voir sessions ouvertes</a><br/>
+<a href="http://localhost:8080/Sapfor/rest/session/19041975/accessible">Voir sessions accessibles pour l'agent de matricule 19041975</a><br/>
+<a href="http://localhost:8080/Sapfor/rest/session/06091991/accessible">Voir sessions accessibles pour l'agent de matricule 06091991</a><br/>
 
 </body>
 </html>

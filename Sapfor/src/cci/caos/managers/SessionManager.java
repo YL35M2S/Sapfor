@@ -22,6 +22,7 @@ import cci.caos.server.SapforServer;
 @Path( "/session" )
 public class SessionManager {
 
+
     @GET
     @Path( "{uuid}/fermerCandidature" )
     public Response fermerCandidature( @PathParam( "uuid" ) String uuid, @QueryParam( "Session" ) String idSession ) {
@@ -39,6 +40,7 @@ public class SessionManager {
         }
     }
 
+
     @POST
     @Path( "{uuid}/modifierCandidats" )
     @Consumes( { MediaType.APPLICATION_JSON } )
@@ -47,7 +49,7 @@ public class SessionManager {
         int ids = Integer.parseInt( idSession );
         if ( SapforServer.getSessionServer().isConnectedByUUID( uuid )
                 && SapforServer.getSessionServer().getAgentByUUID( uuid ).getGestionnaire() ) {
-            SapforServer.getSessionServer().getSessionById( ids ).modifierListeCandidats( candidatures );
+            SapforServer.getSessionServer().modifierListeCandidats( ids, candidatures );
             return Response
                     .status( Status.OK )
                     .build();
@@ -58,14 +60,15 @@ public class SessionManager {
         }
     }
 
+
     @GET
     @Path( "{uuid}/accessible" )
-    @Produces( { MediaType.APPLICATION_JSON } )
+    @Produces( MediaType.APPLICATION_XML )
     public Response getListeSessionsAccessibles( @PathParam( "uuid" ) String uuid ) {
         SapforServer server = SapforServer.getSessionServer();
         if (server.isConnectedByUUID(uuid)) {
-        	List<Session> listSessions = server.getSessionsAccessibles( uuid );
-        	GenericEntity<List<Session>> listSessionsEntity = new GenericEntity<List<Session>>( listSessions ){};
+        	List<Candidature> listSessionsAccessibles = server.getSessionsAccessibles( uuid );
+        	GenericEntity<List<Candidature>> listSessionsEntity = new GenericEntity<List<Candidature>>( listSessionsAccessibles ){};
         	return Response.status(Status.OK).entity(listSessionsEntity).build();
         } else {
         	return Response.status(Status.FORBIDDEN).build();
@@ -98,7 +101,7 @@ public class SessionManager {
                 .build();
     }
 
-    // POUR L'EXEMPLE
+    // POUR L'EXEMPLE ****************************************************************************************************************************
     // Liste les candidatures à une session au format XML
     // http://localhost:8080/rest/session/listeCandidatures?Session=1
     @GET
@@ -106,19 +109,18 @@ public class SessionManager {
     @Produces( MediaType.APPLICATION_XML )
     public Response listeCandidature( @QueryParam( "Session" ) String idSession ) {
         int ids = Integer.parseInt( idSession );
-        Session s = SapforServer.getSessionServer().getSessionById( ids );
-        List<Candidature> list = s.getCandidats();
-        GenericEntity<List<Candidature>> entity = new GenericEntity<List<Candidature>>( list ) {
+        SapforServer server = SapforServer.getSessionServer();
+        List<Candidature> listeCandidatures = server.getListeCandidatures(ids);
+        GenericEntity<List<Candidature>> entity = new GenericEntity<List<Candidature>>( listeCandidatures ) {
         };
         return Response.ok( entity ).build();
     }
 
-    /* Liste Candidature 
+    /* Liste Candidature ****************************************************************************************************************************
      * 
-     * Liste les sessions auxquelles un candidat à candidater
+     * Liste les sessions auxquelles un agent à candidater
      * @return la liste des sessions accessibles
      * */
-    
     @GET
     @Path("{uuid}")
     @Produces( MediaType.APPLICATION_JSON )
@@ -134,17 +136,27 @@ public class SessionManager {
     }
 
 
-    /* Retirer Candidature */ 
+    /* Retirer Candidature */ //****************************************************************************************************************************
     @GET
     @Path( "{uuid}/retirerCandidature" )
-    public boolean retirerCandidature( @PathParam( "uuid" ) String uuid, @QueryParam( "Session" ) String idSession ) {
+    public Response retirerCandidature( @PathParam( "uuid" ) String uuid, @QueryParam( "Session" ) String idSession ) {
     	SapforServer server = SapforServer.getSessionServer();
     	int ids = Integer.parseInt( idSession );
             if ( server.isConnectedByUUID( uuid )) {
                 int idAgent = server.getAgentByUUID(uuid).getId();
-                return server.getSessionById( ids ).retirerCandidature(idAgent);
+                
+                if (server.retirerCandidature(idAgent, ids)) {
+                	return Response.status(Status.OK).build();
+                } else {
+                	/*
+                	 * A discuter, ici la requête côté serveur s'est correctement déroulée mais la requête client a demandé
+                	 * la suppression d'une candidature qui n'existe pas, ce que le serveur a detecté
+                	 * J'aimerais donc notifier le client avec un statut, en l'occurence j'ai opté pour BAD_REQUEST
+                	 */
+                	return Response.status(Status.BAD_REQUEST).build();
+                }
             } else {
-            	return false;
+            	return Response.status(Status.FORBIDDEN).build();
             }
     }
     	
@@ -162,16 +174,23 @@ public class SessionManager {
     public List<Session> getOpenedSession(){
             return 	SapforServer.getSessionServer().getListeSessionsOuvertes();
         }
+    
+  //****************************************************************************************************************************
     @GET
-    @Path( "{uuid}/candidater" )
-    public boolean deposerCandidature( @PathParam( "uuid" ) String uuid, @QueryParam( "Session" ) String idSession ) {
+    @Path( "{uuid}/candidater" ) 
+    public Response deposerCandidature( @PathParam( "uuid" ) String uuid, @QueryParam( "Session" ) String idSession, @QueryParam( "Formateur" ) String role ) {
     	SapforServer server = SapforServer.getSessionServer();
     	int ids = Integer.parseInt( idSession );
+    	boolean estFormateur = Boolean.getBoolean(role);
             if ( server.isConnectedByUUID( uuid )) {
                 int idAgent = server.getAgentByUUID(uuid).getId();
-                return server.getSessionById( ids ).deposerCandidature(idAgent);
+                if (server.deposerCandidature( idAgent, ids, estFormateur )) {
+                	return Response.status(Status.OK).build();
+                } else {
+                	return Response.status(Status.BAD_REQUEST).build();
+                }
             } else {
-            	return false;
+            	return Response.status(Status.FORBIDDEN).build();
             }
     }
     

@@ -118,15 +118,4 @@ public class Session {
     }
   */
 
-	public boolean deposerCandidature(int idAgent) {
-		Iterator<Candidature> it = candidats.iterator();
-    	while (it.hasNext()) {
-    		Candidature elemCourant = it.next();
-    		if (elemCourant.getAgent().getId()==idAgent) {
-    			return candidats.add(elemCourant);
-    		}	
-    	}
-		return false;
-	}
-  
 }

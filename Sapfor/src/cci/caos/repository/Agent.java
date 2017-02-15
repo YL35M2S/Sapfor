@@ -26,7 +26,7 @@ public class Agent implements Comparable {
     public Agent( int id, String nom, String motdepasse, String matricule, Boolean gestionnaire ) {
     	ConfigurablePasswordEncryptor passwordEncryptor = new ConfigurablePasswordEncryptor();
 		passwordEncryptor.setAlgorithm( "SHA-256" );
-		passwordEncryptor.setPlainDigest( false );
+		passwordEncryptor.setPlainDigest( true );
 		String HashMotDePasse = passwordEncryptor.encryptPassword( motdepasse );
     	this.id = id;
         this.nom = nom;

@@ -14,10 +14,11 @@ public class Candidature {
     public Candidature() {
     }
 
-    public Candidature( Agent agent, int statutCandidature, boolean estFormateur ) {
+    public Candidature( Agent agent, int statutCandidature, boolean estFormateur, Session session ) {
         this.agent = agent;
         this.statutCandidature = statutCandidature;
         this.estFormateur = estFormateur;
+        this.session = session;
     }
 
     /* Accesseurs et Modificateurs */
