@@ -12,7 +12,6 @@ public class CandidatureDaoImpl implements CandidatureDao{
 		this.daoFactory = daoFactory;
 	}
 	
-	
 	/*Implémentation des méthodes */
 	
 	public void creer (Candidature candidature) throws DAOException{

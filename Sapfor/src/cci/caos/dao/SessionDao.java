@@ -9,8 +9,8 @@ public interface SessionDao {
 
 	void creer (Session session) throws DAOException;
 	
-	//Session trouver (int id) throws DAOException;
+	Session trouver (int id) throws DAOException;
 	
-	//Session ajouterCandidat(Candidature candidature) throws DAOException;
+	Session ajouterCandidat(Candidature candidature) throws DAOException;
 	
 }
