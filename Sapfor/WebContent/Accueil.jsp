@@ -17,6 +17,6 @@
 <a href="http://localhost:8080/Sapfor/rest/session/listeOuvertes">Voir sessions ouvertes</a><br/>
 <a href="http://localhost:8080/Sapfor/rest/session/19041975/accessible">Voir sessions accessibles pour l'agent de matricule 19041975</a><br/>
 <a href="http://localhost:8080/Sapfor/rest/session/06091991/accessible">Voir sessions accessibles pour l'agent de matricule 06091991</a><br/>
-
+<a href="http://localhost:8080/Sapfor/rest/session/19041975/candidater?Session=1&Formateur=false">Candidature de l'agent de matricule 19041975 en tant que stagiaire</a><br/>
 </body>
 </html>
