@@ -164,7 +164,7 @@ public class SessionManager {
     
     @GET
     @Path( "listeOuvertes" )
-    @Produces( { MediaType.APPLICATION_XML } )
+    @Produces( { MediaType.APPLICATION_JSON } )
     public List<Session> getOpenedSession(){
             return 	SapforServer.getSessionServer().getListeSessionsOuvertes();
         }
