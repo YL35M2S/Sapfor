@@ -6,6 +6,6 @@ public interface AgentDao {
 	
 	void creer (Agent agent) throws DAOException;
 	
-	Agent trouver (String uuid) throws DAOException;
+	Agent trouver (int id) throws DAOException;
 	
 }
