@@ -1,9 +1,8 @@
 package cci.caos.repository;
 
-import java.util.ArrayList;
+
 import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
+
 
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -14,20 +13,22 @@ public class Session {
     private Date              dateDebut, dateFin;
     private boolean           ouverteInscription;
     private Uv                uv;
+    private String		  nomStage;
 
-   
+  
 
-    /* Constructeurs */
+	/* Constructeurs */
     public Session() {
     }
 
-    public Session( int id, String n, Date dd, Date df, boolean b, Uv uv ) {
+    public Session( int id, String n, Date dd, Date df, boolean b, Uv uv, String nomStage ) {
         this.id = id;
         this.nom = n;
         this.dateDebut = dd;
         this.dateFin = df;
         this.ouverteInscription = b;
         this.uv = uv;
+        this.nomStage = nomStage;
     }
 
     /* Accesseurs et Modificateurs */
@@ -78,6 +79,14 @@ public class Session {
     public void setUv( Uv uv ) {
         this.uv = uv;
     }
+    
+    public String getNomStage() {
+		return nomStage;
+	}
+
+	public void setNomStage(String nomStage) {
+		this.nomStage = nomStage;
+	}
 
 
     /* Fonctions Specifiques */

@@ -6,4 +6,6 @@ public interface UvDao {
 
 	void creer (Uv uv) throws DAOException; 
 	
+	Uv trouver (int idUv) throws DAOException; 
+	
 }

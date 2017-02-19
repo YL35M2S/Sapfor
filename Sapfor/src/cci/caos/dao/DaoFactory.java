@@ -1,11 +1,5 @@
 package cci.caos.dao;
 
-
-import java.io.IOException;
-import java.io.InputStream;
-
-import java.util.Properties;
-
 import java.sql.SQLException;
 import java.sql.PreparedStatement;
 import java.sql.Connection;

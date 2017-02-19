@@ -6,17 +6,14 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
-import cci.caos.repository.Agent;
 import cci.caos.repository.Candidature;
-import cci.caos.repository.Session;
 import cci.caos.server.SapforServer;
 
 public class CandidatureDaoImpl implements CandidatureDao{
 
 	private DaoFactory daoFactory;
-	private static final String SQL_SELECT_PAR_CANDIDAT_SESSION = "SELECT * FROM Session WHERE idCandidat = ? and idSession = ?";
-	private static final String SQL_INSERT_CANDIDATURE = "INSERT INTO Session VALUES(?, ?, ?, ?, ?);"; 
+	private static final String SQL_SELECT_PAR_CANDIDAT_SESSION = "SELECT * FROM Candidature WHERE agent = ? and session = ?";
+	private static final String SQL_INSERT_CANDIDATURE = "INSERT INTO Candidature VALUES(?, ?, ?, ?);"; 
 
 	/*Constructeur */
 	public CandidatureDaoImpl(DaoFactory daoFactory) {
@@ -28,7 +25,7 @@ public class CandidatureDaoImpl implements CandidatureDao{
 	
 	
 	
-	public Candidature trouver(int idCandidat, int idSession) throws DAOException{
+	public Candidature trouver(int idAgent, int idSession) throws DAOException{
 		Candidature candidature = null;
 		Connection connexion = null;
 		ResultSet resultSet = null;
@@ -36,15 +33,15 @@ public class CandidatureDaoImpl implements CandidatureDao{
 		
 		try{
 			connexion = daoFactory.getConnection();
-			preparedStatement = DaoFactory.initialisationRequetePreparee( connexion, SQL_SELECT_PAR_CANDIDAT_SESSION, false, idCandidat, idSession );
+			preparedStatement = DaoFactory.initialisationRequetePreparee( connexion, SQL_SELECT_PAR_CANDIDAT_SESSION, false, idAgent, idSession );
 			resultSet = preparedStatement.executeQuery();
 			
 			if (resultSet.next()){
 				candidature = new Candidature();
 				candidature.setEstFormateur(resultSet.getBoolean("estFormateur"));
 				candidature.setStatutCandidature(resultSet.getInt("statutCandidature"));
-				candidature.setAgent(SapforServer.getSessionServer().getAgentById(idCandidat));
-				candidature.setSession(SapforServer.getSessionServer().getSessionById(idSession));
+				candidature.setAgent(SapforServer.getSessionServer().getAgentById(resultSet.getInt("agent")));
+				candidature.setSession(SapforServer.getSessionServer().getSessionById(resultSet.getInt("session")));
 			}
 		} catch ( SQLException e ) {
         	throw new DAOException( e );

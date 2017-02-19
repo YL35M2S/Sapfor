@@ -6,13 +6,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
-
 import cci.caos.repository.Agent;
-import cci.caos.repository.Aptitude;
-import cci.caos.repository.Session;
-import cci.caos.repository.Uv;
-import cci.caos.server.SapforServer;
+
 
 public class AgentDaoImpl implements AgentDao{
 	
@@ -41,7 +36,7 @@ public class AgentDaoImpl implements AgentDao{
 	     
 	     try{
 	     connexion = daoFactory.getConnection();
-	     preparedStatement = DaoFactory.initialisationRequetePreparee(connexion,SQL_INSERT_AGENT, false,id, nom, mdp, matricule, gestionnaire);
+	     preparedStatement = DaoFactory.initialisationRequetePreparee(connexion,SQL_INSERT_AGENT, false, id, nom, mdp, matricule, gestionnaire);
 	     statut = preparedStatement.executeUpdate();
 	     if (statut==0){System.out.println("ok");}; 
 	     } catch ( SQLException e ) {
@@ -66,7 +61,7 @@ public class AgentDaoImpl implements AgentDao{
 			if (resultSet.next()){
 				agent = new Agent();
 				agent.setId(id);
-				agent.setNom(resultSet.getString("nom"));
+				agent.setNom(resultSet.getString("nomAgent"));
 				agent.setMdp(resultSet.getString("mdp"));
 				agent.setMatricule(resultSet.getString("matricule"));
 				agent.setGestionnaire(resultSet.getBoolean("gestionnaire"));

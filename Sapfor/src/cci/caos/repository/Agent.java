@@ -42,9 +42,9 @@ public class Agent implements Comparable {
     public int getId() {
         return id;
     }
-
-    public void setNom( int id ) {
-        this.id = id;
+    
+    public void setId(int id){
+    	 this.id = id;
     }
 
     public String getNom() {

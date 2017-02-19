@@ -4,12 +4,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Date;
 
-import cci.caos.repository.Candidature;
+
 import cci.caos.repository.Session;
-import cci.caos.repository.Uv;
+
 import cci.caos.server.SapforServer;
 
 import static cci.caos.dao.DaoUtilitaires.fermeturesSilencieuses;
@@ -17,8 +16,8 @@ import static cci.caos.dao.DaoUtilitaires.fermeturesSilencieuses;
 public class SessionDaoImpl implements SessionDao {
 	
 	private DaoFactory daoFactory;
-	private static final String SQL_SELECT_PAR_ID = "SELECT * FROM Session WHERE idUv = ?";
-	private static final String SQL_INSERT_SESSION = "INSERT INTO Session VALUES(?, ?, ?, ?, ?, ?);";
+	private static final String SQL_SELECT_PAR_ID = "SELECT * FROM Session WHERE idSession = ?";
+	private static final String SQL_INSERT_SESSION = "INSERT INTO Session VALUES(?, ?, ?, ?, ?, ?, ?);";
 
 	
 	/*Constructeur */
@@ -37,6 +36,7 @@ public class SessionDaoImpl implements SessionDao {
 	     Date 			   dateFin = session.getDateFin();
 	     boolean           ouverteInscription = session.isOuverteInscription();
 	     int               idUv = session.getUv().getId() ;
+	     String			   nomStage = session.getNomStage();
 	     int 			   statut;
 	     
 	     Connection connexion = null; 
@@ -44,7 +44,7 @@ public class SessionDaoImpl implements SessionDao {
 	     
 	     try{
 	     connexion = daoFactory.getConnection();
-	     preparedStatement = DaoFactory.initialisationRequetePreparee(connexion, SQL_INSERT_SESSION, false, id, nom, dateDebut, dateFin, ouverteInscription, idUv);
+	     preparedStatement = DaoFactory.initialisationRequetePreparee(connexion, SQL_INSERT_SESSION, false, id, nom, dateDebut, dateFin, ouverteInscription, idUv, nomStage);
 	     statut = preparedStatement.executeUpdate(); 
 	     if (statut==0){System.out.println("ok");};
 	     } catch ( SQLException e ) {
@@ -73,8 +73,9 @@ public class SessionDaoImpl implements SessionDao {
 				session.setDateDebut(resultSet.getDate("dateDebut"));
 				session.setDateFin(resultSet.getDate("dateFin"));
 				session.setNom(resultSet.getString("nom"));
-				session.setOuverteInscription(resultSet.getBoolean("ouverteInscription"));
-				session.setUv(SapforServer.getSessionServer().getUvById(resultSet.getInt("id")));
+				session.setNomStage(resultSet.getString("nomStage"));
+				session.setOuverteInscription(resultSet.getBoolean("ouvertureInscription"));
+				session.setUv(SapforServer.getSessionServer().getUvById(resultSet.getInt("idUv")));
 			}
 		}	catch ( SQLException e ) {
             	throw new DAOException( e );

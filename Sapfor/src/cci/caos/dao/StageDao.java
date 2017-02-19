@@ -6,6 +6,6 @@ public interface StageDao {
 
 	void creer (Stage stage) throws DAOException;
 	
-	Stage trouver (String nom) throws DAOException;
+	public boolean existe (String nom) throws DAOException;
 	
 }

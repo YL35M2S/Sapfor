@@ -1,7 +1,6 @@
 package cci.caos.dao;
 
 import cci.caos.repository.Candidature;
-import cci.caos.repository.Session;
 
 public interface CandidatureDao {
 
