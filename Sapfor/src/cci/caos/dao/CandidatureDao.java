@@ -7,4 +7,5 @@ public interface CandidatureDao {
 
 	void creer (Candidature candidature) throws DAOException;
 	
+	Candidature trouver(int idCandidat, int idSession) throws DAOException;
 }
