@@ -8,4 +8,6 @@ public interface AgentDao {
 	
 	Agent trouver (int id) throws DAOException;
 	
+	boolean existe (int id) throws DAOException;
+	
 }

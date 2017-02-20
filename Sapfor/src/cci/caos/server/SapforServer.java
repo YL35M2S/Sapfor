@@ -19,6 +19,8 @@ import cci.caos.repository.Session;
 import cci.caos.repository.Stage;
 import cci.caos.repository.Uv;
 
+import cci.caos.dao.*;
+
 public class SapforServer {
 
     private Map<String, Agent>     connexions;
@@ -33,6 +35,9 @@ public class SapforServer {
     private static SapforServer    sessionServer;
 
     public SapforServer() {
+    	
+    	
+
         connexions = new HashMap<String, Agent>();
         sessions = new HashMap<Integer, Session>();
         uvs = new HashMap<Integer, Uv>();
@@ -96,11 +101,11 @@ public class SapforServer {
 
         try {
             s1 = new Session( 1, "INC1", new SimpleDateFormat( "dd/MM/yyyy" ).parse( "06/02/2017" ),
-                    new SimpleDateFormat( "dd/MM/yyyy" ).parse( "10/02/2017" ), true, uv1 );
+                    new SimpleDateFormat( "dd/MM/yyyy" ).parse( "10/02/2017" ), true, uv1, "fevrier1" );
             s2 = new Session( 2, "FDF1", new SimpleDateFormat( "dd/MM/yyyy" ).parse( "06/02/2017" ),
-                    new SimpleDateFormat( "dd/MM/yyyy" ).parse( "17/02/2017" ), true, uv2 );
+                    new SimpleDateFormat( "dd/MM/yyyy" ).parse( "17/02/2017" ), true, uv2, "fevier2" );
             s3 = new Session( 3, "SAR1", new SimpleDateFormat( "dd/MM/yyyy" ).parse( "30/01/2017" ),
-                    new SimpleDateFormat( "dd/MM/yyyy" ).parse( "3/02/2017" ), true, uv3 );
+                    new SimpleDateFormat( "dd/MM/yyyy" ).parse( "3/02/2017" ), true, uv3, "janvier1" );
 
         } catch ( ParseException e ) {
             e.printStackTrace();
@@ -112,7 +117,7 @@ public class SapforServer {
 
         candidatures.put(1, new Candidature( a2, 2, false, s1 ));
         candidatures.put(2, new Candidature( a3, 2, false, s1 ));
-        
+
     }
 
     public static SapforServer getSessionServer() {

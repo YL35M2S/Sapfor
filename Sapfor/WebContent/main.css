@@ -1,18 +1,17 @@
 @CHARSET "UTF-8";
 
-html, body {
- margin: 0;
- padding: 0;
- }
+body, p, legend, label, input {
+    font: normal 8pt verdana, helvetica, sans-serif;
+    color: #000000;
+}
 body {
- background-image: url("http://www.planwallpaper.com/static/images/wood-carving-border-ppt-backgrounds-powerpoint.jpg"); 
- font-family: Verdana, sans-serif; 
+ background-image: url("https://static.pexels.com/photos/1380/black-and-white-city-skyline-buildings.jpg");  
+ background-size: cover;
  font-size: 100%;
  }
 
 a.bouton {
   border: 1px solid black;
-  color: black;
   background-color: #D6E6E4;
   text-decoration: none;
   font-weight: bold;
@@ -21,4 +20,49 @@ a.bouton {
 }
 a.bouton:hover {
 
+}
+
+/* Forms --------------------------------------------------------------------------------------- */
+fieldset {
+    padding: 10px;
+    border: 1px #0568CD solid;
+    margin: 10px;
+}
+
+legend {
+    font-weight: bold;
+    color: #0568CD;
+}
+
+form label {
+    float: left;
+    width: 200px;
+    margin: 3px 0px 0px 0px;
+}
+
+form input {
+    margin: 3px 3px 0px 0px;
+    border: 1px #999 solid;
+}
+
+form input.sansLabel {
+    margin-left: 200px;
+}
+
+/* Styles et couleurs -------------------------------------------------------------------------- */
+.requis {
+    color: #c00;
+}
+
+.erreur {
+    color: #900;
+}
+
+.succes {
+    color: #090;
+}
+
+.info {
+    font-style: italic;
+    color: #E8A22B;
 }

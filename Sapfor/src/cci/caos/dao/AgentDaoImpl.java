@@ -14,6 +14,7 @@ public class AgentDaoImpl implements AgentDao{
 	private DaoFactory daoFactory;
 	private static final String SQL_SELECT_PAR_ID = "SELECT * FROM Agent WHERE idAgent = ?";
 	private static final String SQL_INSERT_AGENT = "INSERT INTO Agent VALUES(?, ?, ?, ?, ?);";
+	private static final String SQL_EXISTE_AGENT = "SELECT * FROM Agent WHERE idAgent = ?";
 	
 	/*Constructeur */
 	
@@ -76,4 +77,28 @@ public class AgentDaoImpl implements AgentDao{
 			
 		return agent;
 	}
+	
+	public boolean existe(int idAgent) throws DAOException{
+		boolean existe = false;
+		Connection connexion = null;
+		ResultSet resultSet = null;
+		PreparedStatement preparedStatement = null;
+		
+		try{
+			connexion = daoFactory.getConnection();
+			preparedStatement = DaoFactory.initialisationRequetePreparee( connexion, SQL_EXISTE_AGENT, false, idAgent );
+			resultSet = preparedStatement.executeQuery();
+			if (resultSet.next()){
+				existe = true;
+			}
+		}catch ( SQLException e ) {
+        	throw new DAOException( e );
+		 }
+		finally {
+			fermeturesSilencieuses( resultSet, preparedStatement, connexion );
+		}
+		return existe;
+	}
+	
+	
 }
