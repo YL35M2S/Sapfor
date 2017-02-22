@@ -19,7 +19,6 @@ public class Agent implements Comparable {
     private Boolean        gestionnaire;
 
     /* Constructeurs */
-
     public Agent() {
     }
 
@@ -37,7 +36,6 @@ public class Agent implements Comparable {
     }
 
     /* Accesseurs et Modificateurs */
-
     public int getId() {
         return id;
     }

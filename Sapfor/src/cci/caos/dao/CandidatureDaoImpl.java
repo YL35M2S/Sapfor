@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 import cci.caos.repository.Agent;
 import cci.caos.repository.Candidature;
@@ -12,7 +11,7 @@ import cci.caos.repository.Session;
 
 public class CandidatureDaoImpl extends Dao implements CandidatureDao {
     private static final String SQL_SELECT_PAR_CANDIDAT_SESSION = "SELECT * FROM Candidature WHERE idAgent = ? and idSession = ?";
-    private static final String SQL_INSERT_CANDIDATURE          = "INSERT INTO Candidature (agent, statutCandidature, estFormateur, session) VALUES(?, ?, ?, ?);";
+    private static final String SQL_INSERT_CANDIDATURE          = "INSERT INTO Candidature (idAgent, statutCandidature, estFormateur, idSession) VALUES(?, ?, ?, ?);";
 
     /* Constructeur */
     public CandidatureDaoImpl( Connection conn ) {
@@ -26,15 +25,13 @@ public class CandidatureDaoImpl extends Dao implements CandidatureDao {
      * 
      * @param candidature
      *            La candidature a sauvegarder
-     * @return l'id créé
      */
     @Override
-    public int creer( Candidature candidature ) throws DAOException {
-        int statut;
+    public void creer( Candidature candidature ) throws DAOException {
         PreparedStatement preparedStatement;
 
         try {
-            preparedStatement = connect.prepareStatement( SQL_INSERT_CANDIDATURE, Statement.RETURN_GENERATED_KEYS );
+            preparedStatement = connect.prepareStatement( SQL_INSERT_CANDIDATURE );
 
             /* Remplissage des champs de la requete */
             preparedStatement.setInt( 1, candidature.getAgent().getId() );
@@ -44,22 +41,20 @@ public class CandidatureDaoImpl extends Dao implements CandidatureDao {
 
             /* Execution de la requete */
             preparedStatement.executeUpdate();
-
-            /* Recuperation de l'Id créé */
-            ResultSet resultat = preparedStatement.getGeneratedKeys();
-            resultat.next();
-            return resultat.getInt( 1 );
         } catch ( SQLException e ) {
+            e.printStackTrace();
             throw new DAOException( e );
         }
     }
 
     /**
-     * Recherche d'une candidatture dans la Base de Donnees DAO à partir de son
-     * id
+     * Recherche d'une candidature dans la Base de Donnees DAO à partir de
+     * l'agent et de la session
      * 
-     * @param id
-     *            L'id de la candidature a rechercher
+     * @param agent
+     *            L'agent concerné par la candidature recherchée
+     * @param session
+     *            La session concernée par la candidature recherchée
      * @return la candidature recherchée
      */
     @Override
@@ -86,9 +81,9 @@ public class CandidatureDaoImpl extends Dao implements CandidatureDao {
                 candidature.setSession( session );
             }
         } catch ( SQLException e ) {
+            e.printStackTrace();
             throw new DAOException( e );
         }
         return candidature;
     }
-
 }

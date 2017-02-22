@@ -1,8 +1,6 @@
 package cci.caos.tests;
 
 import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -72,13 +70,8 @@ public class SessionTest {
         uv1.getListePrerequis().add( uv2 );
         uv1.getListePrerequis().add( uv3 );
 
-        Session s1 = null;
-        try {
-            s1 = new Session( 1, "INC1", new SimpleDateFormat( "dd/MM/yyyy" ).parse( "06/02/2017" ),
-                    new SimpleDateFormat( "dd/MM/yyyy" ).parse( "10/02/2017" ), true, uv1, new Stage( "fevrier1" ) );
-        } catch ( ParseException e ) {
-            e.printStackTrace();
-        }
+        Session s1 = new Session( "INC1", new java.sql.Date( 2017, 02, 06 ), new java.sql.Date( 2017, 02, 10 ), true,
+                uv1, new Stage( "fevrier1" ) );
 
         Assert.assertEquals(
                 200, target.path( "session" ).path( "sessions" ).queryParam( "Session", 1 )
@@ -100,12 +93,8 @@ public class SessionTest {
         current.setId( 1 );
         current.setNom( "INC2" );
         current.setOuverteInscription( true );
-        try {
-            current.setDateDebut( new SimpleDateFormat( "dd/MM/yyyy" ).parse( "13/02/2017" ) );
-            current.setDateFin( new SimpleDateFormat( "dd/MM/yyyy" ).parse( "17/02/2017" ) );
-        } catch ( ParseException e ) {
-            e.printStackTrace();
-        }
+        current.setDateDebut( new java.sql.Date( 2017, 02, 13 ) );
+        current.setDateFin( new java.sql.Date( 2017, 02, 17 ) );
         Assert.assertEquals(
                 200,
                 target.path( "session" ).path( "createSession" )

@@ -1,5 +1,6 @@
 package cci.caos.repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -19,6 +20,11 @@ public class Aptitude {
     public Aptitude( String nom, List<Uv> listeUV ) {
         this.nom = nom;
         this.listeUV = listeUV;
+    }
+
+    public Aptitude( String nom ) {
+        this.nom = nom;
+        this.listeUV = new ArrayList<Uv>();
     }
 
     /* Accesseurs et Modificateurs */

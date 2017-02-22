@@ -8,5 +8,7 @@ public interface AptitudeDao {
 
     public Aptitude trouver( int id ) throws DAOException;
 
-    public boolean existe( int id ) throws DAOException;
+    public void mettreAJour( Aptitude aptitude ) throws DAOException;
+
+    public boolean existe( Aptitude aptitude ) throws DAOException;
 }

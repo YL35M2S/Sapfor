@@ -13,9 +13,11 @@ import cci.caos.server.SapforServer;
 public class UvDaoImpl extends Dao implements UvDao {
     private static final String SQL_SELECT_PAR_ID             = "SELECT * FROM Uv WHERE idUv = ?";
     private static final String SQL_INSERT_UV                 = "INSERT INTO Uv ( nomUv, duree, nombrePlaceMin, nombrePlaceMax, lieu) VALUES( ?, ?, ?, ?, ?);";
-    private static final String SQL_INSERT_UV_PREREQUISES     = "INSERT INTO ListePrerequis ( idUv, idPrerequis ) VALUES(?, ?);";
-    private static final String SQL_SELECT_PREREQUISES_PAR_ID = "SELECT idPrerequis FROM ListePrerequis WHERE idUv = ?";
+    private static final String SQL_INSERT_UV_PREREQUISES     = "INSERT INTO listePrerequis ( idUv, idPrerequis ) VALUES(?, ?);";
+    private static final String SQL_SELECT_PREREQUISES_PAR_ID = "SELECT idPrerequis FROM listePrerequis WHERE idUv = ?";
     private static final String SQL_EXISTE_UV                 = "SELECT * FROM Uv WHERE idUv = ?";
+    private static final String SQL_UPDATE_UV                 = "UPDATE Uv SET nomUv=?, duree=?, nombrePlaceMin=?, nombrePlaceMax=?, lieu=? WHERE idUv = ?";
+    private static final String SQL_DELETE_UV_PREREQUISES     = "DELETE FROM listePrerequis WHERE idUv = ?";
 
     /* Constructeur */
     public UvDaoImpl( Connection conn ) {
@@ -57,9 +59,24 @@ public class UvDaoImpl extends Dao implements UvDao {
             /* Insertion des Uv Prerequises */
             if ( uv.getListePrerequis().size() > 0 ) {
                 preparedStatement = connect.prepareStatement( SQL_INSERT_UV_PREREQUISES );
+
+                AbstractDAOFactory adf = AbstractDAOFactory.getFactory( AbstractDAOFactory.DAO_FACTORY );
+                UvDao uvDao = adf.getUvDao();
+
+                /* Verification de l'existence de l'UV */
                 for ( Uv u : uv.getListePrerequis() ) {
+                    int idNewUvPrerequise;
+                    if ( !uvDao.existe( u ) ) {
+                        idNewUvPrerequise = uvDao.creer( u );
+                        u.setId( idNewUvPrerequise );
+                    } else {
+                        idNewUvPrerequise = u.getId();
+                    }
+                    /* Remplissage des champs de la requete */
                     preparedStatement.setInt( 1, idNewUv );
-                    preparedStatement.setInt( 2, u.getId() );
+                    preparedStatement.setInt( 2, idNewUvPrerequise );
+
+                    /* Execution de la requete */
                     preparedStatement.executeUpdate();
                 }
             }
@@ -161,7 +178,54 @@ public class UvDaoImpl extends Dao implements UvDao {
      */
     @Override
     public void mettreAJour( Uv uv ) throws DAOException {
-        // TODO Auto-generated method stub
+        PreparedStatement preparedStatement;
 
+        try {
+            preparedStatement = connect.prepareStatement( SQL_UPDATE_UV );
+
+            /* Remplissage des champs de la requete */
+            preparedStatement.setString( 1, uv.getNom() );
+            preparedStatement.setInt( 2, uv.getDuree() );
+            preparedStatement.setInt( 3, uv.getNombrePlaceMin() );
+            preparedStatement.setInt( 4, uv.getNombrePlaceMax() );
+            preparedStatement.setString( 5, uv.getLieu() );
+            preparedStatement.setInt( 6, uv.getId() );
+
+            /* Execution de la requete */
+            preparedStatement.executeUpdate();
+
+            /* Effacement des Uv prerequises */
+            preparedStatement = connect.prepareStatement( SQL_DELETE_UV_PREREQUISES );
+            preparedStatement.setInt( 1, uv.getId() );
+            preparedStatement.executeUpdate();
+
+            /* Insertion des Uv Prerequises */
+            if ( uv.getListePrerequis().size() > 0 ) {
+                preparedStatement = connect.prepareStatement( SQL_INSERT_UV_PREREQUISES );
+
+                AbstractDAOFactory adf = AbstractDAOFactory.getFactory( AbstractDAOFactory.DAO_FACTORY );
+                UvDao uvDao = adf.getUvDao();
+
+                /* Verification de l'existence de l'UV */
+                for ( Uv u : uv.getListePrerequis() ) {
+                    int idNewUvPrerequise;
+                    if ( !uvDao.existe( u ) ) {
+                        idNewUvPrerequise = uvDao.creer( u );
+                        u.setId( idNewUvPrerequise );
+                    } else {
+                        idNewUvPrerequise = u.getId();
+                    }
+                    /* Remplissage des champs de la requete */
+                    preparedStatement.setInt( 1, uv.getId() );
+                    preparedStatement.setInt( 2, idNewUvPrerequise );
+
+                    /* Execution de la requete */
+                    preparedStatement.executeUpdate();
+                }
+            }
+        } catch ( SQLException e ) {
+            e.printStackTrace();
+            throw new DAOException( e );
+        }
     }
 }

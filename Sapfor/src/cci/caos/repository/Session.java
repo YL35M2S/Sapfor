@@ -1,6 +1,6 @@
 package cci.caos.repository;
 
-import java.util.Date;
+import java.sql.Date;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -17,8 +17,7 @@ public class Session {
     public Session() {
     }
 
-    public Session( int id, String n, Date dd, Date df, boolean b, Uv uv, Stage stage ) {
-        this.id = id;
+    public Session( String n, Date dd, Date df, boolean b, Uv uv, Stage stage ) {
         this.nom = n;
         this.dateDebut = dd;
         this.dateFin = df;

@@ -9,23 +9,26 @@ import java.sql.Statement;
 import cci.caos.repository.Stage;
 
 public class StageDaoImpl extends Dao implements StageDao {
-    private static final String SQL_INSERT_STAGE = "INSERT INTO Stage (nomStage) VALUES(?);";
-    private static final String SQL_EXISTE_STAGE = "SELECT * FROM Stage WHERE nomStage = ?";
+    private static final String SQL_INSERT_STAGE  = "INSERT INTO Stage (nomStage) VALUES(?);";
+    private static final String SQL_EXISTE_STAGE  = "SELECT * FROM Stage WHERE idStage = ?";
+    private static final String SQL_UPDATE_STAGE  = "UPDATE Stage SET nomStage=?  WHERE idStage= ?";
+    private static final String SQL_SELECT_PAR_ID = "SELECT * FROM Stage WHERE idStage = ?";
 
     public StageDaoImpl( Connection conn ) {
         super( conn );
     }
 
     /**
-     * Creation d'un agent dans la Base de Donnees DAO
+     * Creation d'un stage dans la Base de Donnees DAO
      * 
-     * @param agent
-     *            L'agent a sauvegarder
-     * @return l'Id de l'agent créé
+     * @param stage
+     *            Le stage a sauvegarder
+     * @return l'Id du stage créé
      */
     @Override
     public int creer( Stage stage ) throws DAOException {
         PreparedStatement preparedStatement;
+        int idNewStage;
 
         try {
             preparedStatement = connect.prepareStatement( SQL_INSERT_STAGE, Statement.RETURN_GENERATED_KEYS );
@@ -54,7 +57,7 @@ public class StageDaoImpl extends Dao implements StageDao {
      * @return Vrai si il existe sinon false
      */
     @Override
-    public boolean existe( int idStage ) throws DAOException {
+    public boolean existe( Stage stage ) throws DAOException {
         boolean existe = false;
         ResultSet resultSet = null;
         PreparedStatement preparedStatement = null;
@@ -63,7 +66,7 @@ public class StageDaoImpl extends Dao implements StageDao {
             preparedStatement = connect.prepareStatement( SQL_EXISTE_STAGE );
 
             /* Remplissage des champs de la requete */
-            preparedStatement.setInt( 1, idStage );
+            preparedStatement.setInt( 1, stage.getId() );
 
             /* Execution de la requete */
             resultSet = preparedStatement.executeQuery();
@@ -74,5 +77,63 @@ public class StageDaoImpl extends Dao implements StageDao {
             throw new DAOException( e );
         }
         return existe;
+    }
+
+    /**
+     * Mise a jour d'un stage dans la Base de Donnees DAO
+     * 
+     * @param stage
+     *            Le stage a mettre a jour
+     */
+    @Override
+    public void mettreAJour( Stage stage ) throws DAOException {
+        PreparedStatement preparedStatement;
+
+        try {
+            preparedStatement = connect.prepareStatement( SQL_UPDATE_STAGE );
+
+            /* Remplissage des champs de la requete */
+            preparedStatement.setString( 1, stage.getNom() );
+            preparedStatement.setInt( 2, stage.getId() );
+
+            /* Execution de la requete */
+            preparedStatement.executeUpdate();
+        } catch ( SQLException e ) {
+            e.printStackTrace();
+            throw new DAOException( e );
+        }
+    }
+
+    /**
+     * Recherche d'un stage dans la Base de Donnees DAO à partir de son id
+     * 
+     * @param id
+     *            L'id du stage a rechercher
+     * @return le stage recherché
+     */
+    @Override
+    public Stage trouver( int id ) throws DAOException {
+        PreparedStatement preparedStatement;
+        ResultSet resultSet;
+        Stage stage = null;
+        try {
+            preparedStatement = connect.prepareStatement( SQL_SELECT_PAR_ID );
+
+            /* Remplissage des champs de la requete */
+            preparedStatement.setInt( 1, id );
+
+            /* Execution de la requete */
+            resultSet = preparedStatement.executeQuery();
+
+            /* Creation de l'agent */
+            if ( resultSet.next() ) {
+                stage = new Stage();
+                stage.setId( id );
+                stage.setNom( resultSet.getString( "nomStage" ) );
+            }
+        } catch ( SQLException e ) {
+            throw new DAOException( e );
+        }
+        return stage;
     }
 }

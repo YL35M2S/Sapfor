@@ -1,7 +1,5 @@
 package cci.caos.server;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -14,6 +12,10 @@ import org.jasypt.util.password.ConfigurablePasswordEncryptor;
 
 import cci.caos.dao.AbstractDAOFactory;
 import cci.caos.dao.AgentDao;
+import cci.caos.dao.AptitudeDao;
+import cci.caos.dao.CandidatureDao;
+import cci.caos.dao.SessionDao;
+import cci.caos.dao.StageDao;
 import cci.caos.dao.UvDao;
 import cci.caos.repository.Agent;
 import cci.caos.repository.Aptitude;
@@ -356,13 +358,30 @@ public class SapforServer {
         }
     }
 
+    @SuppressWarnings( "deprecation" )
     public void initializeServer() {
         AbstractDAOFactory adf = AbstractDAOFactory.getFactory( AbstractDAOFactory.DAO_FACTORY );
 
-        /* Creation des instances d'UV */
+        /* Creation des instances d'UV Simple + DAO */
         Uv uv1 = new Uv( "UV_INC1", 5, 3, 12, "Rennes" );
         Uv uv2 = new Uv( "UV_FDF1", 10, 3, 12, "Rennes" );
         Uv uv3 = new Uv( "UV_SAR1", 5, 3, 12, "Rennes" );
+        uvs.put( 1, uv1 );
+        uvs.put( 2, uv2 );
+        uvs.put( 3, uv3 );
+        UvDao uvDao = adf.getUvDao();
+        uv1.setId( uvDao.creer( uv1 ) );
+        uv2.setId( uvDao.creer( uv2 ) );
+        uv3.setId( uvDao.creer( uv3 ) );
+
+        /* Mise a jour d'instances d'UV avec prerequis + DAO */
+        uv1.ajouterUv( uv2 );
+        uv1.ajouterUv( uv3 );
+        uv2.ajouterUv( uv3 );
+        uvDao.mettreAJour( uv1 );
+        uvDao.mettreAJour( uv2 );
+
+        /* Creation des instances d'UV avec prerequis + DAO */
         Uv uv4 = new Uv( "UV_WJK2", 5, 3, 12, "Rennes" );
         Uv uv5 = new Uv( "UV_WJK1", 5, 3, 12, "Rennes" );
         Uv uv6 = new Uv( "UV_AJH", 5, 3, 12, "Rennes" );
@@ -370,94 +389,125 @@ public class SapforServer {
                                                           // etre formateur
         Uv uv8 = new Uv( "UV_FORM", 5, 3, 12, "Rennes" ); // Uv requise pour
                                                           // etre formateur
-        uvs.put( 1, uv1 );
-        uvs.put( 2, uv2 );
-        uvs.put( 3, uv3 );
         uvs.put( 4, uv4 );
         uvs.put( 5, uv5 );
         uvs.put( 6, uv6 );
         uvs.put( 7, uv7 );
         uvs.put( 8, uv8 );
-
-        /* Sauvegarde des UV */
-        UvDao uvDao = adf.getUvDao();
-        uv1.setId( uvDao.creer( uv1 ) );
-        uv2.setId( uvDao.creer( uv2 ) );
-        uv3.setId( uvDao.creer( uv3 ) );
+        uv3.ajouterUv( uv6 );
+        uv4.ajouterUv( uv5 );
         uv4.setId( uvDao.creer( uv4 ) );
         uv5.setId( uvDao.creer( uv5 ) );
         uv6.setId( uvDao.creer( uv6 ) );
         uv7.setId( uvDao.creer( uv7 ) );
         uv8.setId( uvDao.creer( uv8 ) );
 
-        /* Creation des prerequis au niveau des UV */
-        uv1.ajouterUv( uv2 );
-        uv1.ajouterUv( uv3 );
-        uv2.ajouterUv( uv3 );
-        uv3.ajouterUv( uv6 );
-        uv4.ajouterUv( uv5 );
+        // Creation d'aptitude simple + DAO
+        Aptitude apt1 = new Aptitude( "APT1" );
+        Aptitude apt2 = new Aptitude( "APT2" );
+        aptitudes.put( 1, apt1 );
+        aptitudes.put( 2, apt2 );
+        AptitudeDao aptitudeDao = adf.getAptitudeDao();
+        apt1.setId( aptitudeDao.creer( apt1 ) );
+        apt2.setId( aptitudeDao.creer( apt2 ) );
 
-        /* Ajouter la Mise a jour des Uv */
-        // A IMPLEMENTER
-        uvDao.mettreAJour( uv1 );
+        // Mise a jour d'aptitude avec prerequis + DAO
+        apt1.ajouterUv( uv1 );
+        apt1.ajouterUv( uv2 );
+        apt2.ajouterUv( uv1 );
+        aptitudeDao.mettreAJour( apt1 );
 
-        // Creation d'agents
+        // Creation d'aptitude avec prerequis + DAO
+        Aptitude apt3 = new Aptitude( "APT3" );
+        apt3.ajouterUv( uv4 );
+        apt3.ajouterUv( uv5 );
+        aptitudes.put( 3, apt3 );
+        apt3.setId( aptitudeDao.creer( apt3 ) );
+
+        // Creation d'agents simple + DAO
         Agent a1 = new Agent( "ATREUILLIER", "mdp", "19041975", true );
         Agent a2 = new Agent( "LTREUILLIER", "mdp", "15122010", false );
-        Agent a3 = new Agent( "NTREUILLIER", "mdp", "09102013", false );
-        Agent a4 = new Agent( "FDESCAVES", "mdp", "06091991", false );
-        Agent a5 = new Agent( "MDESCAVES", "max", "06091990", false );
-
+        agents.put( 1, a1 );
+        agents.put( 2, a2 );
         /* Sauvegarde des Agents */
         AgentDao agentDao = adf.getAgentDao();
         a1.setId( agentDao.creer( a1 ) );
         a2.setId( agentDao.creer( a2 ) );
+
+        // Mise a jour d'agents avec Uv + DAO
+        a1.ajouterUv( uv6 );
+        a2.ajouterUv( uv3 );
+        agentDao.mettreAJour( a1 );
+        agentDao.mettreAJour( a2 );
+
+        // Creation d'agents avec Uv + DAO
+        Agent a3 = new Agent( "NTREUILLIER", "mdp", "09102013", false );
+        Agent a4 = new Agent( "FDESCAVES", "mdp", "06091991", false );
+        Agent a5 = new Agent( "MDESCAVES", "max", "06091990", false );
+        agents.put( 3, a3 );
+        agents.put( 4, a4 );
+        agents.put( 5, a5 );
+        a3.ajouterUv( uv2 );
+        a3.ajouterUv( uv3 );
         a3.setId( agentDao.creer( a3 ) );
         a4.setId( agentDao.creer( a4 ) );
         a5.setId( agentDao.creer( a5 ) );
 
-        a1.ajouterUv( uv6 );
-        a2.ajouterUv( uv3 );
-        a3.ajouterUv( uv2 );
-        a3.ajouterUv( uv3 );
+        // Creation de Stage Simple + DAO
+        Stage stg1 = new Stage( "fevrier1" );
+        Stage stg2 = new Stage( "fevrier2" );
+        Stage stg3 = new Stage( "mars1" );
+        stages.put( 1, stg1 );
+        stages.put( 2, stg2 );
+        stages.put( 3, stg3 );
+        StageDao stageDao = adf.getStageDao();
+        stg1.setId( stageDao.creer( stg1 ) );
+        stg2.setId( stageDao.creer( stg2 ) );
+        stg3.setId( stageDao.creer( stg3 ) );
 
-        // A IMPLEMENTER
-        agentDao.mettreAJour( a1 );
+        // Mise à jour de Stage Simple + DAO
+        stg1.setNom( "fevrier3" );
+        stageDao.mettreAJour( stg1 );
 
-        agents.put( 1, a1 );
-        agents.put( 2, a2 );
-        agents.put( 3, a3 );
-        agents.put( 4, a4 );
-        agents.put( 5, a5 );
-
-        connexions.put( "19041975", a1 );
-        connexions.put( "15122010", a2 );
-        connexions.put( "09102013", a3 );
-        connexions.put( "06091991", a4 );
-
-        // Creation de session
-        Session s1 = null;
-        Session s2 = null;
-        Session s3 = null;
-
-        try {
-            s1 = new Session( 1, "INC1", new SimpleDateFormat( "dd/MM/yyyy" ).parse( "06/02/2017" ),
-                    new SimpleDateFormat( "dd/MM/yyyy" ).parse( "10/02/2017" ), true, uv1, new Stage( "fevrier1" ) );
-            s2 = new Session( 2, "FDF1", new SimpleDateFormat( "dd/MM/yyyy" ).parse( "06/02/2017" ),
-                    new SimpleDateFormat( "dd/MM/yyyy" ).parse( "17/02/2017" ), true, uv2, new Stage( "fevier2" ) );
-            s3 = new Session( 3, "SAR1", new SimpleDateFormat( "dd/MM/yyyy" ).parse( "30/01/2017" ),
-                    new SimpleDateFormat( "dd/MM/yyyy" ).parse( "3/02/2017" ), true, uv3, new Stage( "janvier1" ) );
-
-        } catch ( ParseException e ) {
-            e.printStackTrace();
-        }
+        // Creation de session simple + DAO
+        Session s1 = new Session( "INC1", new java.sql.Date( 2017, 02, 06 ), new java.sql.Date( 2017, 02, 10 ), true,
+                uv1, stg1 );
+        Session s2 = new Session( "FDF1", new java.sql.Date( 2017, 02, 06 ), new java.sql.Date( 2017, 02, 17 ), true,
+                uv2, stg2 );
+        Session s3 = new Session( "SAR1", new java.sql.Date( 2017, 01, 30 ), new java.sql.Date( 2017, 02, 03 ), true,
+                uv3, stg3 );
 
         sessions.put( 1, s1 );
         sessions.put( 2, s2 );
         sessions.put( 3, s3 );
+        /* Sauvegarde des Sessions */
+        SessionDao sessionDao = adf.getSessionDao();
+        s1.setId( sessionDao.creer( s1 ) );
+        s2.setId( sessionDao.creer( s2 ) );
+        s3.setId( sessionDao.creer( s3 ) );
 
-        candidatures.put( 1, new Candidature( a2, 2, false, s1 ) );
-        candidatures.put( 2, new Candidature( a3, 2, false, s1 ) );
+        // Mise a jour de session simple + DAO
+        s1.setStage( stg2 );
+        sessionDao.mettreAJour( s1 );
 
+        // Creation de candidatures simples + DAO
+        Candidature cand1 = new Candidature( a2, -2, false, s1 );
+        Candidature cand2 = new Candidature( a3, -2, false, s1 );
+        candidatures.put( 1, cand1 );
+        candidatures.put( 2, cand2 );
+        /* Sauvegarde des Candidatures */
+        CandidatureDao candidatureDao = adf.getCandidatureDao();
+        candidatureDao.creer( cand1 );
+        candidatureDao.creer( cand2 );
+
+        // Mise a jour de candidature simple + DAO
+        cand1.setSession( s2 );
+        sessionDao.mettreAJour( s2 );
+
+        // Ajout des tokens de connexions
+        connexions.put( "19041975", a1 );
+        connexions.put( "15122010", a2 );
+        connexions.put( "09102013", a3 );
+        connexions.put( "06091991", a4 );
     }
 }

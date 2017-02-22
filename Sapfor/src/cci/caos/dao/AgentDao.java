@@ -10,6 +10,6 @@ public interface AgentDao {
 
     public Agent trouver( int id ) throws DAOException;
 
-    public boolean existe( int id ) throws DAOException;
+    public boolean existe( Agent agent ) throws DAOException;
 
 }

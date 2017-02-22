@@ -15,6 +15,8 @@ public class AptitudeDaoImpl extends Dao implements AptitudeDao {
     private static final String SQL_SELECT_UV_PAR_ID   = "SELECT * FROM Uv WHERE idUv = ?";
     private static final String SQL_SELECT_PAR_ID      = "SELECT * FROM Aptitude WHERE idAptitude = ?";
     private static final String SQL_EXISTE_APTITUDE    = "SELECT * FROM Aptitude WHERE idAptitude = ?";
+    private static final String SQL_UPDATE_APTITUDE    = "UPDATE Aptitude SET nomAptitude=? WHERE idAptitude=?";
+    private static final String SQL_DELETE_UV_APTITUDE = "DELETE FROM listeAptitudeUv WHERE idAptitude = ?";
 
     /* Constructeur */
     public AptitudeDaoImpl( Connection conn ) {
@@ -117,7 +119,7 @@ public class AptitudeDaoImpl extends Dao implements AptitudeDao {
      * @return Vrai si il existe sinon false
      */
     @Override
-    public boolean existe( int id ) throws DAOException {
+    public boolean existe( Aptitude aptitude ) throws DAOException {
         boolean existe = false;
         ResultSet resultSet = null;
         PreparedStatement preparedStatement = null;
@@ -126,7 +128,7 @@ public class AptitudeDaoImpl extends Dao implements AptitudeDao {
             preparedStatement = connect.prepareStatement( SQL_EXISTE_APTITUDE );
 
             /* Remplissage des champs de la requete */
-            preparedStatement.setInt( 1, id );
+            preparedStatement.setInt( 1, aptitude.getId() );
 
             /* Execution de la requete */
             resultSet = preparedStatement.executeQuery();
@@ -137,5 +139,59 @@ public class AptitudeDaoImpl extends Dao implements AptitudeDao {
             throw new DAOException( e );
         }
         return existe;
+    }
+
+    /**
+     * Met a jour une aptitude dans la Base de Donnees
+     * 
+     * @param aptitude
+     *            L'aptitude à mettre a jour
+     */
+    @Override
+    public void mettreAJour( Aptitude aptitude ) throws DAOException {
+        PreparedStatement preparedStatement;
+
+        try {
+            preparedStatement = connect.prepareStatement( SQL_UPDATE_APTITUDE );
+
+            /* Remplissage des champs de la requete */
+            preparedStatement.setString( 1, aptitude.getNom() );
+            preparedStatement.setInt( 2, aptitude.getId() );
+
+            /* Execution de la requete */
+            preparedStatement.executeUpdate();
+
+            /* Effacement des Uv prerequises */
+            preparedStatement = connect.prepareStatement( SQL_DELETE_UV_APTITUDE );
+            preparedStatement.setInt( 1, aptitude.getId() );
+            preparedStatement.executeUpdate();
+
+            /* Creation des Uv requises par l'aptitude */
+            if ( aptitude.getListeUV().size() > 0 ) {
+                preparedStatement = connect.prepareStatement( SQL_INSERT_UV_APTITUDE );
+
+                AbstractDAOFactory adf = AbstractDAOFactory.getFactory( AbstractDAOFactory.DAO_FACTORY );
+                UvDao uvDao = adf.getUvDao();
+
+                /* Verification de l'existence de l'UV */
+                for ( Uv u : aptitude.getListeUV() ) {
+                    int idNewUv;
+                    if ( !uvDao.existe( u ) ) {
+                        idNewUv = uvDao.creer( u );
+                    } else {
+                        idNewUv = u.getId();
+                    }
+                    /* Remplissage des champs de la requete */
+                    preparedStatement.setInt( 1, aptitude.getId() );
+                    preparedStatement.setInt( 2, idNewUv );
+
+                    /* Execution de la requete */
+                    preparedStatement.executeUpdate();
+                }
+            }
+        } catch ( SQLException e ) {
+            e.printStackTrace();
+            throw new DAOException( e );
+        }
     }
 }

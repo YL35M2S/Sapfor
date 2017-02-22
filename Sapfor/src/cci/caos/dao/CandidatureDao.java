@@ -6,7 +6,7 @@ import cci.caos.repository.Session;
 
 public interface CandidatureDao {
 
-    public int creer( Candidature candidature ) throws DAOException;
+    public void creer( Candidature candidature ) throws DAOException;
 
     public Candidature trouver( Agent agent, Session session ) throws DAOException;
 }
