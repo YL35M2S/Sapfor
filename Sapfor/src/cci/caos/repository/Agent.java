@@ -23,12 +23,11 @@ public class Agent implements Comparable {
     public Agent() {
     }
 
-    public Agent( int id, String nom, String motdepasse, String matricule, Boolean gestionnaire ) {
-    	ConfigurablePasswordEncryptor passwordEncryptor = new ConfigurablePasswordEncryptor();
-		passwordEncryptor.setAlgorithm( "SHA-256" );
-		passwordEncryptor.setPlainDigest( true );
-		String HashMotDePasse = passwordEncryptor.encryptPassword( motdepasse );
-    	this.id = id;
+    public Agent( String nom, String motdepasse, String matricule, Boolean gestionnaire ) {
+        ConfigurablePasswordEncryptor passwordEncryptor = new ConfigurablePasswordEncryptor();
+        passwordEncryptor.setAlgorithm( "SHA-256" );
+        passwordEncryptor.setPlainDigest( true );
+        String HashMotDePasse = passwordEncryptor.encryptPassword( motdepasse );
         this.nom = nom;
         this.mdp = HashMotDePasse;
         this.matricule = matricule;
@@ -42,9 +41,9 @@ public class Agent implements Comparable {
     public int getId() {
         return id;
     }
-    
-    public void setId(int id){
-    	 this.id = id;
+
+    public void setId( int id ) {
+        this.id = id;
     }
 
     public String getNom() {
@@ -105,14 +104,13 @@ public class Agent implements Comparable {
         this.gestionnaire = gestionnaire;
     }
 
-	@Override
-	public int compareTo(Object o) {
-		if (((Agent)o).getId()==this.getId()){
-			return 0;
-		}
-		else {
-			return -1;
-		}
-	}
+    @Override
+    public int compareTo( Object o ) {
+        if ( ( (Agent) o ).getId() == this.getId() ) {
+            return 0;
+        } else {
+            return -1;
+        }
+    }
 
 }

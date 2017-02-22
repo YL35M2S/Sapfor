@@ -8,18 +8,23 @@ import cci.caos.dao.DaoFactory;
 
 public class InitialisationDaoFactory implements ServletContextListener {
     private static final String ATT_DAO_FACTORY = "daofactory";
-    private DaoFactory  		daoFactory;
+    private DaoFactory          daoFactory;
 
     @Override
     public void contextInitialized( ServletContextEvent event ) {
-    	
-        /* Récupération du ServletContext lors du chargement de l'application */
+
+        /*
+         * Récupération du ServletContext lors du chargement de l'application
+         */
         ServletContext servletContext = event.getServletContext();
-        
+
         /* Instanciation de notre DaoFactory */
-        this.daoFactory = DaoFactory.getInstance();
-        
-        /* Enregistrement dans un attribut ayant pour portée toute l'application */
+        // this.daoFactory = DaoFactory.getInstance();
+
+        /*
+         * Enregistrement dans un attribut ayant pour portée toute
+         * l'application
+         */
         servletContext.setAttribute( ATT_DAO_FACTORY, this.daoFactory );
     }
 

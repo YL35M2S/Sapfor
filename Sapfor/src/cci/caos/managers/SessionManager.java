@@ -14,7 +14,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import cci.caos.repository.Agent;
 import cci.caos.repository.Candidature;
 import cci.caos.repository.Session;
 import cci.caos.server.SapforServer;
@@ -22,6 +21,16 @@ import cci.caos.server.SapforServer;
 @Path( "/session" )
 public class SessionManager {
 
+    /*
+     * UseCase : #GESTION/FermerCandidature Fermer une sesion à la candidature
+     * http://localhost:8080/Sapfor/rest/sessions/{uuid}/fermerCandidature?
+     * Session=1
+     * 
+     * Permet à un gestionnaire de fermer les candidatures pour une session
+     * donnée
+     * 
+     * @return True si la fermeture a été effective, sinon False
+     */
     @GET
     @Path( "{uuid}/fermerCandidature" )
     public Response fermerCandidature( @PathParam( "uuid" ) String uuid, @QueryParam( "Session" ) String idSession ) {
@@ -39,6 +48,18 @@ public class SessionManager {
         }
     }
 
+    /*
+     * UseCase : #SELC/modifierCandidats Modifier les candidatures à une session
+     * http://localhost:8080/Sapfor/rest/sessions/{uuid}/modifierCandidats?
+     * Session=1
+     * 
+     * Permet à un gestionnaire de modifier les candidatures pour une session
+     * donnée (Acceptée/Refusée/Liste d'Attente)
+     * 
+     * @Param candidatures Liste des candidatures modifiée
+     * 
+     * @return True si la liste des candidats a été modifiée, sinon False
+     */
     @POST
     @Path( "{uuid}/modifierCandidats" )
     @Consumes( { MediaType.APPLICATION_JSON } )
@@ -58,133 +79,133 @@ public class SessionManager {
         }
     }
 
+    /*
+     * UseCase : #LACC Renvoie la liste des sessions accessibles à un agent
+     * http://localhost:8080/Sapfor/rest/sessions/{uuid}/accessible -------
+     * Renvoie la liste des sessions auxquelles un agent peut candidater
+     * 
+     * @return la liste des sessions accessibles
+     */
     @GET
     @Path( "{uuid}/accessible" )
     @Produces( MediaType.APPLICATION_XML )
     public Response getListeSessionsAccessibles( @PathParam( "uuid" ) String uuid ) {
         SapforServer server = SapforServer.getSessionServer();
-        if (server.isConnectedByUUID(uuid)) {
-        	List<Candidature> listSessionsAccessibles = server.getSessionsAccessibles( uuid );
-        	GenericEntity<List<Candidature>> listSessionsEntity = new GenericEntity<List<Candidature>>( listSessionsAccessibles ){};
-        	return Response.status(Status.OK).entity(listSessionsEntity).build();
+        if ( server.isConnectedByUUID( uuid ) ) {
+            List<Candidature> listSessionsAccessibles = server.getSessionsAccessibles( uuid );
+            GenericEntity<List<Candidature>> listSessionsEntity = new GenericEntity<List<Candidature>>(
+                    listSessionsAccessibles ) {
+            };
+            return Response.status( Status.OK ).entity( listSessionsEntity ).build();
         } else {
-        	return Response.status(Status.FORBIDDEN).build();
+            return Response.status( Status.FORBIDDEN ).build();
         }
     }
 
-    // POUR L'EXEMPLE
-    // Recuperation d'une session au format XML
-    // http://localhost:8080/rest/session/sessions?Session=1
-    @GET
-    @Path( "sessions" )
-    @Produces( { MediaType.APPLICATION_XML } )
-    public Session listeSession( @QueryParam( "Session" ) String idSession ) {
-        int ids = Integer.parseInt( idSession );
-        Session s = SapforServer.getSessionServer().getSessionById( ids );
-        return s;
-    }
-
-    // POUR L'EXEMPLE
-    // Creation d'une session Ã  partir d'une entrÃ©e au format XML
-    // http://localhost:8080/rest/session/createSession
-    @POST
-    @Path( "createSession" )
-    @Consumes( MediaType.APPLICATION_XML )
-    public Response createSession( Session session ) {
-        Session s = session;
-        return Response
-                .status( Status.OK )
-                .entity( s )
-                .build();
-    }
-
-    // POUR L'EXEMPLE
-    // Liste les candidatures Ã  une session au format XML
-    // http://localhost:8080/rest/session/listeCandidatures?Session=1
-    @GET
-    @Path( "listeCandidature" )
-    @Produces( MediaType.APPLICATION_XML )
-    public Response listeCandidature( @QueryParam( "Session" ) String idSession ) {
-        int ids = Integer.parseInt( idSession );
-        SapforServer server = SapforServer.getSessionServer();
-        List<Candidature> listeCandidatures = server.getListeCandidatures(ids);
-        GenericEntity<List<Candidature>> entity = new GenericEntity<List<Candidature>>( listeCandidatures ) {
-        };
-        return Response.ok( entity ).build();
-    }
-
-    /* Liste Candidature
+    /*
+     * UseCase : #LISTC Renvoie la liste des candidatures pour un agent donné
+     * http://localhost:8080/Sapfor/rest/sessions/{uuid} --------------------
+     * Renvoie la liste des sessions auxquelles un agent à candidater
      * 
-     * Liste les sessions auxquelles un agent Ã  candidater
-     * @return la liste des sessions accessibles
-     * */
+     * @return la liste des sessions auxquelles un agent à candidater
+     */
     @GET
-    @Path("{uuid}")
+    @Path( "{uuid}" )
     @Produces( MediaType.APPLICATION_JSON )
-    public Response getListeCandidatures( @PathParam("uuid") String id){
-    	SapforServer server = SapforServer.getSessionServer();
-    	if (server.isConnectedByUUID(id)) {
-    		List<Session> listeCandidature = server.getListeSession(id);
-    		return Response.status(Status.OK).entity(listeCandidature).build();
-    	}
-    	else {
-    		return Response.status(Status.FORBIDDEN).build();
-    	}
+    public Response getListeCandidatures( @PathParam( "uuid" ) String id ) {
+        SapforServer server = SapforServer.getSessionServer();
+        if ( server.isConnectedByUUID( id ) ) {
+            List<Session> listeCandidature = server.getListeSession( id );
+            return Response.status( Status.OK ).entity( listeCandidature ).build();
+        } else {
+            return Response.status( Status.FORBIDDEN ).build();
+        }
     }
 
+    /*
+     * UseCase : #RETC Retirer une candidature (Form/Stag) pour un agent
+     * http://localhost:8080/Sapfor/rest/sessions/{uuid}/retirerCandidature?
+     * Session=1
+     * 
+     * Permet à un agent de retirer sa candidature pour une session donnée
+     * 
+     * @return True si la candidature a été retirée, sinon False
+     */
     @GET
     @Path( "{uuid}/retirerCandidature" )
     public Response retirerCandidature( @PathParam( "uuid" ) String uuid, @QueryParam( "Session" ) String idSession ) {
-    	SapforServer server = SapforServer.getSessionServer();
-    	int ids = Integer.parseInt( idSession );
-            if ( server.isConnectedByUUID( uuid )) {
-                int idAgent = server.getAgentByUUID(uuid).getId();
-                
-                if (server.retirerCandidature(idAgent, ids)) {
-                	return Response.status(Status.OK).build();
-                } else {
-                	/*
-                	 * A discuter, ici la requÃªte cÃ´tÃ© serveur s'est correctement dÃ©roulÃ©e mais la requÃªte client a demandÃ©
-                	 * la suppression d'une candidature qui n'existe pas, ce que le serveur a detectÃ©
-                	 * J'aimerais donc notifier le client avec un statut, en l'occurence j'ai optÃ© pour BAD_REQUEST
-                	 */
-                	return Response.status(Status.BAD_REQUEST).build();
-                }
+        SapforServer server = SapforServer.getSessionServer();
+        int ids = Integer.parseInt( idSession );
+        if ( server.isConnectedByUUID( uuid ) ) {
+            int idAgent = server.getAgentByUUID( uuid ).getId();
+
+            if ( server.retirerCandidature( idAgent, ids ) ) {
+                return Response.status( Status.OK ).build();
             } else {
-            	return Response.status(Status.FORBIDDEN).build();
+                return Response.status( Status.BAD_REQUEST ).build();
             }
-    }
-    		
-    @GET
-    @Path( "listefermee" )
-    @Produces( { MediaType.APPLICATION_JSON } )
-    public List<Session> getClosedSession(){
-            return 	SapforServer.getSessionServer().getListeSessionsFermees();
+        } else {
+            return Response.status( Status.FORBIDDEN ).build();
         }
-    
+    }
+
+    /*
+     * UseCase : #SELC Renvoie la liste des sessions fermees à la candidature
+     * http://localhost:8080/Sapfor/rest/sessions/listeFermees --------------
+     * Permet d'obtenir la liste des sessions fermées à la candidature
+     * 
+     * @return Liste des sessions fermées à la candidature
+     */
+    @GET
+    @Path( "listeFermees" )
+    @Produces( { MediaType.APPLICATION_JSON } )
+    public Response getClosedSession() {
+        List<Session> listeFermees = SapforServer.getSessionServer().getListeSessionsFermees();
+        return Response.status( Status.OK ).entity( listeFermees ).build();
+    }
+
+    /*
+     * UseCase : #GESTION/FermerCandidature Renvoie la liste des sessions
+     * ouvertes à la candidature
+     * http://localhost:8080/Sapfor/rest/sessions/listeOuvertes
+     * 
+     * Permet d'obtenr la liste des sessions ouvertes à la candidature
+     * 
+     * @return Liste des sessions ouvertes au format JSON
+     */
     @GET
     @Path( "listeOuvertes" )
     @Produces( { MediaType.APPLICATION_JSON } )
-    public List<Session> getOpenedSession(){
-            return 	SapforServer.getSessionServer().getListeSessionsOuvertes();
-        }
-    
-    @GET
-    @Path( "{uuid}/candidater" ) 
-    public Response deposerCandidature( @PathParam( "uuid" ) String uuid, @QueryParam( "Session" ) String idSession, @QueryParam( "Formateur" ) String role ) {
-    	SapforServer server = SapforServer.getSessionServer();
-    	int ids = Integer.parseInt( idSession );
-    	boolean estFormateur = Boolean.getBoolean(role);
-            if ( server.isConnectedByUUID( uuid )) {
-                int idAgent = server.getAgentByUUID(uuid).getId();
-                if (server.deposerCandidature( idAgent, ids, estFormateur )) {
-                	return Response.status(Status.OK).build();
-                } else {
-                	return Response.status(Status.BAD_REQUEST).build();
-                }
-            } else {
-            	return Response.status(Status.FORBIDDEN).build();
-            }
+    public Response getOpenedSession() {
+        List<Session> listeOuvertes = SapforServer.getSessionServer().getListeSessionsOuvertes();
+        return Response.status( Status.OK ).entity( listeOuvertes ).build();
     }
-    
+
+    /*
+     * UseCase : #DEPC Deposer une candidature (Form/Stag) pour un agent
+     * http://localhost:8080/Sapfor/rest/sessions/{uuid}/candidater?Session=1&
+     * Formateur="True"
+     * 
+     * Permet à un agent de déposer une candidature pour une session donnée
+     * 
+     * @return True si la candidature a été enregistrée, sinon False
+     */
+    @GET
+    @Path( "{uuid}/candidater" )
+    public Response deposerCandidature( @PathParam( "uuid" ) String uuid, @QueryParam( "Session" ) String idSession,
+            @QueryParam( "Formateur" ) String role ) {
+        SapforServer server = SapforServer.getSessionServer();
+        int ids = Integer.parseInt( idSession );
+        boolean estFormateur = Boolean.getBoolean( role );
+        if ( server.isConnectedByUUID( uuid ) ) {
+            int idAgent = server.getAgentByUUID( uuid ).getId();
+            if ( server.deposerCandidature( idAgent, ids, estFormateur ) ) {
+                return Response.status( Status.OK ).build();
+            } else {
+                return Response.status( Status.BAD_REQUEST ).build();
+            }
+        } else {
+            return Response.status( Status.FORBIDDEN ).build();
+        }
+    }
 }

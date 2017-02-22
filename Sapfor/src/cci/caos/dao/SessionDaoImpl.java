@@ -4,88 +4,92 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Date;
-
+import java.sql.Statement;
 
 import cci.caos.repository.Session;
-
 import cci.caos.server.SapforServer;
 
-import static cci.caos.dao.DaoUtilitaires.fermeturesSilencieuses;
+public class SessionDaoImpl extends Dao implements SessionDao {
+    private static final String SQL_SELECT_PAR_ID  = "SELECT * FROM Session WHERE idSession = ?";
+    private static final String SQL_INSERT_SESSION = "INSERT INTO Session (nom, dateDebut, dateFin, ouvertureInscription, idStage, idUv) VALUES(?, ?, ?, ?, ?, ?);";
 
-public class SessionDaoImpl implements SessionDao {
-	
-	private DaoFactory daoFactory;
-	private static final String SQL_SELECT_PAR_ID = "SELECT * FROM Session WHERE idSession = ?";
-	private static final String SQL_INSERT_SESSION = "INSERT INTO Session VALUES(?, ?, ?, ?, ?, ?, ?);";
+    /* Constructeur */
+    public SessionDaoImpl( Connection conn ) {
+        super( conn );
+    }
 
-	
-	/*Constructeur */
-	
-	public SessionDaoImpl(DaoFactory daoFactory){
-		this.daoFactory = daoFactory;
-	}
-	
-	/*Implementation des mÃ©thodes*/
-	
-	@Override
-	public void creer (Session session) throws DAOException{
-		 int               id = session.getId();
-	     String            nom = session.getNom();
-	     Date              dateDebut = session.getDateDebut();
-	     Date 			   dateFin = session.getDateFin();
-	     boolean           ouverteInscription = session.isOuverteInscription();
-	     int               idUv = session.getUv().getId() ;
-	     String			   nomStage = session.getNomStage();
-	     int 			   statut;
-	     
-	     Connection connexion = null; 
-	     PreparedStatement preparedStatement = null; 
-	     
-	     try{
-	     connexion = daoFactory.getConnection();
-	     preparedStatement = DaoFactory.initialisationRequetePreparee(connexion, SQL_INSERT_SESSION, false, id, nom, dateDebut, dateFin, ouverteInscription, idUv, nomStage);
-	     statut = preparedStatement.executeUpdate(); 
-	     if (statut==0){System.out.println("ok");};
-	     } catch ( SQLException e ) {
-         	throw new DAOException( e );
-			}
-			finally {
-				fermeturesSilencieuses( preparedStatement, connexion );
-			}
-	}
-	
-	
-	@Override
-	public Session trouver (int id) throws DAOException{
-		Connection connexion = null;
-		ResultSet resultSet = null;
-		Session session = null;
-		PreparedStatement preparedStatement = null;
-		
-		try{
-			connexion = daoFactory.getConnection();
-			preparedStatement = DaoFactory.initialisationRequetePreparee( connexion, SQL_SELECT_PAR_ID, false, id );
-			resultSet = preparedStatement.executeQuery();
-			if (resultSet.next()){
-				session = new Session();
-				session.setId(id);
-				session.setDateDebut(resultSet.getDate("dateDebut"));
-				session.setDateFin(resultSet.getDate("dateFin"));
-				session.setNom(resultSet.getString("nom"));
-				session.setNomStage(resultSet.getString("nomStage"));
-				session.setOuverteInscription(resultSet.getBoolean("ouvertureInscription"));
-				session.setUv(SapforServer.getSessionServer().getUvById(resultSet.getInt("idUv")));
-			}
-		}	catch ( SQLException e ) {
-            	throw new DAOException( e );
-			}
-			finally {
-				fermeturesSilencieuses( resultSet, preparedStatement, connexion );
-			}
-		return session;
-	}
-	
-	
+    /* Implémentation des méthodes */
 
+    /**
+     * Creation d'une session dans la Base de Donnees DAO
+     * 
+     * @param session
+     *            La session à sauvegarder
+     * @return l'Id de la session créée
+     */
+    @Override
+    public int creer( Session session ) throws DAOException {
+        PreparedStatement preparedStatement;
+
+        try {
+            preparedStatement = connect.prepareStatement( SQL_INSERT_SESSION, Statement.RETURN_GENERATED_KEYS );
+
+            /* Remplissage des champs de la requete */
+            preparedStatement.setString( 1, session.getNom() );
+            preparedStatement.setDate( 2, (java.sql.Date) session.getDateDebut() );
+            preparedStatement.setDate( 3, (java.sql.Date) session.getDateFin() );
+            preparedStatement.setBoolean( 4, session.isOuverteInscription() );
+            preparedStatement.setInt( 5, session.getStage().getId() );
+            preparedStatement.setInt( 6, session.getUv().getId() );
+
+            /* Execution de la requete */
+            preparedStatement.executeUpdate();
+
+            /* Recuperation de l'Id créé */
+            ResultSet resultat = preparedStatement.getGeneratedKeys();
+            resultat.next();
+            return resultat.getInt( 1 );
+        } catch ( SQLException e ) {
+            throw new DAOException( e );
+        }
+    }
+
+    /**
+     * Recherche d'un agent dans la Base de Donnees DAO à partir de son id
+     * 
+     * @param id
+     *            L'id de l'agent a rechercher
+     * @return l'agent recherché
+     */
+    @Override
+    public Session trouver( int id ) throws DAOException {
+        PreparedStatement preparedStatement;
+        ResultSet resultSet;
+        Session session = null;
+
+        try {
+            preparedStatement = connect.prepareStatement( SQL_SELECT_PAR_ID );
+
+            /* Remplissage des champs de la requete */
+            preparedStatement.setInt( 1, id );
+
+            /* Execution de la requete */
+            resultSet = preparedStatement.executeQuery();
+
+            /* Creation de l'agent */
+            if ( resultSet.next() ) {
+                session = new Session();
+                session.setId( id );
+                session.setDateDebut( resultSet.getDate( "dateDebut" ) );
+                session.setDateFin( resultSet.getDate( "dateFin" ) );
+                session.setNom( resultSet.getString( "nom" ) );
+                session.setStage( SapforServer.getSessionServer().getStageById( resultSet.getInt( "idStage" ) ) );
+                session.setOuverteInscription( resultSet.getBoolean( "ouvertureInscription" ) );
+                session.setUv( SapforServer.getSessionServer().getUvById( resultSet.getInt( "idUv" ) ) );
+            }
+        } catch ( SQLException e ) {
+            throw new DAOException( e );
+        }
+        return session;
+    }
 }

@@ -4,8 +4,8 @@ import cci.caos.repository.Stage;
 
 public interface StageDao {
 
-	void creer (Stage stage) throws DAOException;
-	
-	public boolean existe (String nom) throws DAOException;
-	
+    public int creer( Stage stage ) throws DAOException;
+
+    public boolean existe( int idStage ) throws DAOException;
+
 }

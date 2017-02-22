@@ -4,8 +4,12 @@ import cci.caos.repository.Uv;
 
 public interface UvDao {
 
-	void creer (Uv uv) throws DAOException; 
-	
-	Uv trouver (int idUv) throws DAOException; 
-	
+    public int creer( Uv uv ) throws DAOException;
+
+    public boolean existe( Uv uv ) throws DAOException;
+
+    public void mettreAJour( Uv uv ) throws DAOException;
+
+    public Uv trouver( int idUv ) throws DAOException;
+
 }

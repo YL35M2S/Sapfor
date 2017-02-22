@@ -21,8 +21,7 @@ public class Uv {
     public Uv() {
     }
 
-    public Uv( int id, String nom, int duree, int nombrePlaceMin, int nombrePlaceMax, String lieu ) {
-        this.id = id;
+    public Uv( String nom, int duree, int nombrePlaceMin, int nombrePlaceMax, String lieu ) {
         this.nom = nom;
         this.duree = duree;
         this.nombrePlaceMin = nombrePlaceMin;

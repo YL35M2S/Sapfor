@@ -2,11 +2,11 @@ package cci.caos.dao;
 
 import cci.caos.repository.Aptitude;
 
-
 public interface AptitudeDao {
-	
-	void creer (Aptitude aptitude) throws DAOException;
-	
-	boolean existe(String nom) throws DAOException;
-	
+
+    public int creer( Aptitude aptitude ) throws DAOException;
+
+    public Aptitude trouver( int id ) throws DAOException;
+
+    public boolean existe( int id ) throws DAOException;
 }

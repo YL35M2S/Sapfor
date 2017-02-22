@@ -8,6 +8,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class Stage {
 
+    private int           id;
     private String        nom;
     private List<Session> session;
 
@@ -21,6 +22,13 @@ public class Stage {
     }
 
     /* Accesseurs et Modificateurs */
+    public int getId() {
+        return id;
+    }
+
+    public void setId( int id ) {
+        this.id = id;
+    }
 
     public String getNom() {
         return nom;

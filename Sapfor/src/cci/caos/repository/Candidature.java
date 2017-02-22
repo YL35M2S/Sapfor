@@ -10,7 +10,7 @@ public class Candidature {
     private boolean estFormateur;
     private Session session;
 
-	/* Contructeurs */
+    /* Contructeurs */
     public Candidature() {
     }
 
@@ -45,14 +45,13 @@ public class Candidature {
     public void setEstFormateur( boolean estFormateur ) {
         this.estFormateur = estFormateur;
     }
-    
+
     public Session getSession() {
-  		return session;
-  	}
+        return session;
+    }
 
-  	public void setSession(Session session) {
-  		this.session = session;
-  	}
-
+    public void setSession( Session session ) {
+        this.session = session;
+    }
 
 }

@@ -7,6 +7,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class Aptitude {
 
+    private int      id;
     private String   nom;
     private List<Uv> listeUV;
 
@@ -21,6 +22,14 @@ public class Aptitude {
     }
 
     /* Accesseurs et Modificateurs */
+    public int getId() {
+        return id;
+    }
+
+    public void setId( int id ) {
+        this.id = id;
+    }
+
     public String getNom() {
         return nom;
     }
