@@ -5,20 +5,26 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import cci.caos.repository.Agent;
 import cci.caos.repository.Aptitude;
 import cci.caos.repository.Uv;
+import cci.caos.server.SapforServer;
 
 public class AgentDaoImpl extends Dao implements AgentDao {
     private static final String SQL_SELECT_PAR_ID         = "SELECT * FROM Agent WHERE idAgent = ?";
+    private static final String SQL_SELECT_ALL            = "SELECT * FROM Agent";
     private static final String SQL_INSERT_AGENT          = "INSERT INTO Agent (  nomAgent ,  mdp ,  matricule,  gestionnaire) VALUES (?, ?, ?, ?);";
     private static final String SQL_EXISTE_AGENT          = "SELECT * FROM Agent WHERE idAgent = ?";
     private static final String SQL_UPDATE_AGENT          = "UPDATE Agent SET nomAgent=? ,  mdp=?,  matricule=?,  gestionnaire=? WHERE idAgent = ?";
-    private static final String SQL_INSERT_UV_AGENT       = "INSERT INTO listeUv (idAgent, idUv) VALUES (?,?);";
-    private static final String SQL_INSERT_APTITUDE_AGENT = "INSERT INTO listeAptitude (idAgent, idAptitude) VALUES (?,?);";
+    private static final String SQL_INSERT_UV_AGENT       = "INSERT INTO listeUv (idAgent, idUv) VALUES (?,?)";
+    private static final String SQL_INSERT_APTITUDE_AGENT = "INSERT INTO listeAptitude (idAgent, idAptitude) VALUES (?,?)";
     private static final String SQL_DELETE_UV_AGENT       = "DELETE FROM listeUv WHERE idAgent=?";
     private static final String SQL_DELETE_APTITUDE_AGENT = "DELETE FROM listeAptitude WHERE idAgent=?";
+    private static final String SQL_SELECT_UV_AGENT       = "SELECT * FROM listeUv WHERE idAgent=?";
+    private static final String SQL_SELECT_APTITUDE_AGENT = "SELECT * FROM listeAptitude WHERE idAgent=?";
 
     /* Constructeur */
     public AgentDaoImpl( Connection conn ) {
@@ -140,6 +146,8 @@ public class AgentDaoImpl extends Dao implements AgentDao {
                 agent.setMdp( resultSet.getString( "mdp" ) );
                 agent.setMatricule( resultSet.getString( "matricule" ) );
                 agent.setGestionnaire( resultSet.getBoolean( "gestionnaire" ) );
+                agent.setListeAptitude( listerAptitudeParAgent( id ) );
+                agent.setListeUV( listerUvParAgent( id ) );
             }
         } catch ( SQLException e ) {
             throw new DAOException( e );
@@ -263,5 +271,94 @@ public class AgentDaoImpl extends Dao implements AgentDao {
             e.printStackTrace();
             throw new DAOException( e );
         }
+    }
+
+    /**
+     * Liste tous les agents existants dans la Base de Donnees DAO
+     * 
+     * @return Liste des agents existants en BDD
+     */
+    @Override
+    public List<Agent> listerTous() throws DAOException {
+        PreparedStatement preparedStatement;
+        ResultSet resultSet;
+        Agent agent = null;
+        List<Agent> listeAgents = new ArrayList<Agent>();
+
+        try {
+            preparedStatement = connect.prepareStatement( SQL_SELECT_ALL );
+
+            /* Execution de la requete */
+            resultSet = preparedStatement.executeQuery();
+
+            /* Creation de la liste des agents */
+            while ( resultSet.next() ) {
+                agent = new Agent();
+                agent.setId( resultSet.getInt( "idAgent" ) );
+                agent.setNom( resultSet.getString( "nomAgent" ) );
+                agent.setMdp( resultSet.getString( "mdp" ) );
+                agent.setMatricule( resultSet.getString( "matricule" ) );
+                agent.setGestionnaire( resultSet.getBoolean( "gestionnaire" ) );
+                agent.setListeAptitude( listerAptitudeParAgent( resultSet.getInt( "idAgent" ) ) );
+                agent.setListeUV( listerUvParAgent( resultSet.getInt( "idAgent" ) ) );
+                listeAgents.add( agent );
+            }
+        } catch ( SQLException e ) {
+            e.printStackTrace();
+            throw new DAOException( e );
+        }
+        return listeAgents;
+    }
+
+    @Override
+    public List<Aptitude> listerAptitudeParAgent( int id ) throws DAOException {
+        PreparedStatement preparedStatement;
+        ResultSet resultSet;
+        List<Aptitude> listeAptitudes = new ArrayList<Aptitude>();
+        try {
+            preparedStatement = connect.prepareStatement( SQL_SELECT_APTITUDE_AGENT );
+
+            /* Remplissage des champs de la requete */
+            preparedStatement.setInt( 1, id );
+
+            /* Execution de la requete */
+            resultSet = preparedStatement.executeQuery();
+
+            /* Creation de l'agent */
+            while ( resultSet.next() ) {
+                listeAptitudes
+                        .add( SapforServer.getSessionServer().getAptitudeById( resultSet.getInt( "idAptitude" ) ) );
+            }
+        } catch ( SQLException e ) {
+            e.printStackTrace();
+            throw new DAOException( e );
+        }
+        return listeAptitudes;
+    }
+
+    @Override
+    public List<Uv> listerUvParAgent( int id ) throws DAOException {
+        PreparedStatement preparedStatement;
+        ResultSet resultSet;
+        List<Uv> listeUvs = new ArrayList<Uv>();
+        try {
+            preparedStatement = connect.prepareStatement( SQL_SELECT_UV_AGENT );
+
+            /* Remplissage des champs de la requete */
+            preparedStatement.setInt( 1, id );
+
+            /* Execution de la requete */
+            resultSet = preparedStatement.executeQuery();
+
+            /* Creation de l'agent */
+            while ( resultSet.next() ) {
+                listeUvs
+                        .add( SapforServer.getSessionServer().getUvById( resultSet.getInt( "idUv" ) ) );
+            }
+        } catch ( SQLException e ) {
+            e.printStackTrace();
+            throw new DAOException( e );
+        }
+        return listeUvs;
     }
 }

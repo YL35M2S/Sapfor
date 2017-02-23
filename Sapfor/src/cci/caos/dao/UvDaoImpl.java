@@ -112,7 +112,7 @@ public class UvDaoImpl extends Dao implements UvDao {
             if ( resultSet.next() ) {
                 uv = new Uv();
                 uv.setId( idUv );
-                uv.setNom( resultSet.getString( "nomAgent" ) );
+                uv.setNom( resultSet.getString( "nomUv" ) );
                 uv.setDuree( resultSet.getInt( "duree" ) );
                 uv.setNombrePlaceMin( resultSet.getInt( "nombrePlaceMin" ) );
                 uv.setNombrePlaceMax( resultSet.getInt( "nombrePlaceMax" ) );
@@ -135,6 +135,7 @@ public class UvDaoImpl extends Dao implements UvDao {
                         .add( SapforServer.getSessionServer().getUvById( resultSet.getInt( "idPrerequis" ) ) );
             }
         } catch ( SQLException e ) {
+            e.printStackTrace();
             throw new DAOException( e );
         }
         return uv;

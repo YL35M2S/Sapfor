@@ -6,12 +6,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import cci.caos.repository.Session;
 import cci.caos.server.SapforServer;
 
 public class SessionDaoImpl extends Dao implements SessionDao {
     private static final String SQL_SELECT_PAR_ID  = "SELECT * FROM Session WHERE idSession = ?";
+    private static final String SQL_SELECT_ALL     = "SELECT * FROM Session";
     private static final String SQL_INSERT_SESSION = "INSERT INTO Session (nom, dateDebut, dateFin, ouvertureInscription, idStage, idUv) VALUES(?, ?, ?, ?, ?, ?);";
     private static final String SQL_UPDATE_SESSION = "UPDATE Session SET nom=?, dateDebut=?, dateFin=?, ouvertureInscription=?, idStage=?, idUv=? WHERE idSession = ?";
     private static final String SQL_EXISTE_SESSION = "SELECT * FROM Session WHERE idSession = ?";
@@ -59,11 +62,11 @@ public class SessionDaoImpl extends Dao implements SessionDao {
     }
 
     /**
-     * Recherche d'un agent dans la Base de Donnees DAO à partir de son id
+     * Recherche d'une session dans la Base de Donnees DAO à partir de son id
      * 
      * @param id
-     *            L'id de l'agent a rechercher
-     * @return l'agent recherché
+     *            L'id de la session a rechercher
+     * @return la session recherchée
      */
     @Override
     public Session trouver( int id ) throws DAOException {
@@ -80,7 +83,7 @@ public class SessionDaoImpl extends Dao implements SessionDao {
             /* Execution de la requete */
             resultSet = preparedStatement.executeQuery();
 
-            /* Creation de l'agent */
+            /* Creation de la session */
             if ( resultSet.next() ) {
                 session = new Session();
                 session.setId( id );
@@ -157,5 +160,42 @@ public class SessionDaoImpl extends Dao implements SessionDao {
             throw new DAOException( e );
         }
         return existe;
+    }
+
+    /**
+     * Liste toutes les sessions existantes dans la Base de Donnees DAO
+     * 
+     * @return Liste des sessions existantes en BDD
+     */
+    @Override
+    public List<Session> listerToutes() throws DAOException {
+        PreparedStatement preparedStatement;
+        ResultSet resultSet;
+        Session session = null;
+        List<Session> listeSessions = new ArrayList<Session>();
+
+        try {
+            preparedStatement = connect.prepareStatement( SQL_SELECT_ALL );
+
+            /* Execution de la requete */
+            resultSet = preparedStatement.executeQuery();
+
+            /* Creation de la liste de sessions */
+            while ( resultSet.next() ) {
+                session = new Session();
+                session.setId( resultSet.getInt( "idSession" ) );
+                session.setDateDebut( resultSet.getDate( "dateDebut" ) );
+                session.setDateFin( resultSet.getDate( "dateFin" ) );
+                session.setNom( resultSet.getString( "nom" ) );
+                session.setStage( SapforServer.getSessionServer().getStageById( resultSet.getInt( "idStage" ) ) );
+                session.setOuverteInscription( resultSet.getBoolean( "ouvertureInscription" ) );
+                session.setUv( SapforServer.getSessionServer().getUvById( resultSet.getInt( "idUv" ) ) );
+                listeSessions.add( session );
+            }
+        } catch ( SQLException e ) {
+            e.printStackTrace();
+            throw new DAOException( e );
+        }
+        return listeSessions;
     }
 }

@@ -7,7 +7,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.ThreadLocalRandom;
 
 import org.jasypt.util.password.ConfigurablePasswordEncryptor;
 
@@ -29,26 +28,12 @@ import cci.caos.repository.Uv;
 
 public class SapforServer {
 
-    private Map<String, Agent>        connexions;
-    private Map<Integer, Session>     sessions;
-    private Map<Integer, Uv>          uvs;
-    private Map<Integer, Agent>       agents;
-    private Map<Integer, Stage>       stages;
-    private Map<Integer, Aptitude>    aptitudes;
-    private Map<Integer, Candidature> candidatures;
-
-    private Map<String, Agent>        uuid_agents;
-    private static SapforServer       sessionServer;
+    public static final int     typeDao = AbstractDAOFactory.DAO_FACTORY;
+    private Map<String, Agent>  connexions;
+    private static SapforServer sessionServer;
 
     public SapforServer() {
         connexions = new HashMap<String, Agent>();
-        sessions = new HashMap<Integer, Session>();
-        uvs = new HashMap<Integer, Uv>();
-        agents = new HashMap<Integer, Agent>();
-        stages = new HashMap<Integer, Stage>();
-        aptitudes = new HashMap<Integer, Aptitude>();
-        candidatures = new HashMap<Integer, Candidature>();
-
         initializeServer();
     }
 
@@ -72,13 +57,9 @@ public class SapforServer {
      * @return Retourne la session recherchée
      */
     public Session getSessionById( int id ) {
-        Session s = null;
-        for ( Map.Entry<Integer, Session> entry : sessions.entrySet() ) {
-            if ( (int) ( entry.getKey() ) == id ) {
-                s = entry.getValue();
-            }
-        }
-        return s;
+        AbstractDAOFactory adf = AbstractDAOFactory.getFactory( typeDao );
+        SessionDao sessionDao = adf.getSessionDao();
+        return sessionDao.trouver( id );
     }
 
     /*
@@ -89,13 +70,9 @@ public class SapforServer {
      * @return Retourne l'uv recherchée
      */
     public Uv getUvById( int id ) {
-        Uv u = null;
-        for ( Map.Entry<Integer, Uv> entry : uvs.entrySet() ) {
-            if ( (int) ( entry.getKey() ) == id ) {
-                u = entry.getValue();
-            }
-        }
-        return u;
+        AbstractDAOFactory adf = AbstractDAOFactory.getFactory( typeDao );
+        UvDao uvDao = adf.getUvDao();
+        return uvDao.trouver( id );
     }
 
     /*
@@ -124,13 +101,7 @@ public class SapforServer {
      * @return Retourne l'agent identifié par uuid
      */
     public Agent getAgentByUUID( String uuid ) {
-        Agent a = null;
-        for ( Map.Entry<String, Agent> entry : connexions.entrySet() ) {
-            if ( entry.getKey().compareTo( uuid ) == 0 ) {
-                a = entry.getValue();
-            }
-        }
-        return a;
+        return connexions.get( uuid );
     }
 
     /*
@@ -141,13 +112,9 @@ public class SapforServer {
      * @return Retourne l'agent identifié par "id"
      */
     public Agent getAgentById( int id ) {
-        Agent a = null;
-        for ( Map.Entry<Integer, Agent> entry : agents.entrySet() ) {
-            if ( entry.getKey() == id ) {
-                a = entry.getValue();
-            }
-        }
-        return a;
+        AbstractDAOFactory adf = AbstractDAOFactory.getFactory( typeDao );
+        AgentDao agentDao = adf.getAgentDao();
+        return agentDao.trouver( id );
     }
 
     /*
@@ -158,19 +125,22 @@ public class SapforServer {
      * @return Retourne le stage identifié par "id"
      */
     public Stage getStageById( int id ) {
-        Stage s = null;
-        for ( Map.Entry<Integer, Stage> entry : stages.entrySet() ) {
-            if ( entry.getKey() == id ) {
-                s = entry.getValue();
-            }
-        }
-        return s;
+        AbstractDAOFactory adf = AbstractDAOFactory.getFactory( typeDao );
+        StageDao stageDao = adf.getStageDao();
+        return stageDao.trouver( id );
+    }
+
+    public Aptitude getAptitudeById( int id ) {
+        AbstractDAOFactory adf = AbstractDAOFactory.getFactory( typeDao );
+        AptitudeDao aptitudeDao = adf.getAptitudeDao();
+        return aptitudeDao.trouver( id );
+
     }
 
     public List<Uv> getListeUvFormateur() {
         List<Uv> ListeUvFormateur = new ArrayList<Uv>();
-        ListeUvFormateur.add( uvs.get( 7 ) );
-        ListeUvFormateur.add( uvs.get( 8 ) );
+        // ListeUvFormateur.add( uvs.get( 7 ) );
+        // ListeUvFormateur.add( uvs.get( 8 ) );
         return ListeUvFormateur;
     }
 
@@ -179,9 +149,11 @@ public class SapforServer {
         List<Candidature> CandidaturesSessionsAccessibles = new ArrayList<Candidature>();
         List<Uv> listeUvRequiseFormateur = getListeUvFormateur();
 
-        // Pour chaque session existante sur le serveur
-        for ( Integer mapKey : sessions.keySet() ) {
-            List<Uv> listeUvRequiseStagiaire = sessions.get( mapKey ).getUv().getListePrerequis();
+        // Pour chaque session existante sur la BDD
+        AbstractDAOFactory adf = AbstractDAOFactory.getFactory( typeDao );
+        SessionDao sessionDao = adf.getSessionDao();
+        for ( Session s : sessionDao.listerToutes() ) {
+            List<Uv> listeUvRequiseStagiaire = s.getUv().getListePrerequis();
             // nombre d'UV requises en tant que Candidat pour cette session
             int nombreUvRequisesStagiaire = listeUvRequiseStagiaire.size();
             // futur nombre de ces UV en tant que Candidat possÃ©dÃ©es par
@@ -216,7 +188,7 @@ public class SapforServer {
                 while ( itListeUvAgent.hasNext() ) {
                     Uv UvAgent = itListeUvAgent.next();
 
-                    if ( UvAgent.getNom().compareTo( sessions.get( mapKey ).getUv().getNom() ) == 0 ) {
+                    if ( UvAgent.getNom().compareTo( s.getUv().getNom() ) == 0 ) {
                         AgentPossedeUvSession = true;
                     }
 
@@ -228,13 +200,13 @@ public class SapforServer {
 
             // Ajout candidature en tant que stagiaire
             if ( nombreUvRequisesStagiaire == nombreUvPossedeStagiaire && !AgentPossedeUvSession ) {
-                Candidature candidature = new Candidature( agent, -2, false, sessions.get( mapKey ) );
+                Candidature candidature = new Candidature( agent, -2, false, s );
                 CandidaturesSessionsAccessibles.add( candidature );
             }
 
             // Ajout candidature en tant que formateur
             if ( nombreUvRequiseFormateur == nombreUvPossedeFormateur & AgentPossedeUvSession ) {
-                Candidature candidature = new Candidature( agent, -2, true, sessions.get( mapKey ) );
+                Candidature candidature = new Candidature( agent, -2, true, s );
                 CandidaturesSessionsAccessibles.add( candidature );
             }
         }
@@ -243,9 +215,13 @@ public class SapforServer {
 
     public List<Session> getListeSessionsFermees() {
         List<Session> listeFermees = new ArrayList<Session>();
-        for ( Map.Entry<Integer, Session> entry : sessions.entrySet() ) {
-            if ( entry.getValue().isOuverteInscription() == false ) {
-                listeFermees.add( entry.getValue() );
+
+        // Pour chaque session existante sur la BDD
+        AbstractDAOFactory adf = AbstractDAOFactory.getFactory( typeDao );
+        SessionDao sessionDao = adf.getSessionDao();
+        for ( Session s : sessionDao.listerToutes() ) {
+            if ( !s.isOuverteInscription() ) {
+                listeFermees.add( s );
             }
         }
         return listeFermees;
@@ -253,9 +229,13 @@ public class SapforServer {
 
     public List<Session> getListeSessionsOuvertes() {
         List<Session> listeOuvertes = new ArrayList<Session>();
-        for ( Map.Entry<Integer, Session> entry : sessions.entrySet() ) {
-            if ( entry.getValue().isOuverteInscription() == true ) {
-                listeOuvertes.add( entry.getValue() );
+
+        // Pour chaque session existante sur la BDD
+        AbstractDAOFactory adf = AbstractDAOFactory.getFactory( typeDao );
+        SessionDao sessionDao = adf.getSessionDao();
+        for ( Session s : sessionDao.listerToutes() ) {
+            if ( s.isOuverteInscription() ) {
+                listeOuvertes.add( s );
             }
         }
         return listeOuvertes;
@@ -266,15 +246,19 @@ public class SapforServer {
         passwordEncryptor.setAlgorithm( "SHA-256" );
         passwordEncryptor.setPlainDigest( true );
 
-        for ( Map.Entry<Integer, Agent> entry : agents.entrySet() ) {
-            if ( entry.getValue().getMatricule().compareTo( matricule ) == 0 ) {
-                if ( passwordEncryptor.checkPassword( password, entry.getValue().getMdp() ) ) {
+        // Pour chaque agent existant sur la BDD
+        AbstractDAOFactory adf = AbstractDAOFactory.getFactory( typeDao );
+        AgentDao agentDao = adf.getAgentDao();
+        for ( Agent a : agentDao.listerTous() ) {
+            if ( a.getMatricule().compareTo( matricule ) == 0 ) {
+                if ( passwordEncryptor.checkPassword( password, a.getMdp() ) ) {
                     String uuid = UUID.randomUUID().toString();
-                    connexions.put( uuid, entry.getValue() );
+                    connexions.put( uuid, a );
                     AgentConnection ag = new AgentConnection();
                     ag.setMatricule( matricule );
-                    ag.setNom( entry.getValue().getNom() );
+                    ag.setNom( a.getNom() );
                     ag.setUuid( uuid );
+                    ag.setGestionnaire( a.getGestionnaire() );
                     return ag; // Si la connexion est réussie
                 }
             }
@@ -282,98 +266,81 @@ public class SapforServer {
         return null; // Si la connexion a échouée
     }
 
-    public List<Candidature> getListeCandidatures( int idSession ) {
-        List<Candidature> listeCandidatures = new ArrayList<Candidature>();
-        for ( Map.Entry<Integer, Candidature> entry : candidatures.entrySet() ) {
-            if ( entry.getValue().getSession().getId() == idSession ) {
-                listeCandidatures.add( entry.getValue() );
-            }
-        }
-        return listeCandidatures;
-    }
-
-    /*
-     * @param uuid l'uuid de l'agent
+    /**
+     * Retourne la liste des candidatures pour une session donnée
      * 
-     * @return la liste des sessions dans lesquelles l'agent Ã  candidater
-     * 
-     * Attention Agent compareTo(a) compare uniquement les id des agents.
+     * @param idSession
+     *            id de la session recherchée
+     * @return Liste des candidatures pour une session donnée
      */
-    public List<Session> getListeSession( String uuid ) {
-        List<Session> listeSessionsCandidat = new ArrayList<Session>();
-        Agent agentCherche = getAgentByUUID( uuid );
-
-        for ( Map.Entry<Integer, Candidature> entry : candidatures.entrySet() ) {
-            if ( entry.getValue().getAgent().compareTo( agentCherche ) == 0 ) {
-                listeSessionsCandidat.add( entry.getValue().getSession() );
-            }
-        }
-        return listeSessionsCandidat;
+    public List<Candidature> getListeCandidatures( int idSession ) {
+        AbstractDAOFactory adf = AbstractDAOFactory.getFactory( typeDao );
+        CandidatureDao candidatureDao = adf.getCandidatureDao();
+        return candidatureDao.listerCandidaturesParSession( idSession );
     }
+
+    /**
+     * Retourne la liste des candidatures pour un agent donné
+     * 
+     * @param idAgent
+     *            id de l'agent recherché
+     * @return Liste des candidatures pour un agent donné
+     */
+    public List<Candidature> getListeSession( String uuid ) {
+        Agent agent = getAgentByUUID( uuid );
+        AbstractDAOFactory adf = AbstractDAOFactory.getFactory( typeDao );
+        CandidatureDao candidatureDao = adf.getCandidatureDao();
+        return candidatureDao.listerCandidaturesParAgent( agent.getId() );
+    }
+
+    // CONSERVER AU CAS OU
+    /*
+     * List<Session> listeSessionsCandidat = new ArrayList<Session>(); Agent
+     * agentCherche = getAgentByUUID( uuid );
+     * 
+     * for ( Map.Entry<Integer, Candidature> entry : candidatures.entrySet() ) {
+     * if ( entry.getValue().getAgent().compareTo( agentCherche ) == 0 ) {
+     * listeSessionsCandidat.add( entry.getValue().getSession() ); } } return
+     * listeSessionsCandidat; }
+     */
 
     public boolean modifierListeCandidats( int idSession, List<Candidature> listeCandidature ) {
-        Iterator<Candidature> itCandidature = listeCandidature.iterator();
-
-        for ( Map.Entry<Integer, Candidature> entry : candidatures.entrySet() ) {
-            while ( itCandidature.hasNext() ) {
-                Candidature CandidatureCourante = itCandidature.next();
-                if ( CandidatureCourante.getAgent().compareTo( entry.getValue().getAgent() ) == 0 &&
-                        CandidatureCourante.getSession().getId() == entry.getValue().getSession().getId() ) {
-                    candidatures.put( entry.getKey(), CandidatureCourante ); // Remplacement
-                                                                             // de
-                                                                             // la
-                                                                             // candidature
-                }
-            }
-        }
-        // Temporaire
+        AbstractDAOFactory adf = AbstractDAOFactory.getFactory( typeDao );
+        CandidatureDao candidatureDao = adf.getCandidatureDao();
+        candidatureDao.mettreAJourCandidatureASession( idSession, listeCandidature );
         return true;
     }
 
     public boolean retirerCandidature( int idAgent, int idSession ) {
-        for ( Map.Entry<Integer, Candidature> entry : candidatures.entrySet() ) {
-            if ( entry.getValue().getAgent().getId() == idAgent ) {
-                if ( entry.getValue().getSession().getId() == idSession ) {
-                    candidatures.remove( entry.getKey() );
-                    return true;
-                }
-            }
-        }
-        return false;
+        AbstractDAOFactory adf = AbstractDAOFactory.getFactory( typeDao );
+        CandidatureDao candidatureDao = adf.getCandidatureDao();
+        candidatureDao.supprimerCandidature( idAgent, idSession );
+        return true;
     }
 
     public List<SessionGenerique> getListeSessionsGeneriques() {
         List<SessionGenerique> listeSessionsGeneriques = new ArrayList<SessionGenerique>();
 
-        for ( Map.Entry<Integer, Session> entry : sessions.entrySet() ) {
-            if ( entry.getValue().isOuverteInscription() ) {
-                listeSessionsGeneriques.add( sessionToSessionGenerique( entry.getValue() ) );
+        // Pour chaque session existante sur la BDD
+        AbstractDAOFactory adf = AbstractDAOFactory.getFactory( typeDao );
+        SessionDao sessionDao = adf.getSessionDao();
+        for ( Session s : sessionDao.listerToutes() ) {
+            if ( s.isOuverteInscription() ) {
+                listeSessionsGeneriques.add( sessionToSessionGenerique( s ) );
             }
         }
         return listeSessionsGeneriques;
     }
 
     public boolean deposerCandidature( int idAgent, int idSession, boolean estFormateur ) {
-        boolean alreadyExist = false;
-        for ( Map.Entry<Integer, Candidature> entry : candidatures.entrySet() ) {
-            if ( entry.getValue().getAgent().getId() == idAgent ) {
-                if ( entry.getValue().getSession().getId() == idSession ) {
-                    alreadyExist = true;
-                }
-            }
+        AbstractDAOFactory adf = AbstractDAOFactory.getFactory( typeDao );
+        CandidatureDao candidatureDao = adf.getCandidatureDao();
+        /* Test si la candidature existe deja */
+        if ( !candidatureDao.existe( idAgent, idSession ) ) {
+            candidatureDao.creer( new Candidature( SapforServer.getSessionServer().getAgentById( idAgent ), -2,
+                    estFormateur, SapforServer.getSessionServer().getSessionById( idSession ) ) );
         }
-        if ( !alreadyExist ) {
-            int cle = ThreadLocalRandom.current().nextInt( 1, 100000 + 1 );
-            // Assure l'unicitÃ© de la clÃ© dans la hashMap
-            while ( candidatures.containsKey( cle ) ) {
-                cle = ThreadLocalRandom.current().nextInt( 1, 100000 + 1 );
-            }
-            candidatures.put( cle,
-                    new Candidature( getAgentById( idAgent ), -2, estFormateur, getSessionById( idSession ) ) );
-            return true;
-        } else {
-            return false;
-        }
+        return true;
     }
 
     @SuppressWarnings( "deprecation" )
@@ -390,26 +357,26 @@ public class SapforServer {
 
     @SuppressWarnings( "deprecation" )
     public void initializeServer() {
-        AbstractDAOFactory adf = AbstractDAOFactory.getFactory( AbstractDAOFactory.DAO_FACTORY );
+        // AbstractDAOFactory adf = AbstractDAOFactory.getFactory( typeDao );
 
         /* Creation des instances d'UV Simple + DAO */
         Uv uv1 = new Uv( "UV_INC1", 5, 3, 12, "Rennes" );
         Uv uv2 = new Uv( "UV_FDF1", 10, 3, 12, "Rennes" );
         Uv uv3 = new Uv( "UV_SAR1", 5, 3, 12, "Rennes" );
-        uvs.put( 1, uv1 );
-        uvs.put( 2, uv2 );
-        uvs.put( 3, uv3 );
-        UvDao uvDao = adf.getUvDao();
-        uv1.setId( uvDao.creer( uv1 ) );
-        uv2.setId( uvDao.creer( uv2 ) );
-        uv3.setId( uvDao.creer( uv3 ) );
+        /*
+         * UvDao uvDao = adf.getUvDao(); uv1.setId( uvDao.creer( uv1 ) );
+         * uv2.setId( uvDao.creer( uv2 ) ); uv3.setId( uvDao.creer( uv3 ) );
+         */
+        uv1.setId( 1 );
+        uv2.setId( 2 );
+        uv3.setId( 2 );
 
         /* Mise a jour d'instances d'UV avec prerequis + DAO */
         uv1.ajouterUv( uv2 );
         uv1.ajouterUv( uv3 );
         uv2.ajouterUv( uv3 );
-        uvDao.mettreAJour( uv1 );
-        uvDao.mettreAJour( uv2 );
+        // uvDao.mettreAJour( uv1 );
+        // uvDao.mettreAJour( uv2 );
 
         /* Creation des instances d'UV avec prerequis + DAO */
         Uv uv4 = new Uv( "UV_WJK2", 5, 3, 12, "Rennes" );
@@ -419,85 +386,89 @@ public class SapforServer {
                                                           // etre formateur
         Uv uv8 = new Uv( "UV_FORM", 5, 3, 12, "Rennes" ); // Uv requise pour
                                                           // etre formateur
-        uvs.put( 4, uv4 );
-        uvs.put( 5, uv5 );
-        uvs.put( 6, uv6 );
-        uvs.put( 7, uv7 );
-        uvs.put( 8, uv8 );
         uv3.ajouterUv( uv6 );
         uv4.ajouterUv( uv5 );
-        uv4.setId( uvDao.creer( uv4 ) );
-        uv5.setId( uvDao.creer( uv5 ) );
-        uv6.setId( uvDao.creer( uv6 ) );
-        uv7.setId( uvDao.creer( uv7 ) );
-        uv8.setId( uvDao.creer( uv8 ) );
+        /*
+         * uv4.setId( uvDao.creer( uv4 ) ); uv5.setId( uvDao.creer( uv5 ) );
+         * uv6.setId( uvDao.creer( uv6 ) ); uv7.setId( uvDao.creer( uv7 ) );
+         * uv8.setId( uvDao.creer( uv8 ) );
+         */
+        uv4.setId( 4 );
+        uv5.setId( 5 );
+        uv6.setId( 6 );
+        uv7.setId( 7 );
+        uv8.setId( 8 );
 
         // Creation d'aptitude simple + DAO
         Aptitude apt1 = new Aptitude( "APT1" );
         Aptitude apt2 = new Aptitude( "APT2" );
-        aptitudes.put( 1, apt1 );
-        aptitudes.put( 2, apt2 );
-        AptitudeDao aptitudeDao = adf.getAptitudeDao();
-        apt1.setId( aptitudeDao.creer( apt1 ) );
-        apt2.setId( aptitudeDao.creer( apt2 ) );
+        /*
+         * AptitudeDao aptitudeDao = adf.getAptitudeDao(); apt1.setId(
+         * aptitudeDao.creer( apt1 ) ); apt2.setId( aptitudeDao.creer( apt2 ) );
+         */
+        apt1.setId( 1 );
+        apt2.setId( 2 );
 
         // Mise a jour d'aptitude avec prerequis + DAO
         apt1.ajouterUv( uv1 );
         apt1.ajouterUv( uv2 );
         apt2.ajouterUv( uv1 );
-        aptitudeDao.mettreAJour( apt1 );
+        // aptitudeDao.mettreAJour( apt1 );
 
         // Creation d'aptitude avec prerequis + DAO
         Aptitude apt3 = new Aptitude( "APT3" );
         apt3.ajouterUv( uv4 );
         apt3.ajouterUv( uv5 );
-        aptitudes.put( 3, apt3 );
-        apt3.setId( aptitudeDao.creer( apt3 ) );
+        // apt3.setId( aptitudeDao.creer( apt3 ) );
+        apt3.setId( 3 );
 
         // Creation d'agents simple + DAO
         Agent a1 = new Agent( "ATREUILLIER", "mdp", "19041975", true );
         Agent a2 = new Agent( "LTREUILLIER", "mdp", "15122010", false );
-        agents.put( 1, a1 );
-        agents.put( 2, a2 );
         /* Sauvegarde des Agents */
-        AgentDao agentDao = adf.getAgentDao();
-        a1.setId( agentDao.creer( a1 ) );
-        a2.setId( agentDao.creer( a2 ) );
+        /*
+         * AgentDao agentDao = adf.getAgentDao(); a1.setId( agentDao.creer( a1 )
+         * ); a2.setId( agentDao.creer( a2 ) );
+         */
+        a1.setId( 1 );
+        a2.setId( 2 );
 
         // Mise a jour d'agents avec Uv + DAO
         a1.ajouterUv( uv6 );
         a2.ajouterUv( uv3 );
-        agentDao.mettreAJour( a1 );
-        agentDao.mettreAJour( a2 );
+        // agentDao.mettreAJour( a1 );
+        // agentDao.mettreAJour( a2 );
 
         // Creation d'agents avec Uv + DAO
         Agent a3 = new Agent( "NTREUILLIER", "mdp", "09102013", false );
         Agent a4 = new Agent( "FDESCAVES", "mdp", "06091991", false );
         Agent a5 = new Agent( "MDESCAVES", "max", "06091990", false );
-        agents.put( 3, a3 );
-        agents.put( 4, a4 );
-        agents.put( 5, a5 );
         a3.ajouterUv( uv2 );
         a3.ajouterUv( uv3 );
-        a3.setId( agentDao.creer( a3 ) );
-        a4.setId( agentDao.creer( a4 ) );
-        a5.setId( agentDao.creer( a5 ) );
+        /*
+         * a3.setId( agentDao.creer( a3 ) ); a4.setId( agentDao.creer( a4 ) );
+         * a5.setId( agentDao.creer( a5 ) );
+         */
+        a3.setId( 3 );
+        a4.setId( 4 );
+        a5.setId( 5 );
 
         // Creation de Stage Simple + DAO
         Stage stg1 = new Stage( "fevrier1" );
         Stage stg2 = new Stage( "fevrier2" );
         Stage stg3 = new Stage( "mars1" );
-        stages.put( 1, stg1 );
-        stages.put( 2, stg2 );
-        stages.put( 3, stg3 );
-        StageDao stageDao = adf.getStageDao();
-        stg1.setId( stageDao.creer( stg1 ) );
-        stg2.setId( stageDao.creer( stg2 ) );
-        stg3.setId( stageDao.creer( stg3 ) );
+        /*
+         * StageDao stageDao = adf.getStageDao(); stg1.setId( stageDao.creer(
+         * stg1 ) ); stg2.setId( stageDao.creer( stg2 ) ); stg3.setId(
+         * stageDao.creer( stg3 ) );
+         */
+        stg1.setId( 1 );
+        stg2.setId( 2 );
+        stg3.setId( 3 );
 
         // Mise à jour de Stage Simple + DAO
         stg1.setNom( "fevrier3" );
-        stageDao.mettreAJour( stg1 );
+        // stageDao.mettreAJour( stg1 );
 
         // Creation de session simple + DAO
         Session s1 = new Session( "INC1", new java.sql.Date( 2017, 02, 06 ), new java.sql.Date( 2017, 02, 10 ), true,
@@ -507,32 +478,31 @@ public class SapforServer {
         Session s3 = new Session( "SAR1", new java.sql.Date( 2017, 01, 30 ), new java.sql.Date( 2017, 02, 03 ), true,
                 uv3, stg3 );
 
-        sessions.put( 1, s1 );
-        sessions.put( 2, s2 );
-        sessions.put( 3, s3 );
         /* Sauvegarde des Sessions */
-        SessionDao sessionDao = adf.getSessionDao();
-        s1.setId( sessionDao.creer( s1 ) );
-        s2.setId( sessionDao.creer( s2 ) );
-        s3.setId( sessionDao.creer( s3 ) );
+        /*
+         * SessionDao sessionDao = adf.getSessionDao(); s1.setId(
+         * sessionDao.creer( s1 ) ); s2.setId( sessionDao.creer( s2 ) );
+         * s3.setId( sessionDao.creer( s3 ) );
+         */
+        s1.setId( 1 );
+        s2.setId( 2 );
+        s3.setId( 3 );
 
         // Mise a jour de session simple + DAO
         s1.setStage( stg2 );
-        sessionDao.mettreAJour( s1 );
+        // sessionDao.mettreAJour( s1 );
 
         // Creation de candidatures simples + DAO
         Candidature cand1 = new Candidature( a2, -2, false, s1 );
         Candidature cand2 = new Candidature( a3, -2, false, s1 );
-        candidatures.put( 1, cand1 );
-        candidatures.put( 2, cand2 );
         /* Sauvegarde des Candidatures */
-        CandidatureDao candidatureDao = adf.getCandidatureDao();
-        candidatureDao.creer( cand1 );
-        candidatureDao.creer( cand2 );
-
+        /*
+         * CandidatureDao candidatureDao = adf.getCandidatureDao();
+         * candidatureDao.creer( cand1 ); candidatureDao.creer( cand2 );
+         */
         // Mise a jour de candidature simple + DAO
         cand1.setSession( s2 );
-        sessionDao.mettreAJour( s2 );
+        // sessionDao.mettreAJour( s2 );
 
         // Ajout des tokens de connexions
         connexions.put( "19041975", a1 );

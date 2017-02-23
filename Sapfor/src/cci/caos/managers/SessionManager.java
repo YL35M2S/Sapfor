@@ -15,6 +15,8 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import cci.caos.beans.SessionGenerique;
+import cci.caos.dao.AbstractDAOFactory;
+import cci.caos.dao.SessionDao;
 import cci.caos.repository.Candidature;
 import cci.caos.repository.Session;
 import cci.caos.server.SapforServer;
@@ -38,7 +40,11 @@ public class SessionManager {
         int ids = Integer.parseInt( idSession );
         if ( SapforServer.getSessionServer().isConnectedByUUID( uuid )
                 && SapforServer.getSessionServer().getAgentByUUID( uuid ).getGestionnaire() ) {
-            SapforServer.getSessionServer().getSessionById( ids ).fermerCandidature();
+            Session s = SapforServer.getSessionServer().getSessionById( ids );
+            s.fermerCandidature();
+            AbstractDAOFactory adf = AbstractDAOFactory.getFactory( SapforServer.typeDao );
+            SessionDao sessionDao = adf.getSessionDao();
+            sessionDao.mettreAJour( s );
             return Response
                     .status( Status.OK )
                     .build();
@@ -113,11 +119,14 @@ public class SessionManager {
     @GET
     @Path( "{uuid}" )
     @Produces( MediaType.APPLICATION_JSON )
-    public Response getListeCandidatures( @PathParam( "uuid" ) String id ) {
+    public Response getListeCandidatures( @PathParam( "uuid" ) String uuid ) {
         SapforServer server = SapforServer.getSessionServer();
-        if ( server.isConnectedByUUID( id ) ) {
-            List<Session> listeCandidature = server.getListeSession( id );
-            return Response.status( Status.OK ).entity( listeCandidature ).build();
+        if ( server.isConnectedByUUID( uuid ) ) {
+            List<Candidature> listeCandidature = server.getListeSession( uuid );
+            GenericEntity<List<Candidature>> listeCandidatureEntity = new GenericEntity<List<Candidature>>(
+                    listeCandidature ) {
+            };
+            return Response.status( Status.OK ).entity( listeCandidatureEntity ).build();
         } else {
             return Response.status( Status.FORBIDDEN ).build();
         }
@@ -136,15 +145,9 @@ public class SessionManager {
     @Path( "{uuid}/retirerCandidature" )
     public Response retirerCandidature( @PathParam( "uuid" ) String uuid, @QueryParam( "Session" ) String idSession ) {
         SapforServer server = SapforServer.getSessionServer();
-        int ids = Integer.parseInt( idSession );
         if ( server.isConnectedByUUID( uuid ) ) {
-            int idAgent = server.getAgentByUUID( uuid ).getId();
-
-            if ( server.retirerCandidature( idAgent, ids ) ) {
-                return Response.status( Status.OK ).build();
-            } else {
-                return Response.status( Status.BAD_REQUEST ).build();
-            }
+            server.retirerCandidature( server.getAgentByUUID( uuid ).getId(), Integer.parseInt( idSession ) );
+            return Response.status( Status.OK ).build();
         } else {
             return Response.status( Status.FORBIDDEN ).build();
         }
@@ -196,15 +199,10 @@ public class SessionManager {
     public Response deposerCandidature( @PathParam( "uuid" ) String uuid, @QueryParam( "Session" ) String idSession,
             @QueryParam( "Formateur" ) String role ) {
         SapforServer server = SapforServer.getSessionServer();
-        int ids = Integer.parseInt( idSession );
-        boolean estFormateur = Boolean.getBoolean( role );
         if ( server.isConnectedByUUID( uuid ) ) {
-            int idAgent = server.getAgentByUUID( uuid ).getId();
-            if ( server.deposerCandidature( idAgent, ids, estFormateur ) ) {
-                return Response.status( Status.OK ).build();
-            } else {
-                return Response.status( Status.BAD_REQUEST ).build();
-            }
+            server.deposerCandidature( server.getAgentByUUID( uuid ).getId(),
+                    server.getSessionById( Integer.parseInt( idSession ) ).getId(), Boolean.valueOf( role ) );
+            return Response.status( Status.OK ).build();
         } else {
             return Response.status( Status.FORBIDDEN ).build();
         }
@@ -218,8 +216,10 @@ public class SessionManager {
     @GET
     public Response listerSessions() {
         List<SessionGenerique> listeSessionGenerique = SapforServer.getSessionServer().getListeSessionsGeneriques();
-        return Response.status( Status.OK ).entity( new GenericEntity<List<SessionGenerique>>( listeSessionGenerique ) {
-        } ).build();
+        GenericEntity<List<SessionGenerique>> listeSessionsGeneriques = new GenericEntity<List<SessionGenerique>>(
+                listeSessionGenerique ) {
+        };
+        return Response.status( Status.OK ).entity( listeSessionsGeneriques ).build();
     }
 
 }
