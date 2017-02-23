@@ -14,6 +14,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import cci.caos.beans.SessionGenerique;
 import cci.caos.repository.Candidature;
 import cci.caos.repository.Session;
 import cci.caos.server.SapforServer;
@@ -208,4 +209,17 @@ public class SessionManager {
             return Response.status( Status.FORBIDDEN ).build();
         }
     }
+
+    /*
+     * Liste toutes les sessions enregistrées sur le serveur
+     * 
+     * @return Liste des sessions ouvertes
+     */
+    @GET
+    public Response listerSessions() {
+        List<SessionGenerique> listeSessionGenerique = SapforServer.getSessionServer().getListeSessionsGeneriques();
+        return Response.status( Status.OK ).entity( new GenericEntity<List<SessionGenerique>>( listeSessionGenerique ) {
+        } ).build();
+    }
+
 }

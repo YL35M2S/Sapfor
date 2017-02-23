@@ -1,5 +1,6 @@
 package cci.caos.server;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -10,6 +11,8 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import org.jasypt.util.password.ConfigurablePasswordEncryptor;
 
+import cci.caos.beans.AgentConnection;
+import cci.caos.beans.SessionGenerique;
 import cci.caos.dao.AbstractDAOFactory;
 import cci.caos.dao.AgentDao;
 import cci.caos.dao.AptitudeDao;
@@ -258,7 +261,7 @@ public class SapforServer {
         return listeOuvertes;
     }
 
-    public String getConnexionAgent( String matricule, String password ) {
+    public AgentConnection getConnexionAgent( String matricule, String password ) {
         ConfigurablePasswordEncryptor passwordEncryptor = new ConfigurablePasswordEncryptor();
         passwordEncryptor.setAlgorithm( "SHA-256" );
         passwordEncryptor.setPlainDigest( true );
@@ -268,7 +271,11 @@ public class SapforServer {
                 if ( passwordEncryptor.checkPassword( password, entry.getValue().getMdp() ) ) {
                     String uuid = UUID.randomUUID().toString();
                     connexions.put( uuid, entry.getValue() );
-                    return uuid; // Si la connexion est réussie
+                    AgentConnection ag = new AgentConnection();
+                    ag.setMatricule( matricule );
+                    ag.setNom( entry.getValue().getNom() );
+                    ag.setUuid( uuid );
+                    return ag; // Si la connexion est r�ussie
                 }
             }
         }
@@ -286,7 +293,7 @@ public class SapforServer {
     }
 
     /*
-     * @parameter un uuid
+     * @param uuid l'uuid de l'agent
      * 
      * @return la liste des sessions dans lesquelles l'agent à candidater
      * 
@@ -335,6 +342,17 @@ public class SapforServer {
         return false;
     }
 
+    public List<SessionGenerique> getListeSessionsGeneriques() {
+        List<SessionGenerique> listeSessionsGeneriques = new ArrayList<SessionGenerique>();
+
+        for ( Map.Entry<Integer, Session> entry : sessions.entrySet() ) {
+            if ( entry.getValue().isOuverteInscription() ) {
+                listeSessionsGeneriques.add( sessionToSessionGenerique( entry.getValue() ) );
+            }
+        }
+        return listeSessionsGeneriques;
+    }
+
     public boolean deposerCandidature( int idAgent, int idSession, boolean estFormateur ) {
         boolean alreadyExist = false;
         for ( Map.Entry<Integer, Candidature> entry : candidatures.entrySet() ) {
@@ -356,6 +374,18 @@ public class SapforServer {
         } else {
             return false;
         }
+    }
+
+    @SuppressWarnings( "deprecation" )
+    public SessionGenerique sessionToSessionGenerique( Session session ) {
+        SimpleDateFormat simpDate = new SimpleDateFormat( "dd/MM/yyyy" );
+        return new SessionGenerique(
+                session.getId(),
+                session.getNom(),
+                simpDate.format( session.getDateDebut() ),
+                simpDate.format( session.getDateFin() ),
+                session.getUv().getNom(),
+                session.getStage().getNom() );
     }
 
     @SuppressWarnings( "deprecation" )
