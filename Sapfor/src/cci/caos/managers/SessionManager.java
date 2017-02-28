@@ -14,6 +14,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import cci.caos.beans.CandidatureGenerique;
 import cci.caos.beans.SessionGenerique;
 import cci.caos.dao.AbstractDAOFactory;
 import cci.caos.dao.SessionDao;
@@ -25,14 +26,14 @@ import cci.caos.server.SapforServer;
 public class SessionManager {
 
     /*
-     * UseCase : #GESTION/FermerCandidature Fermer une sesion à la candidature
+     * UseCase : #GESTION/FermerCandidature Fermer une sesion ï¿½ la candidature
      * http://localhost:8080/Sapfor/rest/sessions/{uuid}/fermerCandidature?
      * Session=1
      * 
-     * Permet à un gestionnaire de fermer les candidatures pour une session
-     * donnée
+     * Permet ï¿½ un gestionnaire de fermer les candidatures pour une session
+     * donnï¿½e
      * 
-     * @return True si la fermeture a été effective, sinon False
+     * @return True si la fermeture a ï¿½tï¿½ effective, sinon False
      */
     @GET
     @Path( "{uuid}/fermerCandidature" )
@@ -56,16 +57,16 @@ public class SessionManager {
     }
 
     /*
-     * UseCase : #SELC/modifierCandidats Modifier les candidatures à une session
+     * UseCase : #SELC/modifierCandidats Modifier les candidatures ï¿½ une session
      * http://localhost:8080/Sapfor/rest/sessions/{uuid}/modifierCandidats?
      * Session=1
      * 
-     * Permet à un gestionnaire de modifier les candidatures pour une session
-     * donnée (Acceptée/Refusée/Liste d'Attente)
+     * Permet ï¿½ un gestionnaire de modifier les candidatures pour une session
+     * donnï¿½e (Acceptï¿½e/Refusï¿½e/Liste d'Attente)
      * 
-     * @Param candidatures Liste des candidatures modifiée
+     * @Param candidatures Liste des candidatures modifiï¿½e
      * 
-     * @return True si la liste des candidats a été modifiée, sinon False
+     * @return True si la liste des candidats a ï¿½tï¿½ modifiï¿½e, sinon False
      */
     @POST
     @Path( "{uuid}/modifierCandidats" )
@@ -87,7 +88,7 @@ public class SessionManager {
     }
 
     /*
-     * UseCase : #LACC Renvoie la liste des sessions accessibles à un agent
+     * UseCase : #LACC Renvoie la liste des sessions accessibles Ã  un agent
      * http://localhost:8080/Sapfor/rest/sessions/{uuid}/accessible -------
      * Renvoie la liste des sessions auxquelles un agent peut candidater
      * 
@@ -99,8 +100,8 @@ public class SessionManager {
     public Response getListeSessionsAccessibles( @PathParam( "uuid" ) String uuid ) {
         SapforServer server = SapforServer.getSessionServer();
         if ( server.isConnectedByUUID( uuid ) ) {
-            List<Candidature> listSessionsAccessibles = server.getSessionsAccessibles( uuid );
-            GenericEntity<List<Candidature>> listSessionsEntity = new GenericEntity<List<Candidature>>(
+            List<CandidatureGenerique> listSessionsAccessibles = server.getSessionsAccessibles( uuid );
+            GenericEntity<List<CandidatureGenerique>> listSessionsEntity = new GenericEntity<List<CandidatureGenerique>>(
                     listSessionsAccessibles ) {
             };
             return Response.status( Status.OK ).entity( listSessionsEntity ).build();
@@ -110,11 +111,11 @@ public class SessionManager {
     }
 
     /*
-     * UseCase : #LISTC Renvoie la liste des candidatures pour un agent donné
+     * UseCase : #LISTC Renvoie la liste des candidatures pour un agent donnï¿½
      * http://localhost:8080/Sapfor/rest/sessions/{uuid} --------------------
-     * Renvoie la liste des sessions auxquelles un agent à candidater
+     * Renvoie la liste des sessions auxquelles un agent ï¿½ candidater
      * 
-     * @return la liste des sessions auxquelles un agent à candidater
+     * @return la liste des sessions auxquelles un agent ï¿½ candidater
      */
     @GET
     @Path( "{uuid}" )
@@ -137,9 +138,9 @@ public class SessionManager {
      * http://localhost:8080/Sapfor/rest/sessions/{uuid}/retirerCandidature?
      * Session=1
      * 
-     * Permet à un agent de retirer sa candidature pour une session donnée
+     * Permet ï¿½ un agent de retirer sa candidature pour une session donnï¿½e
      * 
-     * @return True si la candidature a été retirée, sinon False
+     * @return True si la candidature a ï¿½tï¿½ retirï¿½e, sinon False
      */
     @GET
     @Path( "{uuid}/retirerCandidature" )
@@ -154,11 +155,11 @@ public class SessionManager {
     }
 
     /*
-     * UseCase : #SELC Renvoie la liste des sessions fermees à la candidature
+     * UseCase : #SELC Renvoie la liste des sessions fermees ï¿½ la candidature
      * http://localhost:8080/Sapfor/rest/sessions/listeFermees --------------
-     * Permet d'obtenir la liste des sessions fermées à la candidature
+     * Permet d'obtenir la liste des sessions fermï¿½es ï¿½ la candidature
      * 
-     * @return Liste des sessions fermées à la candidature
+     * @return Liste des sessions fermï¿½es ï¿½ la candidature
      */
     @GET
     @Path( "listeFermees" )
@@ -170,10 +171,10 @@ public class SessionManager {
 
     /*
      * UseCase : #GESTION/FermerCandidature Renvoie la liste des sessions
-     * ouvertes à la candidature
+     * ouvertes ï¿½ la candidature
      * http://localhost:8080/Sapfor/rest/sessions/listeOuvertes
      * 
-     * Permet d'obtenr la liste des sessions ouvertes à la candidature
+     * Permet d'obtenr la liste des sessions ouvertes ï¿½ la candidature
      * 
      * @return Liste des sessions ouvertes au format JSON
      */
@@ -190,9 +191,9 @@ public class SessionManager {
      * http://localhost:8080/Sapfor/rest/sessions/{uuid}/candidater?Session=1&
      * Formateur="True"
      * 
-     * Permet à un agent de déposer une candidature pour une session donnée
+     * Permet ï¿½ un agent de dï¿½poser une candidature pour une session donnï¿½e
      * 
-     * @return True si la candidature a été enregistrée, sinon False
+     * @return True si la candidature a ï¿½tï¿½ enregistrï¿½e, sinon False
      */
     @GET
     @Path( "{uuid}/candidater" )
@@ -209,7 +210,7 @@ public class SessionManager {
     }
 
     /*
-     * Liste toutes les sessions enregistrées sur le serveur
+     * Liste toutes les sessions enregistrï¿½es sur le serveur
      * 
      * @return Liste des sessions ouvertes
      */

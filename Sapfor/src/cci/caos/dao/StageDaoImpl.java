@@ -28,7 +28,6 @@ public class StageDaoImpl extends Dao implements StageDao {
     @Override
     public int creer( Stage stage ) throws DAOException {
         PreparedStatement preparedStatement;
-        int idNewStage;
 
         try {
             preparedStatement = connect.prepareStatement( SQL_INSERT_STAGE, Statement.RETURN_GENERATED_KEYS );

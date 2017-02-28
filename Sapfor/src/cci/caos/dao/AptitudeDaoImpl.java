@@ -12,7 +12,6 @@ import cci.caos.repository.Uv;
 public class AptitudeDaoImpl extends Dao implements AptitudeDao {
     private static final String SQL_INSERT_APTITUDE    = "INSERT INTO Aptitude (nomAptitude) VALUES(?);";
     private static final String SQL_INSERT_UV_APTITUDE = "INSERT INTO listeAptitudeUv (idAptitude, idUv) VALUES (?,?);";
-    private static final String SQL_SELECT_UV_PAR_ID   = "SELECT * FROM Uv WHERE idUv = ?";
     private static final String SQL_SELECT_PAR_ID      = "SELECT * FROM Aptitude WHERE idAptitude = ?";
     private static final String SQL_EXISTE_APTITUDE    = "SELECT * FROM Aptitude WHERE idAptitude = ?";
     private static final String SQL_UPDATE_APTITUDE    = "UPDATE Aptitude SET nomAptitude=? WHERE idAptitude=?";

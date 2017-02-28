@@ -11,6 +11,7 @@ import java.util.UUID;
 import org.jasypt.util.password.ConfigurablePasswordEncryptor;
 
 import cci.caos.beans.AgentConnection;
+import cci.caos.beans.CandidatureGenerique;
 import cci.caos.beans.SessionGenerique;
 import cci.caos.dao.AbstractDAOFactory;
 import cci.caos.dao.AgentDao;
@@ -50,11 +51,11 @@ public class SapforServer {
     }
 
     /*
-     * Permet d'obtenir la session identifiée par l'identifiant "id"
+     * Permet d'obtenir la session identifiï¿½e par l'identifiant "id"
      * 
-     * @Param id Identifiant de la session recherchée
+     * @Param id Identifiant de la session recherchï¿½e
      * 
-     * @return Retourne la session recherchée
+     * @return Retourne la session recherchï¿½e
      */
     public Session getSessionById( int id ) {
         AbstractDAOFactory adf = AbstractDAOFactory.getFactory( typeDao );
@@ -63,11 +64,11 @@ public class SapforServer {
     }
 
     /*
-     * Permet d'obtenir l'UV identifiée par l'identifiant "id"
+     * Permet d'obtenir l'UV identifiï¿½e par l'identifiant "id"
      * 
-     * @Param id Identifiant de l'uv recherchée
+     * @Param id Identifiant de l'uv recherchï¿½e
      * 
-     * @return Retourne l'uv recherchée
+     * @return Retourne l'uv recherchï¿½e
      */
     public Uv getUvById( int id ) {
         AbstractDAOFactory adf = AbstractDAOFactory.getFactory( typeDao );
@@ -76,11 +77,11 @@ public class SapforServer {
     }
 
     /*
-     * Permet de vérifier que l'agent identifié par "uuid" est connecté
+     * Permet de vï¿½rifier que l'agent identifiï¿½ par "uuid" est connectï¿½
      * 
      * @Param uuid Identifiant unique de l'agent
      * 
-     * @return Retourne true si l'agent est identifié
+     * @return Retourne true si l'agent est identifiï¿½
      */
     public boolean isConnectedByUUID( String uuid ) {
         boolean estConnecte = false;
@@ -94,22 +95,22 @@ public class SapforServer {
     }
 
     /*
-     * Permet d'obtenir l'agent identifié par "uuid"
+     * Permet d'obtenir l'agent identifiÃ© par "uuid"
      * 
      * @Param uuid Identifiant unique de l'agent
      * 
-     * @return Retourne l'agent identifié par uuid
+     * @return Retourne l'agent identifiÃ© par uuid
      */
     public Agent getAgentByUUID( String uuid ) {
         return connexions.get( uuid );
     }
 
     /*
-     * Permet d'obtenir l'agent identifié par "id"
+     * Permet d'obtenir l'agent identifiÃ© par "id"
      * 
      * @Param id Identifiant de l'agent
      * 
-     * @return Retourne l'agent identifié par "id"
+     * @return Retourne l'agent identifiÃ© par "id"
      */
     public Agent getAgentById( int id ) {
         AbstractDAOFactory adf = AbstractDAOFactory.getFactory( typeDao );
@@ -118,11 +119,11 @@ public class SapforServer {
     }
 
     /*
-     * Permet d'obtenir le stage identifié par "id"
+     * Permet d'obtenir le stage identifiï¿½ par "id"
      * 
      * @Param id Identifiant du stage
      * 
-     * @return Retourne le stage identifié par "id"
+     * @return Retourne le stage identifiï¿½ par "id"
      */
     public Stage getStageById( int id ) {
         AbstractDAOFactory adf = AbstractDAOFactory.getFactory( typeDao );
@@ -144,9 +145,11 @@ public class SapforServer {
         return ListeUvFormateur;
     }
 
-    public List<Candidature> getSessionsAccessibles( String uuid ) {
+    public List<CandidatureGenerique> getSessionsAccessibles( String uuid ) {
+        SimpleDateFormat simpDate = new SimpleDateFormat( "dd/MM/yyyy" );
+
         Agent agent = connexions.get( uuid );
-        List<Candidature> CandidaturesSessionsAccessibles = new ArrayList<Candidature>();
+        List<CandidatureGenerique> CandidaturesSessionsAccessibles = new ArrayList<CandidatureGenerique>();
         List<Uv> listeUvRequiseFormateur = getListeUvFormateur();
 
         // Pour chaque session existante sur la BDD
@@ -200,13 +203,17 @@ public class SapforServer {
 
             // Ajout candidature en tant que stagiaire
             if ( nombreUvRequisesStagiaire == nombreUvPossedeStagiaire && !AgentPossedeUvSession ) {
-                Candidature candidature = new Candidature( agent, -2, false, s );
+                CandidatureGenerique candidature = new CandidatureGenerique( agent.getId(), false, -2, s.getId(),
+                        s.getNom(), simpDate.format( s.getDateDebut() ), simpDate.format( s.getDateFin() ),
+                        s.getUv().getNom(), s.getStage().getNom() );
                 CandidaturesSessionsAccessibles.add( candidature );
             }
 
             // Ajout candidature en tant que formateur
             if ( nombreUvRequiseFormateur == nombreUvPossedeFormateur & AgentPossedeUvSession ) {
-                Candidature candidature = new Candidature( agent, -2, true, s );
+                CandidatureGenerique candidature = new CandidatureGenerique( agent.getId(), true, -2, s.getId(),
+                        s.getNom(), simpDate.format( s.getDateDebut() ), simpDate.format( s.getDateFin() ),
+                        s.getUv().getNom(), s.getStage().getNom() );
                 CandidaturesSessionsAccessibles.add( candidature );
             }
         }
@@ -259,19 +266,19 @@ public class SapforServer {
                     ag.setNom( a.getNom() );
                     ag.setUuid( uuid );
                     ag.setGestionnaire( a.getGestionnaire() );
-                    return ag; // Si la connexion est réussie
+                    return ag; // Si la connexion est rï¿½ussie
                 }
             }
         }
-        return null; // Si la connexion a échouée
+        return null; // Si la connexion a ï¿½chouï¿½e
     }
 
     /**
-     * Retourne la liste des candidatures pour une session donnée
+     * Retourne la liste des candidatures pour une session donnï¿½e
      * 
      * @param idSession
-     *            id de la session recherchée
-     * @return Liste des candidatures pour une session donnée
+     *            id de la session recherchï¿½e
+     * @return Liste des candidatures pour une session donnï¿½e
      */
     public List<Candidature> getListeCandidatures( int idSession ) {
         AbstractDAOFactory adf = AbstractDAOFactory.getFactory( typeDao );
@@ -280,11 +287,11 @@ public class SapforServer {
     }
 
     /**
-     * Retourne la liste des candidatures pour un agent donné
+     * Retourne la liste des candidatures pour un agent donnï¿½
      * 
      * @param idAgent
-     *            id de l'agent recherché
-     * @return Liste des candidatures pour un agent donné
+     *            id de l'agent recherchï¿½
+     * @return Liste des candidatures pour un agent donnï¿½
      */
     public List<Candidature> getListeSession( String uuid ) {
         Agent agent = getAgentByUUID( uuid );
@@ -466,7 +473,7 @@ public class SapforServer {
         stg2.setId( 2 );
         stg3.setId( 3 );
 
-        // Mise à jour de Stage Simple + DAO
+        // Mise Ã  jour de Stage Simple + DAO
         stg1.setNom( "fevrier3" );
         // stageDao.mettreAJour( stg1 );
 
