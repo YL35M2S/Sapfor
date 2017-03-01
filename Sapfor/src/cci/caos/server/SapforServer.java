@@ -484,6 +484,8 @@ public class SapforServer {
                 uv2, stg2 );
         Session s3 = new Session( "SAR1", new java.sql.Date( 2017, 01, 30 ), new java.sql.Date( 2017, 02, 03 ), true,
                 uv3, stg3 );
+        Session s4 = new Session( "SAR2", new java.sql.Date( 2017, 01, 30 ), new java.sql.Date( 2017, 02, 03 ), true,
+                uv3, stg3 );
 
         /* Sauvegarde des Sessions */
         /*
