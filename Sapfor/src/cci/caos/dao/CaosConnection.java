@@ -12,6 +12,10 @@ public class CaosConnection {
     private static final String PROPERTY_MOT_DE_PASSE    = "Lespert";
     private static Connection   connect;
 
+    /**
+     * Récupère une connexion à la base de données
+     * @return une connexion à la base de données
+     */
     public static Connection getInstance() {
         if ( connect == null ) {
             try {
