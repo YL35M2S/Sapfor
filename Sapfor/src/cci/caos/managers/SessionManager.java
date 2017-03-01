@@ -57,16 +57,16 @@ public class SessionManager {
     }
 
     /*
-     * UseCase : #SELC/modifierCandidats Modifier les candidatures � une session
+     * UseCase : #SELC/modifierCandidats Modifier les candidatures à une session
      * http://localhost:8080/Sapfor/rest/sessions/{uuid}/modifierCandidats?
      * Session=1
      * 
-     * Permet � un gestionnaire de modifier les candidatures pour une session
-     * donn�e (Accept�e/Refus�e/Liste d'Attente)
+     * Permet à un gestionnaire de modifier les candidatures pour une session
+     * donnée (Acceptée/Refusée/Liste d'Attente)
      * 
-     * @Param candidatures Liste des candidatures modifi�e
+     * @Param candidatures Liste des candidatures modifiée
      * 
-     * @return True si la liste des candidats a �t� modifi�e, sinon False
+     * @return True si la liste des candidats a été modifiée, sinon False
      */
     @POST
     @Path( "{uuid}/modifierCandidats" )
@@ -113,9 +113,9 @@ public class SessionManager {
     /*
      * UseCase : #LISTC Renvoie la liste des candidatures pour un agent donn�
      * http://localhost:8080/Sapfor/rest/sessions/{uuid} --------------------
-     * Renvoie la liste des sessions auxquelles un agent � candidater
+     * Renvoie la liste des sessions auxquelles un agent à candidater
      * 
-     * @return la liste des sessions auxquelles un agent � candidater
+     * @return la liste des sessions auxquelles un agent à candidater
      */
     @GET
     @Path( "{uuid}" )
@@ -138,9 +138,9 @@ public class SessionManager {
      * http://localhost:8080/Sapfor/rest/sessions/{uuid}/retirerCandidature?
      * Session=1
      * 
-     * Permet � un agent de retirer sa candidature pour une session donn�e
+     * Permet à un agent de retirer sa candidature pour une session donn�e
      * 
-     * @return True si la candidature a �t� retir�e, sinon False
+     * @return True si la candidature a été retirée, sinon False
      */
     @GET
     @Path( "{uuid}/retirerCandidature" )
@@ -155,11 +155,11 @@ public class SessionManager {
     }
 
     /*
-     * UseCase : #SELC Renvoie la liste des sessions fermees � la candidature
+     * UseCase : #SELC Renvoie la liste des sessions fermees à la candidature
      * http://localhost:8080/Sapfor/rest/sessions/listeFermees --------------
-     * Permet d'obtenir la liste des sessions ferm�es � la candidature
+     * Permet d'obtenir la liste des sessions fermées à la candidature
      * 
-     * @return Liste des sessions ferm�es � la candidature
+     * @return Liste des sessions fermées à la candidature
      */
     @GET
     @Path( "listeFermees" )
@@ -171,10 +171,10 @@ public class SessionManager {
 
     /*
      * UseCase : #GESTION/FermerCandidature Renvoie la liste des sessions
-     * ouvertes � la candidature
+     * ouvertes à la candidature
      * http://localhost:8080/Sapfor/rest/sessions/listeOuvertes
      * 
-     * Permet d'obtenr la liste des sessions ouvertes � la candidature
+     * Permet d'obtenr la liste des sessions ouvertes à la candidature
      * 
      * @return Liste des sessions ouvertes au format JSON
      */
@@ -191,9 +191,9 @@ public class SessionManager {
      * http://localhost:8080/Sapfor/rest/sessions/{uuid}/candidater?Session=1&
      * Formateur="True"
      * 
-     * Permet � un agent de d�poser une candidature pour une session donn�e
+     * Permet à un agent de déposer une candidature pour une session donnée
      * 
-     * @return True si la candidature a �t� enregistr�e, sinon False
+     * @return True si la candidature a été enregistrée, sinon False
      */
     @GET
     @Path( "{uuid}/candidater" )
@@ -210,7 +210,7 @@ public class SessionManager {
     }
 
     /*
-     * Liste toutes les sessions enregistr�es sur le serveur
+     * Liste toutes les sessions enregistrées sur le serveur
      * 
      * @return Liste des sessions ouvertes
      */
