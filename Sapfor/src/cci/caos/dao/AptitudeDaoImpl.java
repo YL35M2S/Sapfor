@@ -17,20 +17,22 @@ public class AptitudeDaoImpl extends Dao implements AptitudeDao {
     private static final String SQL_UPDATE_APTITUDE    = "UPDATE Aptitude SET nomAptitude=? WHERE idAptitude=?";
     private static final String SQL_DELETE_UV_APTITUDE = "DELETE FROM listeAptitudeUv WHERE idAptitude = ?";
 
-    /* Constructeur */
+    /**
+     * Constructeur
+     * @param conn
+     */
     public AptitudeDaoImpl( Connection conn ) {
         super( conn );
     }
 
-    /* Impl�mentation des m�thodes */
-
-    /**
-     * Creation d'une aptitude dans la Base de Donnees DAO
-     * 
-     * @param aptitude
-     *            L'aptitude a sauvegarder
-     * @return l'id obtenu dans la BDD
-     */
+    /* Implémentation des méthodes */
+  
+	/**
+	* Création d'une aptitude dans la base de données
+	* @param aptitude - l'aptitude a enregistrer
+	* @return l'id de l'aptitude enregistrée
+	* @throws DAOException si la création dans la base de données a provoqué une SQLException
+	*/
     @Override
     public int creer( Aptitude aptitude ) throws DAOException {
         int idNewAptitude;
@@ -77,11 +79,11 @@ public class AptitudeDaoImpl extends Dao implements AptitudeDao {
     }
 
     /**
-     * Recherche d'une aptitude dans la Base de Donnees DAO grace � son id
-     * 
-     * @param id
-     *            L'id de l'aptitude a rechercher
-     * @return l'aptitude recherch�e
+     * Recherche d'une aptitude par son id dans la base de données
+     * @param id - L'id de l'aptitude à rechercher dans la base de données
+     * @return Un objet Aptitude correspondant à l'aptitude recherchée.
+     * Si l'aptitude n'est pas présente dans la base de données, l'objet Aptitude est initialisé à null
+     * @throws DAOException si la mise à jour dans la base de données a provoqué une SQLException
      */
     @Override
     public Aptitude trouver( int id ) throws DAOException {
@@ -110,12 +112,10 @@ public class AptitudeDaoImpl extends Dao implements AptitudeDao {
     }
 
     /**
-     * Recherche si une aptitude identifi� par son id existe dans la Base de
-     * Donnees
-     * 
-     * @param id
-     *            L'id de l'aptitude � rechercher
-     * @return Vrai si il existe sinon false
+     * Recherche d'une aptitude dans la base de données
+     * @param aptitude - l'aptitude à rechercher dans la base de données
+     * @return true si l'aptitude est présente dans la base de données, sinon renvoie false
+     * @throws DAOException si la recherche dans la base de données a provoqué une SQLException
      */
     @Override
     public boolean existe( Aptitude aptitude ) throws DAOException {
@@ -141,10 +141,9 @@ public class AptitudeDaoImpl extends Dao implements AptitudeDao {
     }
 
     /**
-     * Met a jour une aptitude dans la Base de Donnees
-     * 
-     * @param aptitude
-     *            L'aptitude � mettre a jour
+     * Mise à jour d'une aptitude dans la base de données
+     * @param aptitude - l'aptitude à mettre à jour dans la base de données
+     * @throws DAOException si la mise à jour dans la base de données a provoqué une SQLException
      */
     @Override
     public void mettreAJour( Aptitude aptitude ) throws DAOException {
