@@ -18,6 +18,7 @@ import cci.caos.beans.CandidatureGenerique;
 import cci.caos.beans.SessionGenerique;
 import cci.caos.dao.AbstractDAOFactory;
 import cci.caos.dao.SessionDao;
+import cci.caos.repository.Agent;
 import cci.caos.repository.Candidature;
 import cci.caos.repository.Session;
 import cci.caos.server.SapforServer;
@@ -223,4 +224,28 @@ public class SessionManager {
         return Response.status( Status.OK ).entity( listeSessionsGeneriques ).build();
     }
 
+    
+    /*
+     * UseCase : #SELC Renvoie la liste des candidature d'une session donnée
+     * http://localhost:8080/Sapfor/rest/session/{uuid}/listeCandidat?Session=1&
+     * Renvoie la liste des candidature 
+     * 
+     * @return la liste des candidature d'une session donnée
+     */
+    @GET
+    @Path( "{uuid}/listeCandidat" )
+    public Response getListeCandidat( @PathParam( "uuid" ) String uuid, @QueryParam( "Session" ) String idSession) {
+        SapforServer server = SapforServer.getSessionServer();
+        if ( server.isConnectedByUUID( uuid ) ) {
+        	List<Candidature> listeCandidat = server.getListeCandidats(Integer.parseInt (idSession) );
+            GenericEntity<List<Candidature>> listeCandidatureEntity = new GenericEntity<List<Candidature>>(
+            		listeCandidat ) {
+            };
+            return Response.status( Status.OK ).entity(listeCandidatureEntity).build();
+        } else {
+            return Response.status( Status.FORBIDDEN ).build();
+        }
+    }
+    
+    
 }

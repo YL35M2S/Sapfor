@@ -299,6 +299,19 @@ public class SapforServer {
         CandidatureDao candidatureDao = adf.getCandidatureDao();
         return candidatureDao.listerCandidaturesParAgent( agent.getId() );
     }
+    
+    /**
+     * Retourne la liste des agents pour une session donnée
+     * 
+     * @param idAgent
+     *            id de la session recherchée
+     * @return Liste des agents pour une session donnée
+     */
+    public List<Candidature> getListeCandidats( int idSession ) {
+        AbstractDAOFactory adf = AbstractDAOFactory.getFactory( typeDao );
+        CandidatureDao candidatureDao = adf.getCandidatureDao();
+        return candidatureDao.listerCandidaturesParSession( idSession );
+    }
 
     // CONSERVER AU CAS OU
     /*
