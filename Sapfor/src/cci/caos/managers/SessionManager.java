@@ -123,8 +123,8 @@ public class SessionManager {
     public Response getListeCandidatures( @PathParam( "uuid" ) String uuid ) {
         SapforServer server = SapforServer.getSessionServer();
         if ( server.isConnectedByUUID( uuid ) ) {
-            List<Candidature> listeCandidature = server.getListeSession( uuid );
-            GenericEntity<List<Candidature>> listeCandidatureEntity = new GenericEntity<List<Candidature>>(
+            List<CandidatureGenerique> listeCandidature = server.getListeSession( uuid );
+            GenericEntity<List<CandidatureGenerique>> listeCandidatureEntity = new GenericEntity<List<CandidatureGenerique>>(
                     listeCandidature ) {
             };
             return Response.status( Status.OK ).entity( listeCandidatureEntity ).build();

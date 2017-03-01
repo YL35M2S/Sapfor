@@ -155,6 +155,7 @@ public class SapforServer {
         // Pour chaque session existante sur la BDD
         AbstractDAOFactory adf = AbstractDAOFactory.getFactory( typeDao );
         SessionDao sessionDao = adf.getSessionDao();
+        CandidatureDao candidatureDao = adf.getCandidatureDao();
         for ( Session s : sessionDao.listerToutes() ) {
             List<Uv> listeUvRequiseStagiaire = s.getUv().getListePrerequis();
             // nombre d'UV requises en tant que Candidat pour cette session
@@ -201,20 +202,26 @@ public class SapforServer {
                 }
             }
 
-            // Ajout candidature en tant que stagiaire
-            if ( nombreUvRequisesStagiaire == nombreUvPossedeStagiaire && !AgentPossedeUvSession ) {
-                CandidatureGenerique candidature = new CandidatureGenerique( agent.getId(), false, -2, s.getId(),
-                        s.getNom(), simpDate.format( s.getDateDebut() ), simpDate.format( s.getDateFin() ),
-                        s.getUv().getNom(), s.getStage().getNom() );
-                CandidaturesSessionsAccessibles.add( candidature );
-            }
+            if ( !candidatureDao.existe( agent.getId(), s.getId() ) ) {
 
-            // Ajout candidature en tant que formateur
-            if ( nombreUvRequiseFormateur == nombreUvPossedeFormateur & AgentPossedeUvSession ) {
-                CandidatureGenerique candidature = new CandidatureGenerique( agent.getId(), true, -2, s.getId(),
-                        s.getNom(), simpDate.format( s.getDateDebut() ), simpDate.format( s.getDateFin() ),
-                        s.getUv().getNom(), s.getStage().getNom() );
-                CandidaturesSessionsAccessibles.add( candidature );
+                // Ajout candidature en tant que stagiaire
+                if ( nombreUvRequisesStagiaire == nombreUvPossedeStagiaire && !AgentPossedeUvSession ) {
+
+                    CandidatureGenerique candidature = new CandidatureGenerique( agent.getId(), false, -2, s.getId(),
+                            s.getNom(), simpDate.format( s.getDateDebut() ), simpDate.format( s.getDateFin() ),
+                            s.getUv().getNom(), s.getStage().getNom() );
+                    CandidaturesSessionsAccessibles.add( candidature );
+                }
+
+                // Ajout candidature en tant que formateur
+                if ( nombreUvRequiseFormateur == nombreUvPossedeFormateur & AgentPossedeUvSession )
+
+                {
+                    CandidatureGenerique candidature = new CandidatureGenerique( agent.getId(), true, -2, s.getId(),
+                            s.getNom(), simpDate.format( s.getDateDebut() ), simpDate.format( s.getDateFin() ),
+                            s.getUv().getNom(), s.getStage().getNom() );
+                    CandidaturesSessionsAccessibles.add( candidature );
+                }
             }
         }
         return CandidaturesSessionsAccessibles;
@@ -270,34 +277,47 @@ public class SapforServer {
                 }
             }
         }
-        return null; // Si la connexion a �chou�e
+        return null; // Si la connexion a echouee
     }
 
     /**
-     * Retourne la liste des candidatures pour une session donn�e
+     * Retourne la liste des candidatures pour une session donnee
      * 
      * @param idSession
-     *            id de la session recherch�e
-     * @return Liste des candidatures pour une session donn�e
+     *            id de la session recherchée
+     * @return Liste des candidatures pour une session donnée
      */
-    public List<Candidature> getListeCandidatures( int idSession ) {
+    public List<CandidatureGenerique> getListeCandidatures( int idSession ) {
+        List<CandidatureGenerique> listeCandidaturesGeneriques = new ArrayList<CandidatureGenerique>();
+        List<Candidature> listeCandidatures;
+
         AbstractDAOFactory adf = AbstractDAOFactory.getFactory( typeDao );
         CandidatureDao candidatureDao = adf.getCandidatureDao();
-        return candidatureDao.listerCandidaturesParSession( idSession );
+        listeCandidatures = candidatureDao.listerCandidaturesParSession( idSession );
+        for ( Candidature c : listeCandidatures ) {
+            listeCandidaturesGeneriques.add( candidatureToCandidatureGenerique( c ) );
+        }
+        return listeCandidaturesGeneriques;
     }
 
     /**
-     * Retourne la liste des candidatures pour un agent donn�
+     * Retourne la liste des candidatures pour un agent donne
      * 
      * @param idAgent
-     *            id de l'agent recherch�
-     * @return Liste des candidatures pour un agent donn�
+     *            id de l'agent recherche
+     * @return Liste des candidatures pour un agent donne
      */
-    public List<Candidature> getListeSession( String uuid ) {
+    public List<CandidatureGenerique> getListeSession( String uuid ) {
+        List<CandidatureGenerique> listeCandidaturesGeneriques = new ArrayList<CandidatureGenerique>();
+        List<Candidature> listeCandidatures;
         Agent agent = getAgentByUUID( uuid );
         AbstractDAOFactory adf = AbstractDAOFactory.getFactory( typeDao );
         CandidatureDao candidatureDao = adf.getCandidatureDao();
-        return candidatureDao.listerCandidaturesParAgent( agent.getId() );
+        listeCandidatures = candidatureDao.listerCandidaturesParAgent( agent.getId() );
+        for ( Candidature c : listeCandidatures ) {
+            listeCandidaturesGeneriques.add( candidatureToCandidatureGenerique( c ) );
+        }
+        return listeCandidaturesGeneriques;
     }
 
     // CONSERVER AU CAS OU
@@ -348,6 +368,21 @@ public class SapforServer {
                     estFormateur, SapforServer.getSessionServer().getSessionById( idSession ) ) );
         }
         return true;
+    }
+
+    @SuppressWarnings( "deprecation" )
+    public CandidatureGenerique candidatureToCandidatureGenerique( Candidature candidature ) {
+        SimpleDateFormat simpDate = new SimpleDateFormat( "dd/MM/yyyy" );
+        return new CandidatureGenerique(
+                candidature.getAgent().getId(),
+                candidature.isEstFormateur(),
+                candidature.getStatutCandidature(),
+                candidature.getSession().getId(),
+                candidature.getSession().getNom(),
+                simpDate.format( candidature.getSession().getDateDebut() ),
+                simpDate.format( candidature.getSession().getDateFin() ),
+                candidature.getSession().getUv().getNom(),
+                candidature.getSession().getStage().getNom() );
     }
 
     @SuppressWarnings( "deprecation" )
