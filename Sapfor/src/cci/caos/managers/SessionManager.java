@@ -14,11 +14,11 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import cci.caos.beans.CandidatGenerique;
 import cci.caos.beans.CandidatureGenerique;
 import cci.caos.beans.SessionGenerique;
 import cci.caos.dao.AbstractDAOFactory;
 import cci.caos.dao.SessionDao;
-import cci.caos.repository.Agent;
 import cci.caos.repository.Candidature;
 import cci.caos.repository.Session;
 import cci.caos.server.SapforServer;
@@ -216,7 +216,7 @@ public class SessionManager {
      * @return Liste des sessions ouvertes
      */
     @GET
-    @Produces( { MediaType.APPLICATION_XML} )    
+    @Produces( { MediaType.APPLICATION_XML } )
     public Response listerSessions() {
         List<SessionGenerique> listeSessionGenerique = SapforServer.getSessionServer().getListeSessionsGeneriques();
         GenericEntity<List<SessionGenerique>> listeSessionsGeneriques = new GenericEntity<List<SessionGenerique>>(
@@ -225,28 +225,26 @@ public class SessionManager {
         return Response.status( Status.OK ).entity( listeSessionsGeneriques ).build();
     }
 
-    
     /*
      * UseCase : #SELC Renvoie la liste des candidature d'une session donnée
-     * http://localhost:8080/Sapfor/rest/session/{uuid}/listeCandidat?Session=1&
-     * Renvoie la liste des candidature 
+     * http://localhost:8080/Sapfor/rest/session/{uuid}/listeCandidat?Session=1
+     * Renvoie la liste des candidature
      * 
      * @return la liste des candidature d'une session donnée
      */
     @GET
     @Path( "{uuid}/listeCandidat" )
-    public Response getListeCandidat( @PathParam( "uuid" ) String uuid, @QueryParam( "Session" ) String idSession) {
+    public Response getListeCandidat( @PathParam( "uuid" ) String uuid, @QueryParam( "Session" ) String idSession ) {
         SapforServer server = SapforServer.getSessionServer();
         if ( server.isConnectedByUUID( uuid ) ) {
-        	List<CandidatureGenerique> listeCandidat = server.getListeCandidats(Integer.parseInt (idSession) );
-            GenericEntity<List<CandidatureGenerique>> listeCandidatureEntity = new GenericEntity<List<CandidatureGenerique>>(
-            		listeCandidat ) {
+            List<CandidatGenerique> listeCandidat = server.getListeCandidats( Integer.parseInt( idSession ) );
+            GenericEntity<List<CandidatGenerique>> listeCandidatEntity = new GenericEntity<List<CandidatGenerique>>(
+                    listeCandidat ) {
             };
-            return Response.status( Status.OK ).entity(listeCandidatureEntity).build();
+            return Response.status( Status.OK ).entity( listeCandidatEntity ).build();
         } else {
             return Response.status( Status.FORBIDDEN ).build();
         }
     }
-    
-    
+
 }
