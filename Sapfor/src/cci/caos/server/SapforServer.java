@@ -328,10 +328,19 @@ public class SapforServer {
      *            id de la session recherchée
      * @return Liste des agents pour une session donnée
      */
-    public List<Candidature> getListeCandidats( int idSession ) {
+    public List<CandidatureGenerique> getListeCandidats( int idSession ) {
+        List<CandidatureGenerique> listeCandidaturesGeneriques = new ArrayList<CandidatureGenerique>();
+        List<Candidature> listeCandidats;
+
         AbstractDAOFactory adf = AbstractDAOFactory.getFactory( typeDao );
         CandidatureDao candidatureDao = adf.getCandidatureDao();
-        return candidatureDao.listerCandidaturesParSession( idSession );
+
+        listeCandidats = candidatureDao.listerCandidaturesParSession( idSession );
+        for ( Candidature c : listeCandidats ) {
+            listeCandidaturesGeneriques.add( candidatureToCandidatureGenerique( c ) );
+        }
+        return listeCandidaturesGeneriques;
+
     }
 
     // CONSERVER AU CAS OU
