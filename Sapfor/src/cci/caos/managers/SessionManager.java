@@ -216,6 +216,7 @@ public class SessionManager {
      * @return Liste des sessions ouvertes
      */
     @GET
+    @Produces( { MediaType.APPLICATION_XML} )    
     public Response listerSessions() {
         List<SessionGenerique> listeSessionGenerique = SapforServer.getSessionServer().getListeSessionsGeneriques();
         GenericEntity<List<SessionGenerique>> listeSessionsGeneriques = new GenericEntity<List<SessionGenerique>>(
@@ -237,8 +238,8 @@ public class SessionManager {
     public Response getListeCandidat( @PathParam( "uuid" ) String uuid, @QueryParam( "Session" ) String idSession) {
         SapforServer server = SapforServer.getSessionServer();
         if ( server.isConnectedByUUID( uuid ) ) {
-        	List<Candidature> listeCandidat = server.getListeCandidats(Integer.parseInt (idSession) );
-            GenericEntity<List<Candidature>> listeCandidatureEntity = new GenericEntity<List<Candidature>>(
+        	List<CandidatureGenerique> listeCandidat = server.getListeCandidats(Integer.parseInt (idSession) );
+            GenericEntity<List<CandidatureGenerique>> listeCandidatureEntity = new GenericEntity<List<CandidatureGenerique>>(
             		listeCandidat ) {
             };
             return Response.status( Status.OK ).entity(listeCandidatureEntity).build();

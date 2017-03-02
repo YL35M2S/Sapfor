@@ -320,7 +320,7 @@ public class SapforServer {
         }
         return listeCandidaturesGeneriques;
     }
-    
+
     /**
      * Retourne la liste des agents pour une session donnée
      * 
