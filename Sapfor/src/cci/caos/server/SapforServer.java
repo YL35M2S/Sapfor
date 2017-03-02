@@ -26,6 +26,7 @@ import cci.caos.repository.Candidature;
 import cci.caos.repository.Session;
 import cci.caos.repository.Stage;
 import cci.caos.repository.Uv;
+import cci.caos.util.Date;
 
 public class SapforServer {
 
@@ -526,15 +527,15 @@ public class SapforServer {
         // stageDao.mettreAJour( stg1 );
 
         // Creation de session simple + DAO
-        Session s1 = new Session( "INC1", new java.sql.Date( 2017, 02, 06 ), new java.sql.Date( 2017, 02, 10 ), true,
+        Session s1 = new Session( "INC1", Date.creerDate(2017, 02, 06), Date.creerDate(2017, 02, 10), true,
                 uv1, stg1 );
-        Session s2 = new Session( "FDF1", new java.sql.Date( 2017, 02, 06 ), new java.sql.Date( 2017, 02, 17 ), true,
+        Session s2 = new Session( "FDF1", Date.creerDate(2017, 02, 06), Date.creerDate(2017, 02, 17), true,
                 uv2, stg2 );
-        Session s3 = new Session( "SAR1", new java.sql.Date( 2017, 01, 30 ), new java.sql.Date( 2017, 02, 03 ), true,
+        Session s3 = new Session( "SAR1", Date.creerDate(2017, 01, 30), Date.creerDate(2017, 02, 03), true,
                 uv3, stg3 );
-        Session s4 = new Session( "SAR2", new java.sql.Date( 2017, 01, 30 ), new java.sql.Date( 2017, 02, 03 ), true,
+        Session s4 = new Session( "SAR2", Date.creerDate(2017, 01, 30), Date.creerDate(2017, 02, 03), true,
                 uv3, stg3 );
-
+        
         /* Sauvegarde des Sessions */
         /*
          * SessionDao sessionDao = adf.getSessionDao(); s1.setId(
