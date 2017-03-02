@@ -229,29 +229,29 @@ public class SapforServer {
         return CandidaturesSessionsAccessibles;
     }
 
-    public List<Session> getListeSessionsFermees() {
-        List<Session> listeFermees = new ArrayList<Session>();
+    public List<SessionGenerique> getListeSessionsFermees() {
+        List<SessionGenerique> listeFermees = new ArrayList<SessionGenerique>();
 
         // Pour chaque session existante sur la BDD
         AbstractDAOFactory adf = AbstractDAOFactory.getFactory( typeDao );
         SessionDao sessionDao = adf.getSessionDao();
         for ( Session s : sessionDao.listerToutes() ) {
             if ( !s.isOuverteInscription() ) {
-                listeFermees.add( s );
+                listeFermees.add( sessionToSessionGenerique( s ) );
             }
         }
         return listeFermees;
     }
 
-    public List<Session> getListeSessionsOuvertes() {
-        List<Session> listeOuvertes = new ArrayList<Session>();
+    public List<SessionGenerique> getListeSessionsOuvertes() {
+        List<SessionGenerique> listeOuvertes = new ArrayList<SessionGenerique>();
 
         // Pour chaque session existante sur la BDD
         AbstractDAOFactory adf = AbstractDAOFactory.getFactory( typeDao );
         SessionDao sessionDao = adf.getSessionDao();
         for ( Session s : sessionDao.listerToutes() ) {
             if ( s.isOuverteInscription() ) {
-                listeOuvertes.add( s );
+                listeOuvertes.add( sessionToSessionGenerique( s ) );
             }
         }
         return listeOuvertes;
@@ -547,15 +547,15 @@ public class SapforServer {
         // stageDao.mettreAJour( stg1 );
 
         // Creation de session simple + DAO
-        Session s1 = new Session( "INC1", Date.creerDate(2017, 02, 06), Date.creerDate(2017, 02, 10), true,
+        Session s1 = new Session( "INC1", Date.creerDate( 2017, 02, 06 ), Date.creerDate( 2017, 02, 10 ), true,
                 uv1, stg1 );
-        Session s2 = new Session( "FDF1", Date.creerDate(2017, 02, 06), Date.creerDate(2017, 02, 17), true,
+        Session s2 = new Session( "FDF1", Date.creerDate( 2017, 02, 06 ), Date.creerDate( 2017, 02, 17 ), true,
                 uv2, stg2 );
-        Session s3 = new Session( "SAR1", Date.creerDate(2017, 01, 30), Date.creerDate(2017, 02, 03), true,
+        Session s3 = new Session( "SAR1", Date.creerDate( 2017, 01, 30 ), Date.creerDate( 2017, 02, 03 ), true,
                 uv3, stg3 );
-        Session s4 = new Session( "SAR2", Date.creerDate(2017, 01, 30), Date.creerDate(2017, 02, 03), true,
+        Session s4 = new Session( "SAR2", Date.creerDate( 2017, 01, 30 ), Date.creerDate( 2017, 02, 03 ), true,
                 uv3, stg3 );
-        
+
         /* Sauvegarde des Sessions */
         /*
          * SessionDao sessionDao = adf.getSessionDao(); s1.setId(

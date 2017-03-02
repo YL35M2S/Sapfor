@@ -27,14 +27,14 @@ import cci.caos.server.SapforServer;
 public class SessionManager {
 
     /*
-     * UseCase : #GESTION/FermerCandidature Fermer une sesion � la candidature
+     * UseCase : #GESTION/FermerCandidature Fermer une session a la candidature
      * http://localhost:8080/Sapfor/rest/sessions/{uuid}/fermerCandidature?
      * Session=1
      * 
-     * Permet � un gestionnaire de fermer les candidatures pour une session
-     * donn�e
+     * Permet a un gestionnaire de fermer les candidatures pour une session
+     * donnee
      * 
-     * @return True si la fermeture a �t� effective, sinon False
+     * @return True si la fermeture a ete effective, sinon False
      */
     @GET
     @Path( "{uuid}/fermerCandidature" )
@@ -158,16 +158,19 @@ public class SessionManager {
     /*
      * UseCase : #SELC Renvoie la liste des sessions fermees à la candidature
      * http://localhost:8080/Sapfor/rest/sessions/listeFermees --------------
-     * Permet d'obtenir la liste des sessions fermées à la candidature
+     * Permet d'obtenir la liste des sessions fermees a la candidature
      * 
-     * @return Liste des sessions fermées à la candidature
+     * @return Liste des sessions fermees a la candidature
      */
     @GET
     @Path( "listeFermees" )
-    @Produces( { MediaType.APPLICATION_JSON } )
+    @Produces( { MediaType.APPLICATION_XML } )
     public Response getClosedSession() {
-        List<Session> listeFermees = SapforServer.getSessionServer().getListeSessionsFermees();
-        return Response.status( Status.OK ).entity( listeFermees ).build();
+        List<SessionGenerique> listeFermees = SapforServer.getSessionServer().getListeSessionsFermees();
+        GenericEntity<List<SessionGenerique>> listeClosedSessionEntity = new GenericEntity<List<SessionGenerique>>(
+                listeFermees ) {
+        };
+        return Response.status( Status.OK ).entity( listeClosedSessionEntity ).build();
     }
 
     /*
@@ -175,16 +178,19 @@ public class SessionManager {
      * ouvertes à la candidature
      * http://localhost:8080/Sapfor/rest/sessions/listeOuvertes
      * 
-     * Permet d'obtenr la liste des sessions ouvertes à la candidature
+     * Permet d'obtenr la liste des sessions ouvertes a la candidature
      * 
-     * @return Liste des sessions ouvertes au format JSON
+     * @return Liste des sessions ouvertes au format XML
      */
     @GET
     @Path( "listeOuvertes" )
-    @Produces( { MediaType.APPLICATION_JSON } )
+    @Produces( { MediaType.APPLICATION_XML } )
     public Response getOpenedSession() {
-        List<Session> listeOuvertes = SapforServer.getSessionServer().getListeSessionsOuvertes();
-        return Response.status( Status.OK ).entity( listeOuvertes ).build();
+        List<SessionGenerique> listeOuvertes = SapforServer.getSessionServer().getListeSessionsOuvertes();
+        GenericEntity<List<SessionGenerique>> listeOpenedSessionEntity = new GenericEntity<List<SessionGenerique>>(
+                listeOuvertes ) {
+        };
+        return Response.status( Status.OK ).entity( listeOpenedSessionEntity ).build();
     }
 
     /*
