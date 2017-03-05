@@ -27,7 +27,11 @@ import cci.caos.server.SapforServer;
 public class AgentManager {
     private static final String AUTHORIZATION_PROPERTY = "Authorization";
     private static final String AUTHENTICATION_SCHEME  = "Basic";
-
+    /**
+     * Permet d'obtenir l'agent a partir de l'id de l'agent pour la session actuellement en cours
+     * @param idAg
+     * @return l'agent correspondant à l'idAg 
+     */
     @GET
     @Path( "agents" )
     // @Produces( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON } )
@@ -37,7 +41,12 @@ public class AgentManager {
         Agent a = SapforServer.getSessionServer().getAgentById( ida );
         return a;
     }
-
+    
+    /**
+     * Recupere la liste des prequis pour une uv a partir de l'id de l'uv
+     * @param idUv
+     * @return la liste des prerequis d'une uv
+     */
     @GET
     @Path( "getPrerequis" )
     // @Produces( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON } )
@@ -47,7 +56,11 @@ public class AgentManager {
         Uv u = SapforServer.getSessionServer().getUvById( idu );
         return u.getListePrerequis();
     }
-
+    /**
+     * verifie les donnees de connection et renvoie une reponse
+     * @param request
+     * @return ok si les donnees de connection sont correctes sinon non autorise
+     */
     @GET
     @Path( "connexion" )
     @Produces( { MediaType.APPLICATION_JSON } )

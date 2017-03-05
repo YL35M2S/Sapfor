@@ -16,7 +16,11 @@ import cci.caos.server.SapforServer;
 
 @Path( "/uv" )
 public class UvManager {
-
+	/**
+	 * Renvoie une uv selon son id pour une session donnee
+	 * @param idUv
+	 * @return l'uv cherchee
+	 */
     @GET
     @Path( "uvs" )
     // @Produces( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON } )
@@ -26,7 +30,11 @@ public class UvManager {
         Uv u = SapforServer.getSessionServer().getUvById( idu );
         return u;
     }
-
+    /**
+     * Renvoie la liste des prerequis pour une uv selon son id d'une session donnee
+     * @param idUv
+     * @return la liste des prerequis pour l'uv cherchee
+     */
     @GET
     @Path( "getPrerequis" )
     // @Produces( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON } )
@@ -36,7 +44,10 @@ public class UvManager {
         Uv u = SapforServer.getSessionServer().getUvById( idu );
         return u.getListePrerequis();
     }
-
+    /**
+     * Affiche le nom ainsi que la duree d'une uv 
+     * @param currentJAXBElement
+     */
     @POST
     @Path( "getUv" )
     @Consumes( MediaType.APPLICATION_XML )

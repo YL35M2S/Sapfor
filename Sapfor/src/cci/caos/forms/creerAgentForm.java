@@ -16,11 +16,18 @@ public final class creerAgentForm {
 
     private AgentDao            agentDao;
 
-    //
+    /**
+     * Constructeur
+     * @param agentDao
+     */
     public creerAgentForm( AgentDao agentDao ) {
         this.agentDao = agentDao;
     }
-
+    /**
+     * Recupere les donnees de la jsp creerAgent pour creer un nouvel agent
+     * @param request
+     * @return l'agent cree
+     */
     public Agent creerAgent( HttpServletRequest request ) {
         String id = getValeurChamp( request, CHAMP_ID );
         String nom = getValeurChamp( request, CHAMP_NOM );
@@ -60,7 +67,13 @@ public final class creerAgentForm {
         }
     }
 
-    // méthode qui permet de vérifier si les champs remplis ne son pas nuls.
+   
+    /**
+     * Verifie si les champs remplis ne sont pas nuls
+     * @param request
+     * @param nomChamp
+     * @return null si champs non renseigne ou la valeur du champ
+     */
     private static String getValeurChamp( HttpServletRequest request, String nomChamp ) {
         String valeur = request.getParameter( nomChamp );
         if ( valeur == null || valeur.trim().length() == 0 ) {
