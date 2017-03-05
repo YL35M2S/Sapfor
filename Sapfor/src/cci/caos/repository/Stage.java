@@ -8,27 +8,45 @@ public class Stage {
     private int    id;
     private String nom;
 
-    /* Constructeurs */
+    /**
+     * Constructeur vide
+     */
     public Stage() {
     }
-
+    /**
+     * Constructeur qui initialise la variable d'instance nom
+     * @param nom
+     */
     public Stage( String nom ) {
         this.nom = nom;
     }
 
     /* Accesseurs et Modificateurs */
+    /**
+     * Renvoie l'id du stage
+     * @return id
+     */
     public int getId() {
         return id;
     }
-
+    /**
+     * Change l'id du stage
+     * @param id
+     */
     public void setId( int id ) {
         this.id = id;
     }
-
+    /**
+     * Renvoie le nom du stage
+     * @return nom
+     */
     public String getNom() {
         return nom;
     }
-
+    /**
+     * Change le nom du stage
+     * @param nom
+     */
     public void setNom( String nom ) {
         this.nom = nom;
     }
