@@ -19,7 +19,10 @@ public class UvDaoImpl extends Dao implements UvDao {
     private static final String SQL_UPDATE_UV                 = "UPDATE Uv SET nomUv=?, duree=?, nombrePlaceMin=?, nombrePlaceMax=?, lieu=? WHERE idUv = ?";
     private static final String SQL_DELETE_UV_PREREQUISES     = "DELETE FROM listePrerequis WHERE idUv = ?";
 
-    /* Constructeur */
+    /**
+     * Constructeur
+     * @param conn
+     */
     public UvDaoImpl( Connection conn ) {
         super( conn );
     }
@@ -27,11 +30,12 @@ public class UvDaoImpl extends Dao implements UvDao {
     /* Implémentation des méthodes */
 
     /**
-     * Creation d'une Uv dans la Base de Donnees DAO
+     * Creation d'une Uv dans la Base de Donnees
      * 
      * @param uv
      *            L'uv a sauvegarder
-     * @return l'Id de l'uv créée
+     * @return l'Id de l'uv creee
+     * @throws DAOException si la creation dans la base de donnees a provoque une Exception
      */
     public int creer( Uv uv ) {
         // public int creer( Uv uv ) throws DAOException {
@@ -88,11 +92,12 @@ public class UvDaoImpl extends Dao implements UvDao {
     }
 
     /**
-     * Recherche d'une uv dans la Base de Donnees DAO à partir de son id
+     * Recherche d'une uv dans la Base de Donnees a partir de son id
      * 
      * @param id
      *            L'id de l'uv a rechercher
-     * @return l'uv recherchée
+     * @return l'uv recherchee
+     * @throws DAOException si la recherche dans la base de donnees a provoque une Exception
      */
     @Override
     public Uv trouver( int idUv ) throws DAOException {
@@ -142,11 +147,12 @@ public class UvDaoImpl extends Dao implements UvDao {
     }
 
     /**
-     * Recherche si une uv existe dans la Base de Donnees DAO
+     * Recherche si une uv existe dans la Base de Donnees
      * 
      * @param uv
-     *            L'uv recherchée
+     *            L'uv recherchee
      * @return Vrai si elle existe sinon false
+     * @throws DAOException si la recherche dans la base de donnees a provoque une Exception
      */
     @Override
     public boolean existe( Uv uv ) throws DAOException {
@@ -172,10 +178,11 @@ public class UvDaoImpl extends Dao implements UvDao {
     }
 
     /**
-     * Mise a jour d'une Uv dans la Base de Donnees DAO
+     * Mise a jour d'une Uv dans la Base de Donnees
      * 
      * @param uv
      *            L'uv a mettre a jour
+     * @throws DAOException si la mise a jour dans la base de donnees a provoque une Exception
      */
     @Override
     public void mettreAJour( Uv uv ) throws DAOException {

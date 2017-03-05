@@ -8,7 +8,10 @@ import java.sql.Statement;
 
 
 public class DaoUtilitaires {
-	/* Fermeture silencieuse du resultset */
+	/**
+	 * Fermeture silencieuse du resultset
+	 * @param resultSet
+	 */
 	public static void fermetureSilencieuse( ResultSet resultSet ) {
 	    if ( resultSet != null ) {
 	        try {
@@ -19,7 +22,11 @@ public class DaoUtilitaires {
 	    }
 	}
 
-	/* Fermeture silencieuse du statement */
+	
+	/**
+	 * Fermeture silencieuse du statement
+	 * @param statement
+	 */
 	public static void fermetureSilencieuse( Statement statement ) {
 	    if ( statement != null ) {
 	        try {
@@ -30,7 +37,11 @@ public class DaoUtilitaires {
 	    }
 	}
 
-	/* Fermeture silencieuse de la connexion */
+	
+	/**
+	 * Fermeture silencieuse de la connexion
+	 * @param connexion
+	 */
 	public static void fermetureSilencieuse( Connection connexion ) {
 	    if ( connexion != null ) {
 	        try {
@@ -41,13 +52,24 @@ public class DaoUtilitaires {
 	    }
 	}
 
-	/* Fermetures silencieuses du statement et de la connexion */
+
+	/**
+	 * Fermetures silencieuses du statement et de la connexion
+	 * @param statement
+	 * @param connexion
+	 */
 	public static void fermeturesSilencieuses( Statement statement, Connection connexion ) {
 	    fermetureSilencieuse( statement );
 	    fermetureSilencieuse( connexion );
 	}
 
-	/* Fermetures silencieuses du resultset, du statement et de la connexion */
+	
+	/**
+	 * Fermetures silencieuses du resultset, du statement et de la connexion
+	 * @param resultSet
+	 * @param statement
+	 * @param connexion
+	 */
 	public static void fermeturesSilencieuses( ResultSet resultSet, Statement statement, Connection connexion ) {
 	    fermetureSilencieuse( resultSet );
 	    fermetureSilencieuse( statement );
