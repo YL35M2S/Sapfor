@@ -32,7 +32,7 @@ public class Candidature {
 
     /* Accesseurs et Modificateurs */
     /**
-     * Renvoie un l'agent de la candidature
+     * Renvoie l'agent de la candidature
      * @return agent
      */
     public Agent getAgent() {

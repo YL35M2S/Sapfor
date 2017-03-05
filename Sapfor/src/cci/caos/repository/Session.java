@@ -66,14 +66,14 @@ public class Session {
         this.nom = nom;
     }
     /**
-     * Renvoie la date de debut de la session
+     * Renvoie la date de debut de session
      * @return dateDebut
      */
     public Date getDateDebut() {
         return dateDebut;
     }
     /**
-     * Change la date de debut de la session
+     * Change la date de debut de session
      * @param dateDebut
      */
     public void setDateDebut( Date dateDebut ) {

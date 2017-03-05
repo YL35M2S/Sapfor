@@ -24,7 +24,7 @@ public class Agent implements Comparable {
     public Agent() {
     }
     /**
-     * Constructeur initialisant les variables d'instance avec les paramètres d'entree
+     * Constructeur qui initialise les variables d'instance avec les paramètres d'entree
      * @param nom
      * @param motdepasse
      * @param matricule

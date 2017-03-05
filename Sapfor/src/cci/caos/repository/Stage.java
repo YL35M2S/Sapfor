@@ -14,7 +14,7 @@ public class Stage {
     public Stage() {
     }
     /**
-     * Constructeur qui initialise la variable d'instance nom
+     * Constructeur qui initialise la variable d'instance : nom
      * @param nom
      */
     public Stage( String nom ) {

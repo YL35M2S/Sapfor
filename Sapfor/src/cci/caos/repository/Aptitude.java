@@ -18,7 +18,7 @@ public class Aptitude {
     public Aptitude() {
     }
     /**
-     * Constructeur avec deux parametres
+     * Constructeur avec 2 parametres
      * @param nom
      * @param listeUV
      */

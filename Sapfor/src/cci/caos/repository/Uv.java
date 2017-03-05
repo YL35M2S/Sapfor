@@ -111,7 +111,7 @@ public class Uv {
         this.lieu = lieu;
     }
     /**
-     * Renvoie la liste des uv prerequises pour posseder une uv
+     * Renvoie la liste des uv prerequises de l'UV
      * @return listePrerequis
      */
     public List<Uv> getListePrerequis() {
