@@ -13,17 +13,22 @@ public class StageDaoImpl extends Dao implements StageDao {
     private static final String SQL_EXISTE_STAGE  = "SELECT * FROM Stage WHERE idStage = ?";
     private static final String SQL_UPDATE_STAGE  = "UPDATE Stage SET nomStage=?  WHERE idStage= ?";
     private static final String SQL_SELECT_PAR_ID = "SELECT * FROM Stage WHERE idStage = ?";
-
+    
+    /**
+     * Constructeur
+     * @param conn
+     */
     public StageDaoImpl( Connection conn ) {
         super( conn );
     }
 
     /**
-     * Creation d'un stage dans la Base de Donnees DAO
+     * Creation d'un stage dans la Base de Donnees
      * 
      * @param stage
      *            Le stage a sauvegarder
-     * @return l'Id du stage créé
+     * @return l'Id du stage cree
+     * @throws DAOException si la creation dans la base de donnees a provoque une Exception
      */
     @Override
     public int creer( Stage stage ) throws DAOException {
@@ -48,12 +53,12 @@ public class StageDaoImpl extends Dao implements StageDao {
     }
 
     /**
-     * Recherche si un stage identifié par son id existe dans la Base de Donnees
-     * DAO
+     * Recherche si un stage identifie par son id existe dans la Base de Donnees
      * 
      * @param id
-     *            L'id du stage à rechercher
+     *            L'id du stage a rechercher
      * @return Vrai si il existe sinon false
+     * @throws DAOException si la recherche dans la base de donnees a provoque une Exception
      */
     @Override
     public boolean existe( Stage stage ) throws DAOException {
@@ -79,10 +84,11 @@ public class StageDaoImpl extends Dao implements StageDao {
     }
 
     /**
-     * Mise a jour d'un stage dans la Base de Donnees DAO
+     * Mise a jour d'un stage dans la Base de Donnees
      * 
      * @param stage
      *            Le stage a mettre a jour
+     *@throws DAOException si la mise a jour dans la base de donnees a provoque une Exception
      */
     @Override
     public void mettreAJour( Stage stage ) throws DAOException {
@@ -104,11 +110,12 @@ public class StageDaoImpl extends Dao implements StageDao {
     }
 
     /**
-     * Recherche d'un stage dans la Base de Donnees DAO à partir de son id
+     * Recherche d'un stage dans la Base de Donnees a partir de son id
      * 
      * @param id
      *            L'id du stage a rechercher
-     * @return le stage recherché
+     * @return le stage recherche
+     * @throws DAOException si la recherche dans la base de donnees a provoque une Exception
      */
     @Override
     public Stage trouver( int id ) throws DAOException {
