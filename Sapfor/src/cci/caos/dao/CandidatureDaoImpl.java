@@ -32,11 +32,15 @@ public class CandidatureDaoImpl extends Dao implements CandidatureDao {
 
     /* Implémentation des méthodes */
 
-	/**
-	 * Création d'une candidature dans la base de données
-	 * @param candidature - La candidature à enregistrer
-	 * @throws DAOException si la création dans la base de données a provoqué une SQLException
-	 */
+    /**
+     * Création d'une candidature dans la base de données
+     * 
+     * @param candidature
+     *            - La candidature à enregistrer
+     * @throws DAOException
+     *             si la création dans la base de données a provoqué une
+     *             SQLException
+     */
     @Override
     public void creer( Candidature candidature ) throws DAOException {
         PreparedStatement preparedStatement;
@@ -59,11 +63,17 @@ public class CandidatureDaoImpl extends Dao implements CandidatureDao {
     }
 
     /**
-     * Récupère une candidature dans la base de données à partir de l'agent et de la session
-     * @param agent - l'agent concerné par la candidature recherchée
-     * @param session - la session concernée par la candidature recherchée
+     * Récupère une candidature dans la base de données à partir de l'agent et
+     * de la session
+     * 
+     * @param agent
+     *            - l'agent concerné par la candidature recherchée
+     * @param session
+     *            - la session concernée par la candidature recherchée
      * @return La candidature correspondante
-     * @throws DAOException si la recherche de la candidature dans la base de données a provoqué une SQLException
+     * @throws DAOException
+     *             si la recherche de la candidature dans la base de données a
+     *             provoqué une SQLException
      */
     @Override
     public Candidature trouver( Agent agent, Session session ) throws DAOException {
@@ -97,8 +107,12 @@ public class CandidatureDaoImpl extends Dao implements CandidatureDao {
 
     /**
      * Liste toutes les candidatures existantes dans la Base de Donnees
-     * @return liste de toutes les candidatures existantes dans la Base de Donnees
-     * @throws DAOException si la recherche des candidatures existantes dans la Base de Donnees a provoqué une SQLException
+     * 
+     * @return liste de toutes les candidatures existantes dans la Base de
+     *         Donnees
+     * @throws DAOException
+     *             si la recherche des candidatures existantes dans la Base de
+     *             Donnees a provoqué une SQLException
      */
     @Override
     public List<Candidature> listerToutes() throws DAOException {
@@ -131,9 +145,13 @@ public class CandidatureDaoImpl extends Dao implements CandidatureDao {
 
     /**
      * Liste toutes les candidatures correspondant à un agent donné
-     * @param idAgent - L'id de l'agent concerné
+     * 
+     * @param idAgent
+     *            - L'id de l'agent concerné
      * @return liste de toutes les candidatures de cet agent
-     * @throws DAOException si la recherche des candidatures de cet agent dans la base de données a provoqué une SQLException
+     * @throws DAOException
+     *             si la recherche des candidatures de cet agent dans la base de
+     *             données a provoqué une SQLException
      */
     @Override
     public List<Candidature> listerCandidaturesParAgent( int idAgent ) throws DAOException {
@@ -169,10 +187,14 @@ public class CandidatureDaoImpl extends Dao implements CandidatureDao {
 
     /**
      * Liste toutes les candidatures d'une session donnée
-     * @param idSession - L'id de la session concernée par les candidatures recherchées
+     * 
+     * @param idSession
+     *            - L'id de la session concernée par les candidatures
+     *            recherchées
      * @return liste de toutes les candidatures concernant cette session
-     * @throws DAOException si la recherche des candidatures correspondant à cette session 
-     * dans la base de données a provoqué une SQLException
+     * @throws DAOException
+     *             si la recherche des candidatures correspondant à cette
+     *             session dans la base de données a provoqué une SQLException
      */
     @Override
     public List<Candidature> listerCandidaturesParSession( int idSession ) throws DAOException {
@@ -204,12 +226,17 @@ public class CandidatureDaoImpl extends Dao implements CandidatureDao {
         }
         return listeCandidature;
     }
-    
+
     /**
      * Met à jour les candidatures d'une session donnée
-     * @param idSession - L'id de la session concernée
-     * @param listeCandidature - la liste des candidatures à mettre à jour
-     * @throws DAOException si la mise à jour des candidatures dans la base de données a provoqué une SQLException
+     * 
+     * @param idSession
+     *            - L'id de la session concernée
+     * @param listeCandidature
+     *            - la liste des candidatures à mettre à jour
+     * @throws DAOException
+     *             si la mise à jour des candidatures dans la base de données a
+     *             provoqué une SQLException
      */
     @Override
     public void mettreAJourCandidatureASession( int idSession, List<Candidature> listeCandidature )
@@ -223,7 +250,7 @@ public class CandidatureDaoImpl extends Dao implements CandidatureDao {
             preparedStatement.setInt( 1, idSession );
 
             /* Execution de la requete */
-            preparedStatement.executeQuery();
+            preparedStatement.executeUpdate();
 
             /* Creation des nouvelles candidatures */
             for ( Candidature c : listeCandidature ) {
@@ -237,8 +264,12 @@ public class CandidatureDaoImpl extends Dao implements CandidatureDao {
 
     /**
      * Supprime une candidature présente dans la base de données
-     * @param candidature - la candidature à supprimer
-     * @throws DAOException si la suppression de la candidature dans la base de données a provoqué une SQLException
+     * 
+     * @param candidature
+     *            - la candidature à supprimer
+     * @throws DAOException
+     *             si la suppression de la candidature dans la base de données a
+     *             provoqué une SQLException
      */
     @Override
     public void supprimerCandidature( Candidature candidature ) throws DAOException {
@@ -258,12 +289,17 @@ public class CandidatureDaoImpl extends Dao implements CandidatureDao {
             throw new DAOException( e );
         }
     }
-    
+
     /**
      * Supprime une candidature d'un agent donné pour une session donnée
-     * @param idAgent - l'id de l'agent concerné
-     * @param idSession - l'id de la session concernée
-     * @throws DAOException si la suppression de la candidature dans la base de données a provoqué une SQLException
+     * 
+     * @param idAgent
+     *            - l'id de l'agent concerné
+     * @param idSession
+     *            - l'id de la session concernée
+     * @throws DAOException
+     *             si la suppression de la candidature dans la base de données a
+     *             provoqué une SQLException
      */
     @Override
     public void supprimerCandidature( int idAgent, int idSession ) throws DAOException {
@@ -283,12 +319,17 @@ public class CandidatureDaoImpl extends Dao implements CandidatureDao {
             throw new DAOException( e );
         }
     }
-    
+
     /**
      * Recherche d'une candidature dans la base de données
-     * @param candidature - la candidature à rechercher
-     * @return true si la candidature existe dans la base de données, sinon renvoie false
-     * @throws DAOException si la recherche dans la base de données a provoqué une SQLException
+     * 
+     * @param candidature
+     *            - la candidature à rechercher
+     * @return true si la candidature existe dans la base de données, sinon
+     *         renvoie false
+     * @throws DAOException
+     *             si la recherche dans la base de données a provoqué une
+     *             SQLException
      */
     @Override
     public boolean existe( Candidature candidature ) throws DAOException {
@@ -313,14 +354,20 @@ public class CandidatureDaoImpl extends Dao implements CandidatureDao {
         }
         return existe;
     }
-    
+
     /**
-     * Recherche si une candidature correspondant à l'agent d'id idAgent et de session idSession
-     * existe dans la base de données
-     * @param idAgent - L'id d'un agent
-     * @param idSession - L'id d'une session
-     * @return true si une candidature existe pour cet agent et cette session, sinno renvoie false
-     * @throws DAOException si la recherche dans la base de données a provoqué une SQLException
+     * Recherche si une candidature correspondant à l'agent d'id idAgent et de
+     * session idSession existe dans la base de données
+     * 
+     * @param idAgent
+     *            - L'id d'un agent
+     * @param idSession
+     *            - L'id d'une session
+     * @return true si une candidature existe pour cet agent et cette session,
+     *         sinno renvoie false
+     * @throws DAOException
+     *             si la recherche dans la base de données a provoqué une
+     *             SQLException
      */
     @Override
     public boolean existe( int idAgent, int idSession ) throws DAOException {

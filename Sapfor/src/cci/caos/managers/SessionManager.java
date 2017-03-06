@@ -19,7 +19,6 @@ import cci.caos.beans.CandidatureGenerique;
 import cci.caos.beans.SessionGenerique;
 import cci.caos.dao.AbstractDAOFactory;
 import cci.caos.dao.SessionDao;
-import cci.caos.repository.Candidature;
 import cci.caos.repository.Session;
 import cci.caos.server.SapforServer;
 
@@ -31,8 +30,10 @@ public class SessionManager {
      * http://localhost:8080/Sapfor/rest/sessions/{uuid}/fermerCandidature?
      * Session=1
      */
-	/**
-     * Permet a un gestionnaire de fermer les candidatures pour une session donnee
+    /**
+     * Permet a un gestionnaire de fermer les candidatures pour une session
+     * donnee
+     * 
      * @param uuid
      * @param idSession
      * @return True si la fermeture a ete effective, sinon False
@@ -64,18 +65,20 @@ public class SessionManager {
      * Session=1
      */
     /**
-     * Permet Ã  un gestionnaire de modifier les candidatures pour une session donnee (Acceptee/Refusee/Liste d'Attente)
+     * Permet Ã  un gestionnaire de modifier les candidatures pour une session
+     * donnee (Acceptee/Refusee/Liste d'Attente)
+     * 
      * @param uuid
      * @param idSession
-     * @Param candidatures Liste des candidatures modifiees
+     * @Param candidatures Liste des candidatGenerique modifiee
      * 
      * @return True si la liste des candidats a ete modifiee, sinon False
      */
     @POST
     @Path( "{uuid}/modifierCandidats" )
-    @Consumes( { MediaType.APPLICATION_JSON } )
+    @Consumes( { MediaType.APPLICATION_XML } )
     public Response modifierCandidats( @PathParam( "uuid" ) String uuid, @QueryParam( "Session" ) String idSession,
-            List<Candidature> candidatures ) {
+            List<CandidatGenerique> candidatures ) {
         int ids = Integer.parseInt( idSession );
         if ( SapforServer.getSessionServer().isConnectedByUUID( uuid )
                 && SapforServer.getSessionServer().getAgentByUUID( uuid ).getGestionnaire() ) {
@@ -96,6 +99,7 @@ public class SessionManager {
      */
     /**
      * Renvoie la liste des sessions auxquelles un agent peut candidater
+     * 
      * @param uuid
      * @return la liste des sessions accessibles
      */
@@ -120,9 +124,10 @@ public class SessionManager {
      * http://localhost:8080/Sapfor/rest/sessions/{uuid} --------------------
      */
     /**
-     * Renvoie la liste des sessions auxquelles un agent a  candidater
-     * @param uuid 
-     * @return la liste des sessions auxquelles un agent a  candidater
+     * Renvoie la liste des sessions auxquelles un agent aï¿½ candidater
+     * 
+     * @param uuid
+     * @return la liste des sessions auxquelles un agent aï¿½ candidater
      */
     @GET
     @Path( "{uuid}" )
@@ -146,7 +151,8 @@ public class SessionManager {
      * Session=1
      */
     /**
-     * Permet a  un agent de retirer sa candidature pour une session donnee
+     * Permet aï¿½ un agent de retirer sa candidature pour une session donnee
+     * 
      * @param uuid
      * @param idSession
      * @return True si la candidature a ete retiree, sinon False
@@ -210,7 +216,8 @@ public class SessionManager {
      * Formateur="True"
      */
     /**
-     * Permet a  un agent de deposer une candidature pour une session donnee
+     * Permet aï¿½ un agent de deposer une candidature pour une session donnee
+     * 
      * @param uuid
      * @param idSession
      * @param role
@@ -251,6 +258,7 @@ public class SessionManager {
      */
     /**
      * Renvoie la liste des candidature
+     * 
      * @param uuid
      * @param idSession
      * @return la liste des candidature d'une session donnÃ©e

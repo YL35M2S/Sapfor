@@ -344,18 +344,12 @@ public class SapforServer {
 
     }
 
-    // CONSERVER AU CAS OU
-    /*
-     * List<Session> listeSessionsCandidat = new ArrayList<Session>(); Agent
-     * agentCherche = getAgentByUUID( uuid );
-     * 
-     * for ( Map.Entry<Integer, Candidature> entry : candidatures.entrySet() ) {
-     * if ( entry.getValue().getAgent().compareTo( agentCherche ) == 0 ) {
-     * listeSessionsCandidat.add( entry.getValue().getSession() ); } } return
-     * listeSessionsCandidat; }
-     */
-
-    public boolean modifierListeCandidats( int idSession, List<Candidature> listeCandidature ) {
+    public boolean modifierListeCandidats( int idSession, List<CandidatGenerique> listeCandidatGenerique ) {
+        List<Candidature> listeCandidature = new ArrayList<Candidature>();
+        for ( CandidatGenerique c : listeCandidatGenerique ) {
+            listeCandidature.add( candidatGeneriqueToCandidature( c, idSession ) );
+        }
+        // Construction de la Candidat a partir de la candidatGenerique
         AbstractDAOFactory adf = AbstractDAOFactory.getFactory( typeDao );
         CandidatureDao candidatureDao = adf.getCandidatureDao();
         candidatureDao.mettreAJourCandidatureASession( idSession, listeCandidature );
@@ -429,6 +423,21 @@ public class SapforServer {
                 candidature.getAgent().getMatricule(),
                 candidature.isEstFormateur() ? "Formateur" : "Stagiaire",
                 candidature.getStatutCandidature() );
+    }
+
+    public Candidature candidatGeneriqueToCandidature( CandidatGenerique candidatGenerique, int session ) {
+        AbstractDAOFactory adf = AbstractDAOFactory.getFactory( typeDao );
+        AgentDao agentDao = adf.getAgentDao();
+        Agent a = agentDao.trouver( candidatGenerique.getId_Agent() );
+        boolean estFormateur = ( candidatGenerique.getRole().compareTo( "Formateur" ) == 0 );
+        SessionDao sessionDao = adf.getSessionDao();
+        Session s = sessionDao.trouver( session );
+
+        return new Candidature(
+                a,
+                candidatGenerique.getStatutCandidature(),
+                estFormateur,
+                s );
     }
 
     @SuppressWarnings( "deprecation" )
