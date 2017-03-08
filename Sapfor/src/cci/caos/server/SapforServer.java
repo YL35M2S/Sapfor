@@ -52,10 +52,15 @@ public class SapforServer {
     }
   
     /**
+<<<<<<< HEAD
      * Permet d'obtenir la session identifiee par l'identifiant "id"
      * 
      * @Param id Identifiant de la session recherchee
      * 
+=======
+     * Permet d'obtenir la session identifi�e par l'identifiant "id"
+     * @param id Identifiant de la session recherchee
+>>>>>>> branch 'master' of https://github.com/YL35M2S/Sapfor.git
      * @return Retourne la session recherchee
      */
     public Session getSessionById( int id ) {
@@ -67,8 +72,12 @@ public class SapforServer {
     /**
      * Permet d'obtenir l'UV identifiee par l'identifiant "id"
      * 
+<<<<<<< HEAD
      * @Param id Identifiant de l'uv recherchee
      * 
+=======
+     * @param id Identifiant de l'uv recherchee
+>>>>>>> branch 'master' of https://github.com/YL35M2S/Sapfor.git
      * @return Retourne l'uv recherchee
      */
     public Uv getUvById( int id ) {
@@ -80,8 +89,12 @@ public class SapforServer {
     /**
      * Permet de verifier que l'agent identifie par "uuid" est connecte
      * 
+<<<<<<< HEAD
      * @Param uuid Identifiant unique de l'agent
      * 
+=======
+     * @param uuid Identifiant unique de l'agent
+>>>>>>> branch 'master' of https://github.com/YL35M2S/Sapfor.git
      * @return Retourne true si l'agent est identifie
      */
     public boolean isConnectedByUUID( String uuid ) {
@@ -96,20 +109,36 @@ public class SapforServer {
     }
 
     /**
+<<<<<<< HEAD
      * Permet d'obtenir l'agent identifie par "uuid"
+=======
+     * Permet d'obtenir l'agent identifié par "uuid"
+>>>>>>> branch 'master' of https://github.com/YL35M2S/Sapfor.git
      * 
      * @param uuid Identifiant unique de l'agent
+<<<<<<< HEAD
      * @return Retourne l'agent identifie par uuid
+=======
+     * @return Retourne l'agent identifié par uuid
+>>>>>>> branch 'master' of https://github.com/YL35M2S/Sapfor.git
      */
     public Agent getAgentByUUID( String uuid ) {
         return connexions.get( uuid );
     }
 
     /**
+<<<<<<< HEAD
      * Permet d'obtenir l'agent identifie par "id"
+=======
+     * Permet d'obtenir l'agent identifié par "id"
+>>>>>>> branch 'master' of https://github.com/YL35M2S/Sapfor.git
      * 
      * @param id Identifiant de l'agent
+<<<<<<< HEAD
      * @return Retourne l'agent identifie par "id"
+=======
+     * @return Retourne l'agent identifié par "id"
+>>>>>>> branch 'master' of https://github.com/YL35M2S/Sapfor.git
      */
     public Agent getAgentById( int id ) {
         AbstractDAOFactory adf = AbstractDAOFactory.getFactory( typeDao );
@@ -308,7 +337,11 @@ public class SapforServer {
     /**
      * Retourne la liste des candidatures pour une session donnee
      * @param idSession id de la session recherchée
+<<<<<<< HEAD
      * @return Liste des candidatures pour une session donnee
+=======
+     * @return Liste des candidatures pour une session donnée
+>>>>>>> branch 'master' of https://github.com/YL35M2S/Sapfor.git
      */
     public List<CandidatureGenerique> getListeCandidatures( int idSession ) {
         List<CandidatureGenerique> listeCandidaturesGeneriques = new ArrayList<CandidatureGenerique>();
@@ -344,7 +377,11 @@ public class SapforServer {
     /**
      * Retourne la liste des agents pour une session donnée
      * @param idAgent id de la session recherchée
+<<<<<<< HEAD
      * @return Liste des agents pour une session donnee
+=======
+     * @return Liste des agents pour une session donnée
+>>>>>>> branch 'master' of https://github.com/YL35M2S/Sapfor.git
      */
     public List<CandidatGenerique> getListeCandidats( int idSession ) {
         List<CandidatGenerique> listeCandidaturesGeneriques = new ArrayList<CandidatGenerique>();
