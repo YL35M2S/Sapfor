@@ -61,6 +61,40 @@ public class SessionManager {
     }
 
     /*
+     * UseCase : #GESTION/ouvrirCandidature ouvrir une session a la candidature
+     * http://localhost:8080/Sapfor/rest/sessions/{uuid}/ouvrirCandidature?
+     * Session=1
+     */
+    /**
+     * Permet a un gestionnaire d'ouvrir les candidatures pour une session
+     * donnee
+     * 
+     * @param uuid
+     * @param idSession
+     * @return True si l'ouverture a ete effective, sinon False
+     */
+    @GET
+    @Path( "{uuid}/ouvrirCandidature" )
+    public Response ouvrirCandidature( @PathParam( "uuid" ) String uuid, @QueryParam( "Session" ) String idSession ) {
+        int ids = Integer.parseInt( idSession );
+        if ( SapforServer.getSessionServer().isConnectedByUUID( uuid )
+                && SapforServer.getSessionServer().getAgentByUUID( uuid ).getGestionnaire() ) {
+            Session s = SapforServer.getSessionServer().getSessionById( ids );
+            s.ouvrirCandidature();
+            AbstractDAOFactory adf = AbstractDAOFactory.getFactory( SapforServer.typeDao );
+            SessionDao sessionDao = adf.getSessionDao();
+            sessionDao.mettreAJour( s );
+            return Response
+                    .status( Status.OK )
+                    .build();
+        } else {
+            return Response
+                    .status( Status.FORBIDDEN )
+                    .build();
+        }
+    }    
+    
+    /*
      * UseCase : #SELC/modifierCandidats Modifier les candidatures à une session
      * http://localhost:8080/Sapfor/rest/sessions/{uuid}/modifierCandidats?
      * Session=1

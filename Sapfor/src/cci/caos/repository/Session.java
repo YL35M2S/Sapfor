@@ -148,6 +148,15 @@ public class Session {
     }
 
     /**
+     * Permet d'ouvrir la session aux candidatures
+     * 
+     * @return Vrai si l'ouverture s'est deroulee correctement
+     */
+    public boolean ouvrirCandidature() {
+        this.ouverteInscription = true;
+        return true;
+    }
+    /**
      * Permet de mettre à jour la liste des candidatures à la session
      * 
      * @return Vrai si la mise a jour s'est deroulée correctement
