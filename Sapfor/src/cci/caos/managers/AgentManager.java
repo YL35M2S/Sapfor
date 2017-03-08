@@ -30,7 +30,7 @@ public class AgentManager {
     /**
      * Permet d'obtenir l'agent a partir de l'id de l'agent pour la session actuellement en cours
      * @param idAg
-     * @return l'agent correspondant à l'idAg 
+     * @return l'agent correspondant ï¿½ l'idAg 
      */
     @GET
     @Path( "agents" )
@@ -58,6 +58,7 @@ public class AgentManager {
     }
     /**
      * verifie les donnees de connection et renvoie une reponse
+     * @author FD (fdescaves)
      * @param request
      * @return ok si les donnees de connection sont correctes sinon non autorise
      */

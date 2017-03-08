@@ -34,6 +34,7 @@ public class SessionManager {
      * Permet a un gestionnaire de fermer les candidatures pour une session
      * donnee
      * 
+     * @author TA (Antrema)
      * @param uuid
      * @param idSession
      * @return True si la fermeture a ete effective, sinon False
@@ -68,6 +69,7 @@ public class SessionManager {
      * Permet à un gestionnaire de modifier les candidatures pour une session
      * donnee (Acceptee/Refusee/Liste d'Attente)
      * 
+     * @author AT (Antrema)
      * @param uuid
      * @param idSession
      * @Param candidatures Liste des candidatGenerique modifiee
@@ -100,6 +102,7 @@ public class SessionManager {
     /**
      * Renvoie la liste des sessions auxquelles un agent peut candidater
      * 
+     * @author FD (Fdescaves)
      * @param uuid
      * @return la liste des sessions accessibles
      */
@@ -126,6 +129,7 @@ public class SessionManager {
     /**
      * Renvoie la liste des sessions auxquelles un agent a candidate
      * 
+     * @author TP (TheoPerrin)
      * @param uuid
      * @return la liste des sessions auxquelles un agent a candidate
      */
@@ -153,6 +157,7 @@ public class SessionManager {
     /**
      * Permet a un agent de retirer sa candidature pour une session donnee
      * 
+     * @author YL (YL35M2S)
      * @param uuid
      * @param idSession
      * @return True si la candidature a ete retiree, sinon False
@@ -176,6 +181,7 @@ public class SessionManager {
     /**
      * Permet d'obtenir la liste des sessions fermees a la candidature
      * 
+     * @author YL (YL35M2S)
      * @return Liste des sessions fermees a la candidature
      */
     @GET
@@ -190,13 +196,14 @@ public class SessionManager {
     }
 
     /*
-     * UseCase : #GESTION/FermerCandidature Renvoie la liste des sessions
+     * UseCase : #GESTION/ListeOuverte Renvoie la liste des sessions
      * ouvertes à la candidature
      * http://localhost:8080/Sapfor/rest/sessions/listeOuvertes
      */
     /**
      * Permet d'obtenr la liste des sessions ouvertes a la candidature
      * 
+     * @author RPD (Denier-Poulain-Romain)
      * @return Liste des sessions ouvertes au format XML
      */
     @GET
@@ -218,6 +225,7 @@ public class SessionManager {
     /**
      * Permet a un agent de deposer une candidature pour une session donnee
      * 
+     * @author SI (souraagui)
      * @param uuid
      * @param idSession
      * @param role
@@ -259,6 +267,7 @@ public class SessionManager {
     /**
      * Renvoie la liste des candidatures
      * 
+     * @author RPD (Denier-Poulain-Romain)
      * @param uuid
      * @param idSession
      * @return la liste des candidature d'une session donnée
