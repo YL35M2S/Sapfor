@@ -120,14 +120,14 @@ public class SessionManager {
     }
 
     /*
-     * UseCase : #LISTC Renvoie la liste des candidatures pour un agent donn�
+     * UseCase : #LISTC Renvoie la liste des candidatures pour un agent donne
      * http://localhost:8080/Sapfor/rest/sessions/{uuid} --------------------
      */
     /**
-     * Renvoie la liste des sessions auxquelles un agent a� candidater
+     * Renvoie la liste des sessions auxquelles un agent a candidate
      * 
      * @param uuid
-     * @return la liste des sessions auxquelles un agent a� candidater
+     * @return la liste des sessions auxquelles un agent a candidate
      */
     @GET
     @Path( "{uuid}" )
@@ -151,7 +151,7 @@ public class SessionManager {
      * Session=1
      */
     /**
-     * Permet a� un agent de retirer sa candidature pour une session donnee
+     * Permet a un agent de retirer sa candidature pour une session donnee
      * 
      * @param uuid
      * @param idSession
@@ -216,7 +216,7 @@ public class SessionManager {
      * Formateur="True"
      */
     /**
-     * Permet a� un agent de deposer une candidature pour une session donnee
+     * Permet a un agent de deposer une candidature pour une session donnee
      * 
      * @param uuid
      * @param idSession
@@ -257,7 +257,7 @@ public class SessionManager {
      * http://localhost:8080/Sapfor/rest/session/{uuid}/listeCandidat?Session=1
      */
     /**
-     * Renvoie la liste des candidature
+     * Renvoie la liste des candidatures
      * 
      * @param uuid
      * @param idSession
@@ -277,5 +277,4 @@ public class SessionManager {
             return Response.status( Status.FORBIDDEN ).build();
         }
     }
-
 }

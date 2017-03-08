@@ -53,11 +53,11 @@ public class SapforServer {
     }
 
     /*
-     * Permet d'obtenir la session identifi�e par l'identifiant "id"
+     * Permet d'obtenir la session identifiee par l'identifiant "id"
      * 
-     * @Param id Identifiant de la session recherch�e
+     * @Param id Identifiant de la session recherchee
      * 
-     * @return Retourne la session recherch�e
+     * @return Retourne la session recherchee
      */
     public Session getSessionById( int id ) {
         AbstractDAOFactory adf = AbstractDAOFactory.getFactory( typeDao );
@@ -66,11 +66,11 @@ public class SapforServer {
     }
 
     /*
-     * Permet d'obtenir l'UV identifi�e par l'identifiant "id"
+     * Permet d'obtenir l'UV identifiee par l'identifiant "id"
      * 
-     * @Param id Identifiant de l'uv recherch�e
+     * @Param id Identifiant de l'uv recherchee
      * 
-     * @return Retourne l'uv recherch�e
+     * @return Retourne l'uv recherchee
      */
     public Uv getUvById( int id ) {
         AbstractDAOFactory adf = AbstractDAOFactory.getFactory( typeDao );
@@ -79,11 +79,11 @@ public class SapforServer {
     }
 
     /*
-     * Permet de v�rifier que l'agent identifi� par "uuid" est connect�
+     * Permet de verifier que l'agent identifie par "uuid" est connecte
      * 
      * @Param uuid Identifiant unique de l'agent
      * 
-     * @return Retourne true si l'agent est identifi�
+     * @return Retourne true si l'agent est identifie
      */
     public boolean isConnectedByUUID( String uuid ) {
         boolean estConnecte = false;
@@ -97,22 +97,22 @@ public class SapforServer {
     }
 
     /*
-     * Permet d'obtenir l'agent identifié par "uuid"
+     * Permet d'obtenir l'agent identifie par "uuid"
      * 
      * @Param uuid Identifiant unique de l'agent
      * 
-     * @return Retourne l'agent identifié par uuid
+     * @return Retourne l'agent identifie par uuid
      */
     public Agent getAgentByUUID( String uuid ) {
         return connexions.get( uuid );
     }
 
     /*
-     * Permet d'obtenir l'agent identifié par "id"
+     * Permet d'obtenir l'agent identifie par "id"
      * 
      * @Param id Identifiant de l'agent
      * 
-     * @return Retourne l'agent identifié par "id"
+     * @return Retourne l'agent identifie par "id"
      */
     public Agent getAgentById( int id ) {
         AbstractDAOFactory adf = AbstractDAOFactory.getFactory( typeDao );
@@ -121,11 +121,11 @@ public class SapforServer {
     }
 
     /*
-     * Permet d'obtenir le stage identifi� par "id"
+     * Permet d'obtenir le stage identifie par "id"
      * 
      * @Param id Identifiant du stage
      * 
-     * @return Retourne le stage identifi� par "id"
+     * @return Retourne le stage identifie par "id"
      */
     public Stage getStageById( int id ) {
         AbstractDAOFactory adf = AbstractDAOFactory.getFactory( typeDao );
@@ -133,17 +133,24 @@ public class SapforServer {
         return stageDao.trouver( id );
     }
 
+    /*
+     * Permet d'obtenir l'aptitude identifiee par "id"
+     * 
+     * @Param id Identifiant de l'aptitude
+     * 
+     * @return Retourne l'aptitude identifiee par "id"
+     */
     public Aptitude getAptitudeById( int id ) {
         AbstractDAOFactory adf = AbstractDAOFactory.getFactory( typeDao );
         AptitudeDao aptitudeDao = adf.getAptitudeDao();
         return aptitudeDao.trouver( id );
-
     }
 
+    /*
+     *
+     */
     public List<Uv> getListeUvFormateur() {
         List<Uv> ListeUvFormateur = new ArrayList<Uv>();
-        // ListeUvFormateur.add( uvs.get( 7 ) );
-        // ListeUvFormateur.add( uvs.get( 8 ) );
         return ListeUvFormateur;
     }
 
@@ -229,6 +236,11 @@ public class SapforServer {
         return CandidaturesSessionsAccessibles;
     }
 
+    /*
+     * Permet d'obtenir la liset des dessions Fermees a la candidature
+     * 
+     * @return Retourne une liste des sessions fermees a la candidature
+     */
     public List<SessionGenerique> getListeSessionsFermees() {
         List<SessionGenerique> listeFermees = new ArrayList<SessionGenerique>();
 
