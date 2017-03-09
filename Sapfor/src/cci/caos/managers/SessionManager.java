@@ -92,8 +92,8 @@ public class SessionManager {
                     .status( Status.FORBIDDEN )
                     .build();
         }
-    }    
-    
+    }
+
     /*
      * UseCase : #SELC/modifierCandidats Modifier les candidatures à une session
      * http://localhost:8080/Sapfor/rest/sessions/{uuid}/modifierCandidats?
@@ -230,9 +230,8 @@ public class SessionManager {
     }
 
     /*
-     * UseCase : #GESTION/ListeOuverte Renvoie la liste des sessions
-     * ouvertes à la candidature
-     * http://localhost:8080/Sapfor/rest/sessions/listeOuvertes
+     * UseCase : #GESTION/ListeOuverte Renvoie la liste des sessions ouvertes à
+     * la candidature http://localhost:8080/Sapfor/rest/sessions/listeOuvertes
      */
     /**
      * Permet d'obtenr la liste des sessions ouvertes a la candidature
@@ -279,21 +278,6 @@ public class SessionManager {
         }
     }
 
-    /**
-     * Liste toutes les sessions enregistrees sur le serveur
-     * 
-     * @return Liste des sessions ouvertes
-     */
-    @GET
-    @Produces( { MediaType.APPLICATION_XML } )
-    public Response listerSessions() {
-        List<SessionGenerique> listeSessionGenerique = SapforServer.getSessionServer().getListeSessionsGeneriques();
-        GenericEntity<List<SessionGenerique>> listeSessionsGeneriques = new GenericEntity<List<SessionGenerique>>(
-                listeSessionGenerique ) {
-        };
-        return Response.status( Status.OK ).entity( listeSessionsGeneriques ).build();
-    }
-
     /*
      * UseCase : #SELC Renvoie la liste des candidature d'une session donnée
      * http://localhost:8080/Sapfor/rest/session/{uuid}/listeCandidat?Session=1
@@ -320,4 +304,39 @@ public class SessionManager {
             return Response.status( Status.FORBIDDEN ).build();
         }
     }
+
+    /**
+     * Liste toutes les sessions enregistrees sur le serveur
+     * 
+     * @return Liste des sessions ouvertes
+     */
+    @GET
+    @Produces( { MediaType.APPLICATION_XML } )
+    public Response listerSessions() {
+        List<SessionGenerique> listeSessionGenerique = SapforServer.getSessionServer().getListeSessionsGeneriques();
+        GenericEntity<List<SessionGenerique>> listeSessionsGeneriques = new GenericEntity<List<SessionGenerique>>(
+                listeSessionGenerique ) {
+        };
+        return Response.status( Status.OK ).entity( listeSessionsGeneriques ).build();
+    }
+
+    /**
+     * Detaille la session identifiee par l'id sur le serveur
+     * 
+     * @param idSession
+     *            L'id de la session recherchee
+     * @return Liste des sessions ouvertes
+     */
+    @GET
+    @Path( "/session" )
+    @Produces( { MediaType.APPLICATION_XML } )
+    public Response listerSession( @QueryParam( "Session" ) String idSession ) {
+        int ids = Integer.parseInt( idSession );
+        SessionGenerique session = SapforServer.getSessionServer().getSessionGenerique( ids );
+        GenericEntity<SessionGenerique> sessionGenerique = new GenericEntity<SessionGenerique>(
+                session ) {
+        };
+        return Response.status( Status.OK ).entity( sessionGenerique ).build();
+    }
+
 }

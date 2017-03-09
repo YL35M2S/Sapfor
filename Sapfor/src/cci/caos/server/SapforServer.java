@@ -42,6 +42,7 @@ public class SapforServer {
 
     /**
      * Permet d'obtenir la session actuelle du serveur
+     * 
      * @return Retourne la session SapforServer actuelle
      */
     public static SapforServer getSessionServer() {
@@ -50,17 +51,12 @@ public class SapforServer {
         }
         return sessionServer;
     }
-  
+
     /**
-<<<<<<< HEAD
      * Permet d'obtenir la session identifiee par l'identifiant "id"
      * 
      * @Param id Identifiant de la session recherchee
      * 
-=======
-     * Permet d'obtenir la session identifi�e par l'identifiant "id"
-     * @param id Identifiant de la session recherchee
->>>>>>> branch 'master' of https://github.com/YL35M2S/Sapfor.git
      * @return Retourne la session recherchee
      */
     public Session getSessionById( int id ) {
@@ -72,12 +68,8 @@ public class SapforServer {
     /**
      * Permet d'obtenir l'UV identifiee par l'identifiant "id"
      * 
-<<<<<<< HEAD
-     * @Param id Identifiant de l'uv recherchee
-     * 
-=======
-     * @param id Identifiant de l'uv recherchee
->>>>>>> branch 'master' of https://github.com/YL35M2S/Sapfor.git
+     * @param id
+     *            Identifiant de l'uv recherchee
      * @return Retourne l'uv recherchee
      */
     public Uv getUvById( int id ) {
@@ -89,12 +81,9 @@ public class SapforServer {
     /**
      * Permet de verifier que l'agent identifie par "uuid" est connecte
      * 
-<<<<<<< HEAD
-     * @Param uuid Identifiant unique de l'agent
+     * @param uuid
+     *            Identifiant unique de l'agent
      * 
-=======
-     * @param uuid Identifiant unique de l'agent
->>>>>>> branch 'master' of https://github.com/YL35M2S/Sapfor.git
      * @return Retourne true si l'agent est identifie
      */
     public boolean isConnectedByUUID( String uuid ) {
@@ -109,36 +98,22 @@ public class SapforServer {
     }
 
     /**
-<<<<<<< HEAD
      * Permet d'obtenir l'agent identifie par "uuid"
-=======
-     * Permet d'obtenir l'agent identifié par "uuid"
->>>>>>> branch 'master' of https://github.com/YL35M2S/Sapfor.git
      * 
-     * @param uuid Identifiant unique de l'agent
-<<<<<<< HEAD
-     * @return Retourne l'agent identifie par uuid
-=======
+     * @param uuid
+     *            Identifiant unique de l'agent
      * @return Retourne l'agent identifié par uuid
->>>>>>> branch 'master' of https://github.com/YL35M2S/Sapfor.git
      */
     public Agent getAgentByUUID( String uuid ) {
         return connexions.get( uuid );
     }
 
     /**
-<<<<<<< HEAD
      * Permet d'obtenir l'agent identifie par "id"
-=======
-     * Permet d'obtenir l'agent identifié par "id"
->>>>>>> branch 'master' of https://github.com/YL35M2S/Sapfor.git
      * 
-     * @param id Identifiant de l'agent
-<<<<<<< HEAD
+     * @param id
+     *            Identifiant de l'agent
      * @return Retourne l'agent identifie par "id"
-=======
-     * @return Retourne l'agent identifié par "id"
->>>>>>> branch 'master' of https://github.com/YL35M2S/Sapfor.git
      */
     public Agent getAgentById( int id ) {
         AbstractDAOFactory adf = AbstractDAOFactory.getFactory( typeDao );
@@ -149,7 +124,8 @@ public class SapforServer {
     /**
      * Permet d'obtenir le stage identifie par "id"
      * 
-     * @param id Identifiant du stage
+     * @param id
+     *            Identifiant du stage
      * @return Retourne le stage identifie par "id"
      */
     public Stage getStageById( int id ) {
@@ -160,7 +136,9 @@ public class SapforServer {
 
     /**
      * Permet d'obtenir l'aptitude identifie par "id"
-     * @param id Identifiant de l'aptitude
+     * 
+     * @param id
+     *            Identifiant de l'aptitude
      * @return Retourne l'aptitude identifie par "id"
      */
     public Aptitude getAptitudeById( int id ) {
@@ -171,6 +149,7 @@ public class SapforServer {
 
     /**
      * Renvoie la liste des UV requises pour être formateur en general
+     * 
      * @return liste des UV requises pour être formateur en general
      */
     public List<Uv> getListeUvFormateur() {
@@ -179,11 +158,16 @@ public class SapforServer {
     }
 
     /**
-     * Renvoie la liste des Sessions qui sont accessibles pour un agent identifie par "uuid"
-     * Une session est accessible en tant que stagiaire si le candidat possede les UV pre-requises de l'UV concernee par la session 
-     * Une session est accessibld en tant que formateur si le candidat possede les UV requises pour etre formateur
-     * @param uuid l'uuid d'un agent
-     * @return une liste de candidatureGenerique correspondant a la liste des sessions accessibles
+     * Renvoie la liste des Sessions qui sont accessibles pour un agent
+     * identifie par "uuid" Une session est accessible en tant que stagiaire si
+     * le candidat possede les UV pre-requises de l'UV concernee par la session
+     * Une session est accessibld en tant que formateur si le candidat possede
+     * les UV requises pour etre formateur
+     * 
+     * @param uuid
+     *            l'uuid d'un agent
+     * @return une liste de candidatureGenerique correspondant a la liste des
+     *         sessions accessibles
      */
     public List<CandidatureGenerique> getSessionsAccessibles( String uuid ) {
         SimpleDateFormat simpDate = new SimpleDateFormat( "dd/MM/yyyy" );
@@ -269,6 +253,7 @@ public class SapforServer {
 
     /**
      * Renvoie la liste des sessions fermees a la candidature
+     * 
      * @return liste de session generique fermees a la candidature
      */
     public List<SessionGenerique> getListeSessionsFermees() {
@@ -287,6 +272,7 @@ public class SapforServer {
 
     /**
      * Renvoie la liste des sessions ouvertes a la candidature
+     * 
      * @return liste des sessions ouvertes a la candidature
      */
     public List<SessionGenerique> getListeSessionsOuvertes() {
@@ -305,8 +291,11 @@ public class SapforServer {
 
     /**
      * Renvoie un AgentConnexion si l'agent s'est connecte au serveur
-     * @param matricule Matricule d'un agent
-     * @param password Mot de passe d'un agent
+     * 
+     * @param matricule
+     *            Matricule d'un agent
+     * @param password
+     *            Mot de passe d'un agent
      * @return AgentConnexion si la connexion est reussie, sinon renvoie null
      */
     public AgentConnection getConnexionAgent( String matricule, String password ) {
@@ -336,12 +325,12 @@ public class SapforServer {
 
     /**
      * Retourne la liste des candidatures pour une session donnee
-     * @param idSession id de la session recherchée
-<<<<<<< HEAD
-     * @return Liste des candidatures pour une session donnee
-=======
-     * @return Liste des candidatures pour une session donnée
->>>>>>> branch 'master' of https://github.com/YL35M2S/Sapfor.git
+     * 
+     * @param idSession
+     *            id de la session recherchée <<<<<<< HEAD
+     * @return Liste des candidatures pour une session donnee =======
+     * @return Liste des candidatures pour une session donnée >>>>>>> branch
+     *         'master' of https://github.com/YL35M2S/Sapfor.git
      */
     public List<CandidatureGenerique> getListeCandidatures( int idSession ) {
         List<CandidatureGenerique> listeCandidaturesGeneriques = new ArrayList<CandidatureGenerique>();
@@ -358,7 +347,9 @@ public class SapforServer {
 
     /**
      * Retourne la liste des candidatures pour un agent donne
-     * @param idAgent id de l'agent recherche
+     * 
+     * @param idAgent
+     *            id de l'agent recherche
      * @return Liste des candidatures pour un agent donne
      */
     public List<CandidatureGenerique> getListeSession( String uuid ) {
@@ -376,12 +367,12 @@ public class SapforServer {
 
     /**
      * Retourne la liste des agents pour une session donnée
-     * @param idAgent id de la session recherchée
-<<<<<<< HEAD
-     * @return Liste des agents pour une session donnee
-=======
-     * @return Liste des agents pour une session donnée
->>>>>>> branch 'master' of https://github.com/YL35M2S/Sapfor.git
+     * 
+     * @param idAgent
+     *            id de la session recherchée <<<<<<< HEAD
+     * @return Liste des agents pour une session donnee =======
+     * @return Liste des agents pour une session donnée >>>>>>> branch 'master'
+     *         of https://github.com/YL35M2S/Sapfor.git
      */
     public List<CandidatGenerique> getListeCandidats( int idSession ) {
         List<CandidatGenerique> listeCandidaturesGeneriques = new ArrayList<CandidatGenerique>();
@@ -400,8 +391,11 @@ public class SapforServer {
 
     /**
      * Modifie la liste des candidats a une session
-     * @param idSession id de la session concernee
-     * @param listeCandidatGenerique liste de candidatGenerique pour remplacer celle existante
+     * 
+     * @param idSession
+     *            id de la session concernee
+     * @param listeCandidatGenerique
+     *            liste de candidatGenerique pour remplacer celle existante
      * @return true si la modification s'est bien deroulee
      */
     public boolean modifierListeCandidats( int idSession, List<CandidatGenerique> listeCandidatGenerique ) {
@@ -417,9 +411,13 @@ public class SapforServer {
     }
 
     /**
-     * Retire la candidature d'un agent identifie par "idAgent" a une session identifie par "idSession"
-     * @param idAgent id d'un agent
-     * @param idSession id d'un session
+     * Retire la candidature d'un agent identifie par "idAgent" a une session
+     * identifie par "idSession"
+     * 
+     * @param idAgent
+     *            id d'un agent
+     * @param idSession
+     *            id d'un session
      * @return true si la modification s'est correctement deroulee
      */
     public boolean retirerCandidature( int idAgent, int idSession ) {
@@ -430,7 +428,9 @@ public class SapforServer {
     }
 
     /**
-     * Renvoie une liste de SessionGenerique contenant toutes les sessions stockees par la DAO
+     * Renvoie une liste de SessionGenerique contenant toutes les sessions
+     * stockees par la DAO
+     * 
      * @return liste de SessionGenerique
      */
     public List<SessionGenerique> getListeSessionsGeneriques() {
@@ -448,11 +448,30 @@ public class SapforServer {
     }
 
     /**
-     * Depose une candidature d'un agent identifie par "idAgent" pour la session identifiee par "idSession"
-     * si estFormateur est true alors l'agent candidate en tant que formateur
-     * @param idAgent id d'un agent
-     * @param idSession id d'une session
-     * @param estFormateur true si l'agent candidate en tant que formateur
+     * Renvoie une SessionGenerique contenant la session stockees par la DAO
+     * 
+     * @param idSession
+     *            l'id de la session recherchee
+     * @return sessionGenerique recherchee
+     */
+    public SessionGenerique getSessionGenerique( int idSession ) {
+        // Pour chaque session existante sur la BDD
+        AbstractDAOFactory adf = AbstractDAOFactory.getFactory( typeDao );
+        SessionDao sessionDao = adf.getSessionDao();
+        return sessionToSessionGenerique( sessionDao.trouver( idSession ) );
+    }
+
+    /**
+     * Depose une candidature d'un agent identifie par "idAgent" pour la session
+     * identifiee par "idSession" si estFormateur est true alors l'agent
+     * candidate en tant que formateur
+     * 
+     * @param idAgent
+     *            id d'un agent
+     * @param idSession
+     *            id d'une session
+     * @param estFormateur
+     *            true si l'agent candidate en tant que formateur
      * @return true si le depot de la candidature s'est correctement deroule
      */
     public boolean deposerCandidature( int idAgent, int idSession, boolean estFormateur ) {
@@ -468,6 +487,7 @@ public class SapforServer {
 
     /**
      * Transforme une Candidature en une CandidatureGenerique
+     * 
      * @param candidature
      * @return CandidatureGenerique
      */
@@ -488,6 +508,7 @@ public class SapforServer {
 
     /**
      * Transforme une Session en une SessionGenerique
+     * 
      * @param session
      * @return SessionGenerique
      */
@@ -505,6 +526,7 @@ public class SapforServer {
 
     /**
      * Transforme une Candidature en un CandidatGenerique
+     * 
      * @param candidature
      * @return CandidatGenerique
      */
@@ -520,6 +542,7 @@ public class SapforServer {
 
     /**
      * Transforme une candidatureGenerique en Candidature
+     * 
      * @param candidatGenerique
      * @param session
      * @return Candidature
@@ -540,7 +563,8 @@ public class SapforServer {
     }
 
     /**
-     * Initialise le serveur avec instanciation de differents objets (UV, Session...)
+     * Initialise le serveur avec instanciation de differents objets (UV,
+     * Session...)
      */
     @SuppressWarnings( "deprecation" )
     public void initializeServer() {
