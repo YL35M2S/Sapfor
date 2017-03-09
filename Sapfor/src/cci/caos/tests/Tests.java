@@ -29,7 +29,7 @@ import cci.caos.repository.Candidature;
 import cci.caos.repository.Session;
 import cci.caos.server.SapforServer;
 
-public class TestAT {
+public class Tests {
 
     private final String WS_URI          = "http://localhost:8080/Sapfor/rest";
     private int			 idAgent = 2;
