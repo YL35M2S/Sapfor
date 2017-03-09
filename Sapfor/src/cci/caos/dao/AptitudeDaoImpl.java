@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import cci.caos.dao.exception.DAOException;
+import cci.caos.dao.factory.AbstractDAOFactory;
 import cci.caos.repository.Aptitude;
 import cci.caos.repository.Uv;
 

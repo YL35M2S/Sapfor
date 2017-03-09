@@ -2,6 +2,7 @@ package cci.caos.dao;
 
 import java.util.List;
 
+import cci.caos.dao.exception.DAOException;
 import cci.caos.repository.Session;
 
 public interface SessionDao {
@@ -32,7 +33,7 @@ public interface SessionDao {
      */
     public List<Session> listerToutes() throws DAOException;
     /**
-     *Recherche d'une session dans la DAO à partir de son id 
+     *Recherche d'une session dans la DAO ï¿½ partir de son id 
      * @param id
      * @return la session recherchee
      * @throws DAOException si la recherche dans la DAO a provoque une Exception

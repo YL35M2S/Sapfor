@@ -8,6 +8,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import cci.caos.dao.exception.DAOException;
+import cci.caos.dao.factory.AbstractDAOFactory;
 import cci.caos.repository.Agent;
 import cci.caos.repository.Aptitude;
 import cci.caos.repository.Uv;

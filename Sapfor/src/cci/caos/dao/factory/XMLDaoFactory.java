@@ -1,8 +1,15 @@
-package cci.caos.dao;
+package cci.caos.dao.factory;
+
+import cci.caos.dao.AgentDao;
+import cci.caos.dao.AptitudeDao;
+import cci.caos.dao.CandidatureDao;
+import cci.caos.dao.SessionDao;
+import cci.caos.dao.StageDao;
+import cci.caos.dao.UvDao;
 
 public class XMLDaoFactory extends AbstractDAOFactory {
 	/**
-	 * Récupère l'implémentation de AgenDao
+	 * Rï¿½cupï¿½re l'implï¿½mentation de AgenDao
      * @return null
 	 */
     @Override
@@ -11,7 +18,7 @@ public class XMLDaoFactory extends AbstractDAOFactory {
         return null;
     }
     /**
-     * Récupère l'implémentation de AptitudeDao
+     * Rï¿½cupï¿½re l'implï¿½mentation de AptitudeDao
      * @return null
      */
     @Override
@@ -20,7 +27,7 @@ public class XMLDaoFactory extends AbstractDAOFactory {
         return null;
     }
     /**
-     * Récupère l'implémentation de CandidatureDao
+     * Rï¿½cupï¿½re l'implï¿½mentation de CandidatureDao
      * @return null 
      */
     @Override
@@ -29,7 +36,7 @@ public class XMLDaoFactory extends AbstractDAOFactory {
         return null;
     }
     /**
-     * Récupère l'implémentation de SessionDao
+     * Rï¿½cupï¿½re l'implï¿½mentation de SessionDao
      * @return null
      */
     @Override
@@ -38,7 +45,7 @@ public class XMLDaoFactory extends AbstractDAOFactory {
         return null;
     }
     /**
-     * Récupère l'implémentation de StageDao
+     * Rï¿½cupï¿½re l'implï¿½mentation de StageDao
      * @return null 
      */
     @Override
@@ -47,7 +54,7 @@ public class XMLDaoFactory extends AbstractDAOFactory {
         return null;
     }
     /**
-     * Récupère l'implémentation de UvDao
+     * Rï¿½cupï¿½re l'implï¿½mentation de UvDao
      * @return null
      */
     @Override

@@ -1,5 +1,6 @@
 package cci.caos.dao;
 
+import cci.caos.dao.exception.DAOException;
 import cci.caos.repository.Stage;
 
 public interface StageDao {

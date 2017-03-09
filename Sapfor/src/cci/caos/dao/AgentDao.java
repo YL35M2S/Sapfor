@@ -2,6 +2,7 @@ package cci.caos.dao;
 
 import java.util.List;
 
+import cci.caos.dao.exception.DAOException;
 import cci.caos.repository.Agent;
 import cci.caos.repository.Aptitude;
 import cci.caos.repository.Uv;

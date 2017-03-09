@@ -1,13 +1,11 @@
 package cci.caos.managers;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.StringTokenizer;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.GenericEntity;
@@ -19,8 +17,6 @@ import javax.ws.rs.core.Response.Status;
 import org.glassfish.jersey.internal.util.Base64;
 
 import cci.caos.beans.AgentConnection;
-import cci.caos.repository.Agent;
-import cci.caos.repository.Uv;
 import cci.caos.server.SapforServer;
 
 @Path( "/agent" )
@@ -28,36 +24,46 @@ public class AgentManager {
     private static final String AUTHORIZATION_PROPERTY = "Authorization";
     private static final String AUTHENTICATION_SCHEME  = "Basic";
     /**
-     * Permet d'obtenir l'agent a partir de l'id de l'agent pour la session actuellement en cours
+     * Permet d'obtenir l'agent a partir de l'id de l'agent pour la session
+     * actuellement en cours
+     * 
      * @param idAg
-     * @return l'agent correspondant � l'idAg 
+     * @return l'agent correspondant � l'idAg
      */
-    @GET
-    @Path( "agents" )
-    // @Produces( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON } )
-    @Produces( { MediaType.APPLICATION_XML } )
-    public Agent listeUv( @QueryParam( "Agent" ) String idAg ) {
-        int ida = Integer.parseInt( idAg );
-        Agent a = SapforServer.getSessionServer().getAgentById( ida );
-        return a;
-    }
-    
+    /*
+     * @GET
+     * 
+     * @Path( "agents" ) // @Produces( { MediaType.APPLICATION_XML,
+     * MediaType.APPLICATION_JSON } )
+     * 
+     * @Produces( { MediaType.APPLICATION_XML } ) public Agent
+     * listeUv( @QueryParam( "Agent" ) String idAg ) { int ida =
+     * Integer.parseInt( idAg ); Agent a =
+     * SapforServer.getSessionServer().getAgentById( ida ); return a; }
+     */
+
     /**
      * Recupere la liste des prequis pour une uv a partir de l'id de l'uv
+     * 
      * @param idUv
      * @return la liste des prerequis d'une uv
      */
-    @GET
-    @Path( "getPrerequis" )
-    // @Produces( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON } )
-    @Produces( { MediaType.APPLICATION_XML } )
-    public Collection<Uv> listePreRequis( @QueryParam( "Uv" ) String idUv ) {
-        int idu = Integer.parseInt( idUv );
-        Uv u = SapforServer.getSessionServer().getUvById( idu );
-        return u.getListePrerequis();
-    }
+
+    /*
+     * @GET
+     * 
+     * @Path( "getPrerequis" ) // @Produces( { MediaType.APPLICATION_XML,
+     * MediaType.APPLICATION_JSON } )
+     * 
+     * @Produces( { MediaType.APPLICATION_XML } ) public Collection<Uv>
+     * listePreRequis( @QueryParam( "Uv" ) String idUv ) { int idu =
+     * Integer.parseInt( idUv ); Uv u =
+     * SapforServer.getSessionServer().getUvById( idu ); return
+     * u.getListePrerequis(); }
+     */
     /**
      * verifie les donnees de connection et renvoie une reponse
+     * 
      * @author FD (fdescaves)
      * @param request
      * @return ok si les donnees de connection sont correctes sinon non autorise

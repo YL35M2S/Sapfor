@@ -1,4 +1,4 @@
-package cci.caos.dao;
+package cci.caos.dao.exception;
 
 public class DAOExceptionConfiguration extends RuntimeException {
 	private static final long serialVersionUID = 1L;
@@ -13,14 +13,14 @@ public class DAOExceptionConfiguration extends RuntimeException {
 	/**
 	 * Constructeur
 	 * @param message - message d'erreur
-	 * @param cause - l'Exception de niveau inferieur qui a provoque l'appel à ce constructeur
+	 * @param cause - l'Exception de niveau inferieur qui a provoque l'appel ï¿½ ce constructeur
 	 */
     public DAOExceptionConfiguration( String message, Throwable cause ) {
         super( message, cause );
     }
     /**
      * Constructeur
-     * @param cause - l'Exception de niveau inferieur qui a provoque l'appel à ce constructeur
+     * @param cause - l'Exception de niveau inferieur qui a provoque l'appel ï¿½ ce constructeur
      */
     public DAOExceptionConfiguration( Throwable cause ) {
         super( cause );

@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import cci.caos.dao.exception.DAOException;
+import cci.caos.dao.factory.AbstractDAOFactory;
 import cci.caos.repository.Uv;
 import cci.caos.server.SapforServer;
 
@@ -27,7 +29,7 @@ public class UvDaoImpl extends Dao implements UvDao {
         super( conn );
     }
 
-    /* Implémentation des méthodes */
+    /* Implï¿½mentation des mï¿½thodes */
 
     /**
      * Creation d'une Uv dans la Base de Donnees
@@ -55,7 +57,7 @@ public class UvDaoImpl extends Dao implements UvDao {
             /* Execution de la requete */
             preparedStatement.executeUpdate();
 
-            /* Recuperation de l'Id créé */
+            /* Recuperation de l'Id crï¿½ï¿½ */
             ResultSet resultat = preparedStatement.getGeneratedKeys();
             resultat.next();
             idNewUv = resultat.getInt( 1 );

@@ -8,8 +8,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import cci.caos.repository.Agent;
-import cci.caos.dao.DaoFactory;
 import cci.caos.dao.AgentDao;
+import cci.caos.dao.factory.DaoFactory;
 import cci.caos.forms.creerAgentForm;
 
 

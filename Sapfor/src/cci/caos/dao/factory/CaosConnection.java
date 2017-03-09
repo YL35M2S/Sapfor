@@ -1,8 +1,10 @@
-package cci.caos.dao;
+package cci.caos.dao.factory;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+
+import cci.caos.dao.exception.DAOExceptionConfiguration;
 
 public class CaosConnection {
 

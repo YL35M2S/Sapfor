@@ -1,4 +1,4 @@
-package cci.caos.dao;
+package cci.caos.dao.exception;
 
 public class DAOException extends RuntimeException {
 	private static final long serialVersionUID = 1L;

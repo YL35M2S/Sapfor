@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import cci.caos.dao.exception.DAOException;
 import cci.caos.repository.Stage;
 
 public class StageDaoImpl extends Dao implements StageDao {
@@ -43,7 +44,7 @@ public class StageDaoImpl extends Dao implements StageDao {
             /* Execution de la requete */
             preparedStatement.executeUpdate();
 
-            /* Recuperation de l'Id créé */
+            /* Recuperation de l'Id crï¿½ï¿½ */
             ResultSet resultat = preparedStatement.getGeneratedKeys();
             resultat.next();
             return resultat.getInt( 1 );

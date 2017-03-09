@@ -9,6 +9,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import cci.caos.dao.exception.DAOException;
 import cci.caos.repository.Session;
 import cci.caos.server.SapforServer;
 
@@ -27,7 +28,7 @@ public class SessionDaoImpl extends Dao implements SessionDao {
         super( conn );
     }
 
-    /* Implémentation des méthodes */
+    /* Implï¿½mentation des mï¿½thodes */
 
     /**
      * Creation d'une session dans la Base de Donnees 
@@ -55,7 +56,7 @@ public class SessionDaoImpl extends Dao implements SessionDao {
             /* Execution de la requete */
             preparedStatement.executeUpdate();
 
-            /* Recuperation de l'Id créé */
+            /* Recuperation de l'Id crï¿½ï¿½ */
             ResultSet resultat = preparedStatement.getGeneratedKeys();
             resultat.next();
             return resultat.getInt( 1 );

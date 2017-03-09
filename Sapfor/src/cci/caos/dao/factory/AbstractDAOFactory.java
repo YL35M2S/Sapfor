@@ -1,4 +1,11 @@
-package cci.caos.dao;
+package cci.caos.dao.factory;
+
+import cci.caos.dao.AgentDao;
+import cci.caos.dao.AptitudeDao;
+import cci.caos.dao.CandidatureDao;
+import cci.caos.dao.SessionDao;
+import cci.caos.dao.StageDao;
+import cci.caos.dao.UvDao;
 
 public abstract class AbstractDAOFactory {
 

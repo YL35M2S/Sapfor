@@ -20,8 +20,8 @@ import org.junit.Test;
 
 import cci.caos.beans.AgentConnection;
 import cci.caos.beans.SessionGenerique;
-import cci.caos.dao.AbstractDAOFactory;
 import cci.caos.dao.SessionDao;
+import cci.caos.dao.factory.AbstractDAOFactory;
 import cci.caos.repository.Session;
 import cci.caos.server.SapforServer;
 

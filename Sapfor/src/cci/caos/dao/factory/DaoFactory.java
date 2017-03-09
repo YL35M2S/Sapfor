@@ -1,6 +1,19 @@
-package cci.caos.dao;
+package cci.caos.dao.factory;
 
 import java.sql.Connection;
+
+import cci.caos.dao.AgentDao;
+import cci.caos.dao.AgentDaoImpl;
+import cci.caos.dao.AptitudeDao;
+import cci.caos.dao.AptitudeDaoImpl;
+import cci.caos.dao.CandidatureDao;
+import cci.caos.dao.CandidatureDaoImpl;
+import cci.caos.dao.SessionDao;
+import cci.caos.dao.SessionDaoImpl;
+import cci.caos.dao.StageDao;
+import cci.caos.dao.StageDaoImpl;
+import cci.caos.dao.UvDao;
+import cci.caos.dao.UvDaoImpl;
 
 public class DaoFactory extends AbstractDAOFactory {
     protected static final Connection conn = CaosConnection.getInstance();
