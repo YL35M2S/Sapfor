@@ -27,7 +27,7 @@ public class SessionManager {
 
     /*
      * UseCase : #GESTION/FermerCandidature Fermer une session a la candidature
-     * http://localhost:8080/Sapfor/rest/sessions/{uuid}/fermerCandidature?
+     * http://localhost:8080/Sapfor/rest/session/{uuid}/fermerCandidature?
      * Session=1
      */
     /**
@@ -62,7 +62,7 @@ public class SessionManager {
 
     /*
      * UseCase : #GESTION/ouvrirCandidature ouvrir une session a la candidature
-     * http://localhost:8080/Sapfor/rest/sessions/{uuid}/ouvrirCandidature?
+     * http://localhost:8080/Sapfor/rest/session/{uuid}/ouvrirCandidature?
      * Session=1
      */
     /**
@@ -96,7 +96,7 @@ public class SessionManager {
 
     /*
      * UseCase : #SELC/modifierCandidats Modifier les candidatures à une session
-     * http://localhost:8080/Sapfor/rest/sessions/{uuid}/modifierCandidats?
+     * http://localhost:8080/Sapfor/rest/session/{uuid}/modifierCandidats?
      * Session=1
      */
     /**
@@ -131,7 +131,7 @@ public class SessionManager {
 
     /*
      * UseCase : #LACC Renvoie la liste des sessions accessibles à un agent
-     * http://localhost:8080/Sapfor/rest/sessions/{uuid}/accessible -------
+     * http://localhost:8080/Sapfor/rest/session/{uuid}/accessible -------
      */
     /**
      * Renvoie la liste des sessions auxquelles un agent peut candidater
@@ -158,14 +158,14 @@ public class SessionManager {
 
     /*
      * UseCase : #LISTC Renvoie la liste des candidatures pour un agent donne
-     * http://localhost:8080/Sapfor/rest/sessions/{uuid} --------------------
+     * http://localhost:8080/Sapfor/rest/session/{uuid} --------------------
      */
     /**
-     * Renvoie la liste des sessions auxquelles un agent a candidate
+     * Renvoie la liste des candidatures d'un agent
      * 
      * @author TP (TheoPerrin)
      * @param uuid
-     * @return la liste des sessions auxquelles un agent a candidate
+     * @return la liste des candidatures d'un agent
      */
     @GET
     @Path( "{uuid}" )
@@ -185,7 +185,7 @@ public class SessionManager {
 
     /*
      * UseCase : #RETC Retirer une candidature (Form/Stag) pour un agent
-     * http://localhost:8080/Sapfor/rest/sessions/{uuid}/retirerCandidature?
+     * http://localhost:8080/Sapfor/rest/session/{uuid}/retirerCandidature?
      * Session=1
      */
     /**
@@ -210,7 +210,7 @@ public class SessionManager {
 
     /*
      * UseCase : #SELC Renvoie la liste des sessions fermees à la candidature
-     * http://localhost:8080/Sapfor/rest/sessions/listeFermees --------------
+     * http://localhost:8080/Sapfor/rest/session/listeFermees --------------
      */
     /**
      * Permet d'obtenir la liste des sessions fermees a la candidature
@@ -231,7 +231,7 @@ public class SessionManager {
 
     /*
      * UseCase : #GESTION/ListeOuverte Renvoie la liste des sessions ouvertes à
-     * la candidature http://localhost:8080/Sapfor/rest/sessions/listeOuvertes
+     * la candidature http://localhost:8080/Sapfor/rest/session/listeOuvertes
      */
     /**
      * Permet d'obtenr la liste des sessions ouvertes a la candidature
@@ -252,7 +252,7 @@ public class SessionManager {
 
     /*
      * UseCase : #DEPC Deposer une candidature (Form/Stag) pour un agent
-     * http://localhost:8080/Sapfor/rest/sessions/{uuid}/candidater?Session=1&
+     * http://localhost:8080/Sapfor/rest/session/{uuid}/candidater?Session=1&
      * Formateur="True"
      */
     /**

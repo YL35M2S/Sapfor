@@ -37,9 +37,4 @@
     <url-pattern>/creation</url-pattern>
   </servlet-mapping>
   
-  
-  
-  <listener>
-    <listener-class>cci.caos.config.InitialisationDaoFactory</listener-class>
-  </listener>
 </web-app>
