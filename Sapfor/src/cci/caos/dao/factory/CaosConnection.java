@@ -14,6 +14,21 @@ public class CaosConnection {
     private static final String PROPERTY_MOT_DE_PASSE    = "Lespert";
     private static Connection   connect;
 
+    // Constructeur prive
+    /**
+     * Cree une connexion a la base de donnees
+     */
+    private CaosConnection() {
+        try {
+            Class.forName( PROPERTY_DRIVER );
+            connect = DriverManager.getConnection( PROPERTY_URL, PROPERTY_NOM_UTILISATEUR, PROPERTY_MOT_DE_PASSE );
+        } catch ( ClassNotFoundException e ) {
+            throw new DAOExceptionConfiguration( "Le driver est introuvable dans le classpath.", e );
+        } catch ( SQLException e ) {
+            e.printStackTrace();
+        }
+    }
+
     /**
      * Recupere une connexion a la base de donnees
      * 
@@ -21,14 +36,7 @@ public class CaosConnection {
      */
     public static Connection getInstance() {
         if ( connect == null ) {
-            try {
-                Class.forName( PROPERTY_DRIVER );
-                connect = DriverManager.getConnection( PROPERTY_URL, PROPERTY_NOM_UTILISATEUR, PROPERTY_MOT_DE_PASSE );
-            } catch ( ClassNotFoundException e ) {
-                throw new DAOExceptionConfiguration( "Le driver est introuvable dans le classpath.", e );
-            } catch ( SQLException e ) {
-                e.printStackTrace();
-            }
+            new CaosConnection();
         }
         return connect;
     }
