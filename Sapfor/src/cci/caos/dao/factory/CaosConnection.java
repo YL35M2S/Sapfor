@@ -15,8 +15,9 @@ public class CaosConnection {
     private static Connection   connect;
 
     /**
-     * Récupère une connexion à la base de données
-     * @return une connexion à la base de données
+     * Recupere une connexion a la base de donnees
+     * 
+     * @return une connexion à la base de donnees
      */
     public static Connection getInstance() {
         if ( connect == null ) {

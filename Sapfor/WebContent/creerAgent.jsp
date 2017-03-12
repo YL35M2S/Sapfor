@@ -13,20 +13,16 @@
                 <p>Vous pouvez ajouter un Agent via ce formulaire</p>
                 <br />
 				
-                <label for="id">ID</label>
-                <input type="text" id="id" name="id" value=""" size="20" maxlength="20" />
-                <br />
-                
                 <label for="nom">Nom</label>
-                <input type="text" id="nom" name="nom" value=""" size="20" maxlength="20" />
+                <input type="text" id="nom" name="nom" size="20" maxlength="20" />
                 <br />
                 
                 <label for="motdepasse">Mot de passe</label>
-                <input type="password" id="motdepasse" name="motdepasse" value="" size="20" maxlength="20" />
+                <input type="password" id="motdepasse" name="motdepasse" size="20" maxlength="20" />
                 <br />
                 
                 <label for="matricule">Matricule</label>
-                <input type="text" id="matricule" name="matricule" value="" size="20" maxlength="20" />
+                <input type="text" id="matricule" name="matricule" size="20" maxlength="20" />
                 <br />
                 
                 <label for="gestionnaire">Est-il gestionnaire ?</label>

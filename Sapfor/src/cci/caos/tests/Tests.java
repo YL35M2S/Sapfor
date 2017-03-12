@@ -235,6 +235,10 @@ public class Tests {
 		}
 	}
     
+	/**
+	* Renvoie la liste des candidatures
+	* @return true si la candidature est presente dans la liste des candidatures
+	*/
 	public boolean testListeCandidatures() {
 		boolean estDansListeCandidatures = false;
 		Client client = ClientBuilder.newClient();

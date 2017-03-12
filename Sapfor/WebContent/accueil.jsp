@@ -29,5 +29,8 @@
 <h2>test de Listing des UV</h2>
 <p><a href="http://localhost:8080/Sapfor/rest/uv/uvs?Uv=1" class="bouton">Voir UV 1</a></p>
 
+<h2>test de Creation d'Agent via le DAO</h2>
+<p><a href="http://localhost:8080/Sapfor/creation" class="bouton">Creation d'un agent</a></p>
+
 </body>
 </html>

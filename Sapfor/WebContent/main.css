@@ -4,6 +4,14 @@ body, p, legend, label, input {
     font: normal 8pt verdana, helvetica, sans-serif;
     color: #000000;
 }
+
+h1{
+	color: black;
+}
+
+h2{
+	color: white;
+}
 body {
  background-image: url("https://static.pexels.com/photos/1380/black-and-white-city-skyline-buildings.jpg");  
  background-size: cover;
