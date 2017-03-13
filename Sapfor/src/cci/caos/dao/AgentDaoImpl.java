@@ -30,6 +30,7 @@ public class AgentDaoImpl extends Dao implements AgentDao {
 
     /**
      * Constructeur
+     * 
      * @param conn
      */
     public AgentDaoImpl( Connection conn ) {
@@ -39,11 +40,15 @@ public class AgentDaoImpl extends Dao implements AgentDao {
     /* Implementation des méthodes */
 
     /**
-	 * Création d'un agent dans la base de données
-	 * @param agent - l'agent à enregistrer
-	 * @return L'id de l'agent enregistré
-	 * @throws DAOException si la création dans la base de données a provoqué une SQLException
-	 */
+     * Création d'un agent dans la base de données
+     * 
+     * @param agent
+     *            - l'agent à enregistrer
+     * @return L'id de l'agent enregistré
+     * @throws DAOException
+     *             si la création dans la base de données a provoqué une
+     *             SQLException
+     */
     @Override
     public int creer( Agent agent ) throws DAOException {
         PreparedStatement preparedStatement;
@@ -61,7 +66,7 @@ public class AgentDaoImpl extends Dao implements AgentDao {
             /* Execution de la requete */
             preparedStatement.executeUpdate();
 
-            /* Recuperation de l'Id cr�� */
+            /* Recuperation de l'Id cree */
             ResultSet resultat = preparedStatement.getGeneratedKeys();
             resultat.next();
             idNewAgent = resultat.getInt( 1 );
@@ -123,9 +128,13 @@ public class AgentDaoImpl extends Dao implements AgentDao {
 
     /**
      * Recherche d'un agent dans la base de données à partir de son id
-     * @param id - l'id de l'agent à rechercher
+     * 
+     * @param id
+     *            - l'id de l'agent à rechercher
      * @return Un objet de type Agent correspondant à l'agent recherché
-     * @throws DAOException si la recherche dans la base de données a provoqué une SQLException
+     * @throws DAOException
+     *             si la recherche dans la base de données a provoqué une
+     *             SQLException
      */
     @Override
     public Agent trouver( int id ) throws DAOException {
@@ -160,9 +169,13 @@ public class AgentDaoImpl extends Dao implements AgentDao {
 
     /**
      * Recherche si un agent existe dans la base de données
-     * @param agent - l'agent a rechercher
+     * 
+     * @param agent
+     *            - l'agent a rechercher
      * @return True si l'agent existe, sinon renvoie false
-     * @throws DAOException si la recherche dans la base de données a provoqué une SQLException
+     * @throws DAOException
+     *             si la recherche dans la base de données a provoqué une
+     *             SQLException
      */
     @Override
     public boolean existe( Agent agent ) throws DAOException {
@@ -189,8 +202,12 @@ public class AgentDaoImpl extends Dao implements AgentDao {
 
     /**
      * Mise a jour d'un agent dans la base de données
-     * @param agent - l'agent à mettre à jour
-     * @throws DAOException - si la mise à jour dans la base de données a provoqué une SQLException
+     * 
+     * @param agent
+     *            - l'agent à mettre à jour
+     * @throws DAOException
+     *             - si la mise à jour dans la base de données a provoqué une
+     *             SQLException
      */
     @Override
     public void mettreAJour( Agent agent ) throws DAOException {
@@ -276,8 +293,11 @@ public class AgentDaoImpl extends Dao implements AgentDao {
 
     /**
      * Liste tous les agents existants dans la base de données
+     * 
      * @return Liste de tous les agents existants dans la base de données
-     * @throws DAOException si la recherche des agents existants dans la base de données a provoqué une SQLException
+     * @throws DAOException
+     *             si la recherche des agents existants dans la base de données
+     *             a provoqué une SQLException
      */
     @Override
     public List<Agent> listerTous() throws DAOException {
@@ -312,11 +332,15 @@ public class AgentDaoImpl extends Dao implements AgentDao {
     }
 
     /**
-     * Liste toutes les aptitudes possédées par un agent qui sont enregistrées dans la base de données
-     * @param id - L'id de l'agent concerné
+     * Liste toutes les aptitudes possédées par un agent qui sont enregistrées
+     * dans la base de données
+     * 
+     * @param id
+     *            - L'id de l'agent concerné
      * @return Liste des aptitudes possédées par l'agent
-     * @throws DAOException si la recherche des aptitudes possédées par l'agent 
-     * dans la base de données a provoqué une SQLException
+     * @throws DAOException
+     *             si la recherche des aptitudes possédées par l'agent dans la
+     *             base de données a provoqué une SQLException
      */
     @Override
     public List<Aptitude> listerAptitudeParAgent( int id ) throws DAOException {
@@ -345,10 +369,15 @@ public class AgentDaoImpl extends Dao implements AgentDao {
     }
 
     /**
-     * Liste toutes les UV possédées par un agent qui sont enregistrées dans la base de données
-     * @param id - L'id de l'agent concerné
+     * Liste toutes les UV possédées par un agent qui sont enregistrées dans la
+     * base de données
+     * 
+     * @param id
+     *            - L'id de l'agent concerné
      * @return Liste des UV possédées par l'agent
-     * @throws DAOException si la recherche des UV possédées par l'agent dans la base de données a provoqué une SQLException
+     * @throws DAOException
+     *             si la recherche des UV possédées par l'agent dans la base de
+     *             données a provoqué une SQLException
      */
     @Override
     public List<Uv> listerUvParAgent( int id ) throws DAOException {
