@@ -55,7 +55,8 @@ public class SapforServer {
     /**
      * Permet d'obtenir la session identifiee par l'identifiant "id"
      * 
-     * @Param id Identifiant de la session recherchee
+     * @param id
+     *            Identifiant de la session recherchee
      * 
      * @return Retourne la session recherchee
      */
@@ -327,10 +328,8 @@ public class SapforServer {
      * Retourne la liste des candidatures pour une session donnee
      * 
      * @param idSession
-     *            id de la session recherchée <<<<<<< HEAD
-     * @return Liste des candidatures pour une session donnee =======
-     * @return Liste des candidatures pour une session donnée >>>>>>> branch
-     *         'master' of https://github.com/YL35M2S/Sapfor.git
+     *            id de la session recherchée
+     * @return Liste des candidatures pour une session donnee
      */
     public List<CandidatureGenerique> getListeCandidatures( int idSession ) {
         List<CandidatureGenerique> listeCandidaturesGeneriques = new ArrayList<CandidatureGenerique>();
@@ -348,8 +347,8 @@ public class SapforServer {
     /**
      * Retourne la liste des candidatures pour un agent donne
      * 
-     * @param idAgent
-     *            id de l'agent recherche
+     * @param uuid
+     *            uuid de l'agent pour lequel on recherche les candidatures
      * @return Liste des candidatures pour un agent donne
      */
     public List<CandidatureGenerique> getListeSession( String uuid ) {
@@ -368,11 +367,9 @@ public class SapforServer {
     /**
      * Retourne la liste des agents pour une session donnée
      * 
-     * @param idAgent
-     *            id de la session recherchée <<<<<<< HEAD
-     * @return Liste des agents pour une session donnee =======
-     * @return Liste des agents pour une session donnée >>>>>>> branch 'master'
-     *         of https://github.com/YL35M2S/Sapfor.git
+     * @param idSession
+     *            id de la session recherchee
+     * @return Liste des agents pour une session donnee
      */
     public List<CandidatGenerique> getListeCandidats( int idSession ) {
         List<CandidatGenerique> listeCandidaturesGeneriques = new ArrayList<CandidatGenerique>();
@@ -489,9 +486,9 @@ public class SapforServer {
      * Transforme une Candidature en une CandidatureGenerique
      * 
      * @param candidature
+     *            la Candidature a convertir en CandidatureGenerique
      * @return CandidatureGenerique
      */
-    @SuppressWarnings( "deprecation" )
     public CandidatureGenerique candidatureToCandidatureGenerique( Candidature candidature ) {
         SimpleDateFormat simpDate = new SimpleDateFormat( "dd/MM/yyyy" );
         return new CandidatureGenerique(
@@ -510,9 +507,9 @@ public class SapforServer {
      * Transforme une Session en une SessionGenerique
      * 
      * @param session
+     *            la Session a convertir en SessionGenerique
      * @return SessionGenerique
      */
-    @SuppressWarnings( "deprecation" )
     public SessionGenerique sessionToSessionGenerique( Session session ) {
         SimpleDateFormat simpDate = new SimpleDateFormat( "dd/MM/yyyy" );
         return new SessionGenerique(
@@ -528,9 +525,9 @@ public class SapforServer {
      * Transforme une Candidature en un CandidatGenerique
      * 
      * @param candidature
+     *            la Candidature à convertir en CandidatGenerique
      * @return CandidatGenerique
      */
-    @SuppressWarnings( "deprecation" )
     public CandidatGenerique candidatToCandidatGenerique( Candidature candidature ) {
         return new CandidatGenerique(
                 candidature.getAgent().getId(),
@@ -544,7 +541,9 @@ public class SapforServer {
      * Transforme une candidatureGenerique en Candidature
      * 
      * @param candidatGenerique
+     *            la CandidatureGenerique a convertir en candidature
      * @param session
+     *            l'id de la session concernee par la candidature
      * @return Candidature
      */
     public Candidature candidatGeneriqueToCandidature( CandidatGenerique candidatGenerique, int session ) {
@@ -566,7 +565,6 @@ public class SapforServer {
      * Initialise le serveur avec instanciation de differents objets (UV,
      * Session...)
      */
-    @SuppressWarnings( "deprecation" )
     public void initializeServer() {
         // AbstractDAOFactory adf = AbstractDAOFactory.getFactory( typeDao );
 

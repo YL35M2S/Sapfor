@@ -23,13 +23,15 @@ public class UvDaoImpl extends Dao implements UvDao {
 
     /**
      * Constructeur
+     * 
      * @param conn
+     *            La connection generee par le DAOFactory
      */
     public UvDaoImpl( Connection conn ) {
         super( conn );
     }
 
-    /* Impl�mentation des m�thodes */
+    /* Impl�mentation des methodes */
 
     /**
      * Creation d'une Uv dans la Base de Donnees
@@ -37,7 +39,9 @@ public class UvDaoImpl extends Dao implements UvDao {
      * @param uv
      *            L'uv a sauvegarder
      * @return l'Id de l'uv creee
-     * @throws DAOException si la creation dans la base de donnees a provoque une Exception
+     * @throws DAOException
+     *             si la creation dans la base de donnees a provoque une
+     *             Exception
      */
     public int creer( Uv uv ) {
         // public int creer( Uv uv ) throws DAOException {
@@ -96,10 +100,12 @@ public class UvDaoImpl extends Dao implements UvDao {
     /**
      * Recherche d'une uv dans la Base de Donnees a partir de son id
      * 
-     * @param id
+     * @param idUv
      *            L'id de l'uv a rechercher
      * @return l'uv recherchee
-     * @throws DAOException si la recherche dans la base de donnees a provoque une Exception
+     * @throws DAOException
+     *             si la recherche dans la base de donnees a provoque une
+     *             Exception
      */
     @Override
     public Uv trouver( int idUv ) throws DAOException {
@@ -154,7 +160,9 @@ public class UvDaoImpl extends Dao implements UvDao {
      * @param uv
      *            L'uv recherchee
      * @return Vrai si elle existe sinon false
-     * @throws DAOException si la recherche dans la base de donnees a provoque une Exception
+     * @throws DAOException
+     *             si la recherche dans la base de donnees a provoque une
+     *             Exception
      */
     @Override
     public boolean existe( Uv uv ) throws DAOException {
@@ -184,7 +192,9 @@ public class UvDaoImpl extends Dao implements UvDao {
      * 
      * @param uv
      *            L'uv a mettre a jour
-     * @throws DAOException si la mise a jour dans la base de donnees a provoque une Exception
+     * @throws DAOException
+     *             si la mise a jour dans la base de donnees a provoque une
+     *             Exception
      */
     @Override
     public void mettreAJour( Uv uv ) throws DAOException {

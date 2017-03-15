@@ -36,7 +36,10 @@ public class SessionManager {
      * 
      * @author TA (Antrema)
      * @param uuid
+     *            l'uuid de l'agent connecte demandeur de la fermeture (doit
+     *            etre gestionnaire)
      * @param idSession
+     *            l'id de la session concerne par la fermeture
      * @return True si la fermeture a ete effective, sinon False
      */
     @GET
@@ -70,7 +73,10 @@ public class SessionManager {
      * donnee
      * 
      * @param uuid
+     *            l'uuid de l'agent connecte demandeur de l'ouverture (doit etre
+     *            gestionnaire)
      * @param idSession
+     *            l'id de la session concerne par l'ouverture
      * @return True si l'ouverture a ete effective, sinon False
      */
     @GET
@@ -105,9 +111,11 @@ public class SessionManager {
      * 
      * @author AT (Antrema)
      * @param uuid
+     *            l'uuid de l'agent connecte demandeur de la modification
      * @param idSession
-     * @Param candidatures Liste des candidatGenerique modifiee
-     * 
+     *            l'id de la session concerne par la modification
+     * @param candidatures
+     *            Liste des CandidatGenerique modifiee
      * @return True si la liste des candidats a ete modifiee, sinon False
      */
     @POST
@@ -138,6 +146,7 @@ public class SessionManager {
      * 
      * @author FD (Fdescaves)
      * @param uuid
+     *            l'uuid de l'agent connecte
      * @return la liste des sessions accessibles
      */
     @GET
@@ -165,6 +174,8 @@ public class SessionManager {
      * 
      * @author TP (TheoPerrin)
      * @param uuid
+     *            l'uuid de l'agent connecte demandeur de la liste des
+     *            condidatures
      * @return la liste des candidatures d'un agent
      */
     @GET
@@ -193,7 +204,9 @@ public class SessionManager {
      * 
      * @author YL (YL35M2S)
      * @param uuid
+     *            l'uuid de l'agent connecte demandeur du retrait de candidature
      * @param idSession
+     *            l'id de la session concerne par la modification
      * @return True si la candidature a ete retiree, sinon False
      */
     @GET
@@ -260,8 +273,12 @@ public class SessionManager {
      * 
      * @author SI (souraagui)
      * @param uuid
+     *            l'uuid de l'agent connecte depositaire de la candidature
      * @param idSession
+     *            l'id de la session concerne par le depot de candidature
      * @param role
+     *            le role (Formateur/Stagiaire) de l'agent candidat
+     * 
      * @return True si la candidature a ete enregistree, sinon False
      */
     @GET
@@ -287,7 +304,10 @@ public class SessionManager {
      * 
      * @author RPD (Denier-Poulain-Romain)
      * @param uuid
+     *            l'uuid de l'agent connecte demandeur de la liste (doit etre
+     *            gestionnaire)
      * @param idSession
+     *            l'id de la session concerne par la selection
      * @return la liste des candidature d'une session donnée
      */
     @GET
@@ -338,5 +358,4 @@ public class SessionManager {
         };
         return Response.status( Status.OK ).entity( sessionGenerique ).build();
     }
-
 }

@@ -23,11 +23,17 @@ public class Session {
      * Constructeur qui initialise les variables d'instance
      * 
      * @param n
+     *            le nom de la session
      * @param dd
+     *            la date de debut de la session
      * @param df
+     *            la date de fin de la session
      * @param b
+     *            le statut ouverte aux inscriptions ou fermee
      * @param uv
+     *            l'uv concerne par la session de formation
      * @param stage
+     *            le stage contenant la session
      */
     public Session( String n, Date dd, Date df, boolean b, Uv uv, Stage stage ) {
         this.nom = n;
@@ -52,6 +58,7 @@ public class Session {
      * Change l'id de la session
      * 
      * @param id
+     *            l'id de la session
      */
     public void setId( int id ) {
         this.id = id;
@@ -70,6 +77,7 @@ public class Session {
      * Change le nom de la session
      * 
      * @param nom
+     *            le nom de la session
      */
     public void setNom( String nom ) {
         this.nom = nom;
@@ -88,6 +96,7 @@ public class Session {
      * Change la date de debut de session
      * 
      * @param dateDebut
+     *            date de debut de la session
      */
     public void setDateDebut( Date dateDebut ) {
         this.dateDebut = dateDebut;
@@ -106,6 +115,7 @@ public class Session {
      * Change la date de fin de session
      * 
      * @param dateFin
+     *            date de fin de la session
      */
     public void setDateFin( Date dateFin ) {
         this.dateFin = dateFin;
@@ -124,6 +134,8 @@ public class Session {
      * Change la valeur booleenne de l'ouverture de l'inscription a la session
      * 
      * @param ouverteInscription
+     *            statut de la session de formation (ouverte aux inscriptions ou
+     *            fermee)
      */
     public void setOuverteInscription( boolean ouverteInscription ) {
         this.ouverteInscription = ouverteInscription;
@@ -142,6 +154,7 @@ public class Session {
      * Change l'uv de la session
      * 
      * @param uv
+     *            l'UV de la session
      */
     public void setUv( Uv uv ) {
         this.uv = uv;
@@ -160,6 +173,7 @@ public class Session {
      * Change le stage de la session
      * 
      * @param stage
+     *            la stage integrant la session
      */
     public void setStage( Stage stage ) {
         this.stage = stage;

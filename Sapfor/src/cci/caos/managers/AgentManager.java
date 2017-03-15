@@ -31,6 +31,7 @@ public class AgentManager {
      * actuellement en cours
      * 
      * @param idAg
+     *            l'id de l'agent
      * @return l'agent correspondant a l'idAg
      */
     @GET
@@ -48,6 +49,7 @@ public class AgentManager {
      * 
      * @author FD (fdescaves)
      * @param request
+     *            la requete recue
      * @return ok si les donnees de connection sont correctes sinon non autorise
      */
     @GET

@@ -15,7 +15,7 @@ public class CandidatureGenerique {
     private String  stage;
 
     /* Constructeurs */
-    
+
     /**
      * Constructeur vide
      */
@@ -24,15 +24,26 @@ public class CandidatureGenerique {
 
     /**
      * Constructeur
-     * @param id_Agent Id d'un agent
-     * @param estFormateur True si candidature pour etre formateur
-     * @param statutCandidature Statut de la candidature
-     * @param id_Session Id de la session
-     * @param n Nom de la session
-     * @param dd Date début de la session
-     * @param df Date fin de la session
-     * @param uv UV concernee par la session
-     * @param stage Stage auquel appartient la session
+     * 
+     * @param id_Agent
+     *            l'id d'un agent
+     * @param estFormateur
+     *            le role de la candidature (True si candidature pour etre
+     *            formateur)
+     * @param statutCandidature
+     *            le statut de la candidature
+     * @param id_Session
+     *            l'id de la session
+     * @param n
+     *            le nom de la session
+     * @param dd
+     *            Date la date de début de la session
+     * @param df
+     *            Date la date de fin de la session
+     * @param uv
+     *            l'UV concernee par la session
+     * @param stage
+     *            le stage auquel appartient la session
      */
     public CandidatureGenerique( int id_Agent, boolean estFormateur, int statutCandidature, int id_Session, String n,
             String dd, String df, String uv, String stage ) {
@@ -48,9 +59,10 @@ public class CandidatureGenerique {
     }
 
     /* Accesseurs et Modificateurs */
-    
+
     /**
      * Renvoie l'id de l'agent
+     * 
      * @return id d'agent
      */
     public int getId_Agent() {
@@ -59,7 +71,9 @@ public class CandidatureGenerique {
 
     /**
      * Change l'id de l'agent
+     * 
      * @param id
+     *            l'id de l'agent candidat
      */
     public void setId_Agent( int id ) {
         this.id_Agent = id;
@@ -67,22 +81,26 @@ public class CandidatureGenerique {
 
     /**
      * Retourne l'id de la session
+     * 
      * @return id de session
      */
     public int getId_Session() {
         return id_Session;
     }
-    
+
     /**
      * Change l'id de la session
+     * 
      * @param id
+     *            l'id de la session concernee par la candidature
      */
     public void setId_Session( int id ) {
         this.id_Session = id;
     }
-    
+
     /**
      * Renvoie le nom d'un agent
+     * 
      * @return nom
      */
     public String getNom() {
@@ -91,7 +109,9 @@ public class CandidatureGenerique {
 
     /**
      * Change le nom d'un agent
+     * 
      * @param nom
+     *            le nom de l'agent candidat
      */
     public void setNom( String nom ) {
         this.nom = nom;
@@ -99,6 +119,7 @@ public class CandidatureGenerique {
 
     /**
      * Renvoie la date de début de la session candidate
+     * 
      * @return date (format String)
      */
     public String getDateDebut() {
@@ -107,7 +128,10 @@ public class CandidatureGenerique {
 
     /**
      * Modifie la date de début de la session candidate
+     * 
      * @param dateDebut
+     *            la date de debut de la session concernee par la candidature
+     * 
      */
     public void setDateDebut( String dateDebut ) {
         this.dateDebut = dateDebut;
@@ -115,15 +139,18 @@ public class CandidatureGenerique {
 
     /**
      * Renvoie la date de fin de la session candidate
+     * 
      * @return date (format String)
      */
     public String getDateFin() {
         return dateFin;
     }
-    
+
     /**
      * Change la date de fin de la session candidate
+     * 
      * @param dateFin
+     *            la date de fin de la session concernee par la candidature
      */
     public void setDateFin( String dateFin ) {
         this.dateFin = dateFin;
@@ -131,6 +158,7 @@ public class CandidatureGenerique {
 
     /**
      * Renvoie le nom de l'UV concernee
+     * 
      * @return UV
      */
     public String getUv() {
@@ -139,14 +167,17 @@ public class CandidatureGenerique {
 
     /**
      * Modifie le nom de l'UV concernee
+     * 
      * @param uv
+     *            le nom de l'UV concernee par la candidature
      */
     public void setUv( String uv ) {
         this.uv = uv;
     }
-    
+
     /**
      * Renvoie le nom stage concerne
+     * 
      * @return nom du stage
      */
     public String getStage() {
@@ -155,14 +186,17 @@ public class CandidatureGenerique {
 
     /**
      * Change le nom du stage concerne
+     * 
      * @param stage
+     *            le nom du stage concerne par la candidature
      */
     public void setStage( String stage ) {
         this.stage = stage;
     }
 
     /**
-     * Renvoie si le candidat candidate en tant que formateur 
+     * Renvoie si le candidat candidate en tant que formateur
+     * 
      * @return true si l'agent candidate en tant que formateur, sinon false
      */
     public boolean isEstFormateur() {
@@ -171,7 +205,10 @@ public class CandidatureGenerique {
 
     /**
      * Change l'etat de formateur du candidat pour cette session
+     * 
      * @param estFormateur
+     *            le role (Formateur/Stagiaire) de l'agent candidat (True si
+     *            candidature pour etre formateur)
      */
     public void setEstFormateur( boolean estFormateur ) {
         this.estFormateur = estFormateur;
@@ -179,7 +216,10 @@ public class CandidatureGenerique {
 
     /**
      * Renvoie le statut de la candidature
-     * @return statut
+     * 
+     * @return statut le statut de la candidature (-2 : Candidature non statuee
+     *         ; -1 : Candidature acceptee ; 0 : Candidature refusee ; 1..n :
+     *         place dans la liste d'attente)
      */
     public int getStatutCandidature() {
         return statutCandidature;
@@ -187,7 +227,11 @@ public class CandidatureGenerique {
 
     /**
      * Modifie le statut de la candidature
+     * 
      * @param statutCandidature
+     *            le statut de la candidature (-2 : Candidature non statuee ; -1
+     *            : Candidature acceptee ; 0 : Candidature refusee ; 1..n :
+     *            place dans la liste d'attente)
      */
     public void setStatutCandidature( int statutCandidature ) {
         this.statutCandidature = statutCandidature;

@@ -24,8 +24,10 @@ public class CandidatureDaoImpl extends Dao implements CandidatureDao {
     private static final String SQL_DELETE_PAR_CANDIDAT_SESSION = "DELETE FROM Candidature WHERE idSession = ? AND idAgent = ? ";
 
     /**
+     * Constructeur
      * 
      * @param conn
+     *            La connection generee par le DAOFactory
      */
     public CandidatureDaoImpl( Connection conn ) {
         super( conn );

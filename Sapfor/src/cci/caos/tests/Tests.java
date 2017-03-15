@@ -1,7 +1,6 @@
 package cci.caos.tests;
 
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.ws.rs.client.Client;
@@ -31,18 +30,18 @@ import cci.caos.server.SapforServer;
 
 public class Tests {
 
-    private final String WS_URI          = "http://localhost:8080/Sapfor/rest";
-    private int			 idAgent = 2;
+    private final String WS_URI                     = "http://localhost:8080/Sapfor/rest";
+    private int          idAgent                    = 2;
     private String       uuidAgent;
     private String       uuidGestionnaire;
-    private int          idSessionDeTest = 1;
-    private int 		 idSessionDeTestCandidature = 2;
-    private int [] 		 tabIdSessionsAccessibles = {2,3,4};
+    private int          idSessionDeTest            = 1;
+    private int          idSessionDeTestCandidature = 2;
+    private int[]        tabIdSessionsAccessibles   = { 2, 3, 4 };
     private boolean      etatInitialSession;
-    private boolean  	 etatInitialCandidature;
-    private int 		 statutAgentCandidature;
-    private boolean 	 roleAgentCandidature;
-    
+    private boolean      etatInitialCandidature;
+    private int          statutAgentCandidature;
+    private boolean      roleAgentCandidature;
+
     @Before
     public void initTest() {
         // Initialisation des UUID Agent et Gestionnaire
@@ -60,18 +59,20 @@ public class Tests {
             sessionDeTest.setOuverteInscription( true );
             sessionDao.mettreAJour( sessionDeTest );
         }
-        
-        // Sauvegarde de la présence et de l'etat de la candidature de test sur le serveur
+
+        // Sauvegarde de la présence et de l'etat de la candidature de test sur
+        // le serveur
         CandidatureDao candidatureDao = adf.getCandidatureDao();
-        etatInitialCandidature = candidatureDao.existe(idAgent, idSessionDeTestCandidature);
-        
-       // Sauvegarde de la candidature et retrait (si besoin) de la DAO 		
-        if (etatInitialCandidature) {
-        	AgentDao agentDao = adf.getAgentDao();
-            Candidature candidature = candidatureDao.trouver(agentDao.trouver(idAgent), sessionDao.trouver(idSessionDeTestCandidature));
+        etatInitialCandidature = candidatureDao.existe( idAgent, idSessionDeTestCandidature );
+
+        // Sauvegarde de la candidature et retrait (si besoin) de la DAO
+        if ( etatInitialCandidature ) {
+            AgentDao agentDao = adf.getAgentDao();
+            Candidature candidature = candidatureDao.trouver( agentDao.trouver( idAgent ),
+                    sessionDao.trouver( idSessionDeTestCandidature ) );
             statutAgentCandidature = candidature.getStatutCandidature();
             roleAgentCandidature = candidature.isEstFormateur();
-        	candidatureDao.supprimerCandidature(idAgent, idSessionDeTestCandidature);
+            candidatureDao.supprimerCandidature( idAgent, idSessionDeTestCandidature );
         }
     }
 
@@ -96,50 +97,49 @@ public class Tests {
         Assert.assertEquals( true, testListesAccessibles() );
 
         // Test du depot de candidature
-        Assert.assertEquals(200, testDepotCandidature());
-        
+        Assert.assertEquals( 200, testDepotCandidature() );
+
         // Test de la présence de la candidature dans la DAO
-        Assert.assertEquals(true, testPresenceCandidature());
-        
+        Assert.assertEquals( true, testPresenceCandidature() );
+
         // Test de la présence de la candidature
-        Assert.assertEquals(true, testListeCandidatures());
-        
+        Assert.assertEquals( true, testListeCandidatures() );
+
         // Test du retrait de candidature
-        Assert.assertEquals(200, testRetirerCandidature());
-        
+        Assert.assertEquals( 200, testRetirerCandidature() );
+
         // Test de l'absence de la candidature dans la DAO
-        Assert.assertEquals(true, testAbsenceCandidature());
+        Assert.assertEquals( true, testAbsenceCandidature() );
     }
-    
+
     @After
     public void resetTest() {
-    	AbstractDAOFactory adf = AbstractDAOFactory.getFactory( SapforServer.typeDao );
+        AbstractDAOFactory adf = AbstractDAOFactory.getFactory( SapforServer.typeDao );
         if ( etatInitialSession ) {
             // Retour a l'etat initial de la session de test sur le serveur
             SessionDao sessionDao = adf.getSessionDao();
             Session sessionDeTest = sessionDao.trouver( idSessionDeTest );
             sessionDeTest.setOuverteInscription( etatInitialSession );
         }
-        if (etatInitialCandidature) {
-        	CandidatureDao candidatureDao = adf.getCandidatureDao();
-        	AgentDao agentDao = adf.getAgentDao();
-        	SessionDao sessionDao = adf.getSessionDao();
-        	Candidature candidature = new Candidature(agentDao.trouver(idAgent),statutAgentCandidature,
-        			roleAgentCandidature,sessionDao.trouver(idSessionDeTestCandidature));
-        	candidatureDao.creer(candidature);
+        if ( etatInitialCandidature ) {
+            CandidatureDao candidatureDao = adf.getCandidatureDao();
+            AgentDao agentDao = adf.getAgentDao();
+            SessionDao sessionDao = adf.getSessionDao();
+            Candidature candidature = new Candidature( agentDao.trouver( idAgent ), statutAgentCandidature,
+                    roleAgentCandidature, sessionDao.trouver( idSessionDeTestCandidature ) );
+            candidatureDao.creer( candidature );
         }
     }
 
     /* FONCTIONS ELEMENTAIRES */
     /**
-     * Renvoie la liste des sessions ouvertes
+     * Teste si la session est presente dans la liste des sessions ouvertes
      * 
      * @return true si la session est presente dans la liste des sessions
      *         ouvertes
      */
     public boolean testListesOuvertes() {
         boolean estDansListesOuvertes = false;
-        List<SessionGenerique> models = new ArrayList<>();
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target( getBaseUri() );
         List<SessionGenerique> all = target.path( "session/listeOuvertes" ).request()
@@ -155,14 +155,13 @@ public class Tests {
     }
 
     /**
-     * Renvoie la liste des sessions fermees
+     * Teste si la session est presente dans la liste des sessions fermees
      * 
      * @return true si la session est presente dans la liste des sessions
      *         fermees
      */
     public boolean testListesFermees() {
         boolean estDansListesFermees = false;
-        List<SessionGenerique> models = new ArrayList<>();
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target( getBaseUri() );
         List<SessionGenerique> all = target.path( "session/listeFermees" ).request()
@@ -180,8 +179,6 @@ public class Tests {
     /**
      * Renvoie le status de la fermeture d'une session par un Gestionnaire
      * 
-     * @param idSession
-     *            l'id de la session a fermer
      * @return status de la reponse
      */
     public int testFermerCandidatureGestionnaire() {
@@ -197,10 +194,9 @@ public class Tests {
     }
 
     /**
-     * Renvoie le status de la fermeture d'une session par un Gestionnaire
+     * Renvoie le status de la fermeture d'une session par un agent non
+     * gestionnaire
      * 
-     * @param idSession
-     *            l'id de la session a fermer
      * @return status de la reponse
      */
     public int testFermerCandidatureAgent() {
@@ -214,101 +210,122 @@ public class Tests {
 
         return resultat;
     }
-    
+
     /**
-     * Renvoie le statut de la présence de toutes les sessions accessibles par l'agent
-     * @return true si toutes les sessions accessibles par l'agent sont dans la reponse HTTP
+     * Renvoie le statut de la présence de toutes les sessions accessibles par
+     * l'agent
+     * 
+     * @return true si toutes les sessions accessibles par l'agent sont dans la
+     *         reponse HTTP
      */
-	public boolean testListesAccessibles() {
-		Client client = ClientBuilder.newClient();
-		WebTarget target = client.target( getBaseUri() );
-		List<CandidatureGenerique> listeSessionsAccessibles = target.path( "session/"+uuidAgent+"/accessible").request().get( new GenericType<List<CandidatureGenerique>>() {});		
-		if (listeSessionsAccessibles.size()==tabIdSessionsAccessibles.length) {
-			for (int i=0; i<tabIdSessionsAccessibles.length; i++) {
-				if (listeSessionsAccessibles.get(i).getId_Session()!=tabIdSessionsAccessibles[i]) {
-					return false;
-				}
-			}
-			return true;
-		} else {
-			return false;
-		}
-	}
-    
-	/**
-	* Renvoie la liste des candidatures
-	* @return true si la candidature est presente dans la liste des candidatures
-	*/
-	public boolean testListeCandidatures() {
-		boolean estDansListeCandidatures = false;
-		Client client = ClientBuilder.newClient();
-		WebTarget target = client.target( getBaseUri() );
-		List<CandidatureGenerique> listeCandidature = target.path( "session/"+uuidAgent).request().get( new GenericType<List<CandidatureGenerique>>() {});	
-		
-		for ( CandidatureGenerique c : listeCandidature ) {
-	            if ( c.getId_Agent() == idAgent && c.getId_Session()==idSessionDeTestCandidature) {
-	            	estDansListeCandidatures = true;
-	                break;
-	            }
-		}
-		return estDansListeCandidatures;
-	}
-	
+    public boolean testListesAccessibles() {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target( getBaseUri() );
+        List<CandidatureGenerique> listeSessionsAccessibles = target.path( "session/" + uuidAgent + "/accessible" )
+                .request().get( new GenericType<List<CandidatureGenerique>>() {
+                } );
+        if ( listeSessionsAccessibles.size() == tabIdSessionsAccessibles.length ) {
+            for ( int i = 0; i < tabIdSessionsAccessibles.length; i++ ) {
+                if ( listeSessionsAccessibles.get( i ).getId_Session() != tabIdSessionsAccessibles[i] ) {
+                    return false;
+                }
+            }
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Teste si la candidature est dans la liste des candidatures
+     * 
+     * @return true si la candidature est presente dans la liste des
+     *         candidatures
+     */
+    public boolean testListeCandidatures() {
+        boolean estDansListeCandidatures = false;
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target( getBaseUri() );
+        List<CandidatureGenerique> listeCandidature = target.path( "session/" + uuidAgent ).request()
+                .get( new GenericType<List<CandidatureGenerique>>() {
+                } );
+
+        for ( CandidatureGenerique c : listeCandidature ) {
+            if ( c.getId_Agent() == idAgent && c.getId_Session() == idSessionDeTestCandidature ) {
+                estDansListeCandidatures = true;
+                break;
+            }
+        }
+        return estDansListeCandidatures;
+    }
+
     /**
      * Renvoie le statut du depot de la candidature par un agent
+     * 
      * @return statut de la reponse HTTP
      */
     public int testDepotCandidature() {
-    	int resultat;
-		Client client = ClientBuilder.newClient();
-		WebTarget target = client.target( getBaseUri() );
-		resultat = target.path( "session/"+uuidAgent+"/candidater")
-				.queryParam("Session", idSessionDeTestCandidature)
-				.queryParam("Formateur", "false")
-				.request()
-				.get().getStatus();
-		return resultat;
-		
+        int resultat;
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target( getBaseUri() );
+        resultat = target.path( "session/" + uuidAgent + "/candidater" )
+                .queryParam( "Session", idSessionDeTestCandidature )
+                .queryParam( "Formateur", "false" )
+                .request()
+                .get().getStatus();
+        return resultat;
     }
-    
+
     /**
      * Renvoie le statut du retrait de la candidature par un agent
+     * 
      * @return statut de la reponse HTTP
      */
-	public int testRetirerCandidature() {
-		int resultat;
-		Client client = ClientBuilder.newClient();
-		WebTarget target = client.target( getBaseUri() );
-		resultat = target.path( "session/"+uuidAgent+"/retirerCandidature")
-				.queryParam("Session", idSessionDeTestCandidature)
-				.request()
-				.get().getStatus();
-		return resultat;
-	}
-    
-	/**
-	 * Test la présence de la candidature dans la DAO
-	 * @return true si la candidature est présente dans la DAO
-	 */
-	public boolean testPresenceCandidature() {
-		AbstractDAOFactory adf = AbstractDAOFactory.getFactory( SapforServer.typeDao );
+    public int testRetirerCandidature() {
+        int resultat;
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target( getBaseUri() );
+        resultat = target.path( "session/" + uuidAgent + "/retirerCandidature" )
+                .queryParam( "Session", idSessionDeTestCandidature )
+                .request()
+                .get().getStatus();
+        return resultat;
+    }
+
+    /**
+     * Teste la présence de la candidature dans la DAO
+     * 
+     * @return true si la candidature est présente dans la DAO
+     */
+    public boolean testPresenceCandidature() {
+        AbstractDAOFactory adf = AbstractDAOFactory.getFactory( SapforServer.typeDao );
         CandidatureDao candidatureDao = adf.getCandidatureDao();
-        return candidatureDao.existe(idAgent, idSessionDeTestCandidature);
-	}
-	
-	/**
-	 * Test l'absence de la candidature dans la DAO
-	 * @return true si la candidature est absente dans la DAO
-	 */
-	public boolean testAbsenceCandidature() {
-		AbstractDAOFactory adf = AbstractDAOFactory.getFactory( SapforServer.typeDao );
+        return candidatureDao.existe( idAgent, idSessionDeTestCandidature );
+    }
+
+    /**
+     * Teste l'absence de la candidature dans la DAO
+     * 
+     * @return true si la candidature est absente dans la DAO
+     */
+    public boolean testAbsenceCandidature() {
+        AbstractDAOFactory adf = AbstractDAOFactory.getFactory( SapforServer.typeDao );
         CandidatureDao candidatureDao = adf.getCandidatureDao();
-        return !candidatureDao.existe(idAgent, idSessionDeTestCandidature);
-	}
-	
-    
+        return !candidatureDao.existe( idAgent, idSessionDeTestCandidature );
+    }
+
     /* FONCTIONS COMPLEMENTAIRES */
-    public cci.caos.beans.AgentConnection getIdentification( String user, String pw ) {
+    /**
+     * Fonction d'identification d'un agent
+     * 
+     * @param user
+     *            identifiant de connexion
+     * @param pw
+     *            le mot de passe de connexion
+     * 
+     * @return l'AgentConnection identifie
+     */
+    public AgentConnection getIdentification( String user, String pw ) {
         Client client = null;
         try {
             // Connexion au serveur REST
@@ -334,6 +351,11 @@ public class Tests {
         }
     }
 
+    /**
+     * Renvoie l'URI de base utilise pour les requetes REST
+     * 
+     * @return l'URI de base pour les requetes REST
+     */
     private URI getBaseUri() {
         return UriBuilder.fromUri( WS_URI ).build();
     }

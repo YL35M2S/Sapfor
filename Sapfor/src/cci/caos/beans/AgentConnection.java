@@ -17,9 +17,10 @@ public class AgentConnection {
     }
 
     /* Accesseurs et Modificateurs */
-    
+
     /**
      * Renvoie l'UUID d'un agent
+     * 
      * @return UUID
      */
     public String getUuid() {
@@ -28,7 +29,9 @@ public class AgentConnection {
 
     /**
      * Change l'UUID d'un agent
+     * 
      * @param uuid
+     *            l'UUID de l'agent a modifier
      */
     public void setUuid( String uuid ) {
         this.uuid = uuid;
@@ -36,6 +39,7 @@ public class AgentConnection {
 
     /**
      * Renvoie le Nom de l'agent
+     * 
      * @return Nom
      */
     public String getNom() {
@@ -44,7 +48,9 @@ public class AgentConnection {
 
     /**
      * Change le nom de l'agent
+     * 
      * @param nom
+     *            le nom de l'agent a modifier
      */
     public void setNom( String nom ) {
         this.nom = nom;
@@ -52,15 +58,19 @@ public class AgentConnection {
 
     /**
      * Renvoie le matricule de l'agent
+     * 
      * @return matricule
      */
     public String getMatricule() {
         return matricule;
     }
-    
+
     /**
      * Change le matricule de l'agent
+     * 
      * @param matricule
+     *            le matricule de l'agent a modifier
+     * 
      */
     public void setMatricule( String matricule ) {
         this.matricule = matricule;
@@ -68,6 +78,7 @@ public class AgentConnection {
 
     /**
      * Renvoie si l'agent est gestionnaire
+     * 
      * @return true si l'agent est gestionnaire, sinon false
      */
     public boolean getGestionnaire() {
@@ -76,7 +87,9 @@ public class AgentConnection {
 
     /**
      * Change le status gestionnaire de l'agent
+     * 
      * @param gestionnaire
+     *            le role gestionnaire de l'agent a modifier
      */
     public void setGestionnaire( boolean gestionnaire ) {
         this.gestionnaire = gestionnaire;

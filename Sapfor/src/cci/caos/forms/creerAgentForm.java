@@ -19,6 +19,7 @@ public final class creerAgentForm {
      * Constructeur
      * 
      * @param agentDao
+     *            L'agent DA utilise pour communiquer avec la DAO
      */
     public creerAgentForm( AgentDao agentDao ) {
         this.agentDao = agentDao;
@@ -29,6 +30,7 @@ public final class creerAgentForm {
      * 
      * @author PT (TheoPerrin)
      * @param request
+     *            la requete POST du formulaire
      * @return l'agent cree
      */
     public Agent creerAgent( HttpServletRequest request ) {
@@ -65,7 +67,9 @@ public final class creerAgentForm {
      * 
      * @author PT (TheoPerrin)
      * @param request
+     *            la requete POST du formulaire
      * @param nomChamp
+     *            le nom du champ a extraire
      * @return null si champs non renseigne ou la valeur du champ
      */
     private static String getValeurChamp( HttpServletRequest request, String nomChamp ) {
@@ -76,5 +80,4 @@ public final class creerAgentForm {
             return valeur.trim();
         }
     }
-
 }

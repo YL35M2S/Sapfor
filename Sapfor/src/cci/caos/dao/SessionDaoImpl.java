@@ -22,7 +22,9 @@ public class SessionDaoImpl extends Dao implements SessionDao {
 
     /**
      * Constructeur
+     * 
      * @param conn
+     *            La connection generee par le DAOFactory
      */
     public SessionDaoImpl( Connection conn ) {
         super( conn );
@@ -31,12 +33,14 @@ public class SessionDaoImpl extends Dao implements SessionDao {
     /* Impl�mentation des m�thodes */
 
     /**
-     * Creation d'une session dans la Base de Donnees 
+     * Creation d'une session dans la Base de Donnees
      * 
-     * @param session 
-     * 			La session a sauvegarder
+     * @param session
+     *            La session a sauvegarder
      * @return l'Id de la session creee
-     * @throws DAOException si la creation dans la base de donnees a provoque une Exception
+     * @throws DAOException
+     *             si la creation dans la base de donnees a provoque une
+     *             Exception
      */
     @Override
     public int creer( Session session ) throws DAOException {
@@ -72,7 +76,9 @@ public class SessionDaoImpl extends Dao implements SessionDao {
      * @param id
      *            L'id de la session a rechercher
      * @return la session recherchee
-     * @throws DAOException si la recherche dans la base de donnees a provoque une Exception
+     * @throws DAOException
+     *             si la recherche dans la base de donnees a provoque une
+     *             Exception
      */
     @Override
     public Session trouver( int id ) throws DAOException {
@@ -112,7 +118,9 @@ public class SessionDaoImpl extends Dao implements SessionDao {
      * 
      * @param session
      *            La session a mettre a jour
-     * @throws DAOException si la mise a jour dans la base de donnees a provoque une Exception
+     * @throws DAOException
+     *             si la mise a jour dans la base de donnees a provoque une
+     *             Exception
      */
     @Override
     public void mettreAJour( Session session ) throws DAOException {
@@ -144,7 +152,9 @@ public class SessionDaoImpl extends Dao implements SessionDao {
      * @param session
      *            La session a rechercher
      * @return Vrai si il existe sinon false
-     * @throws DAOException si la recherche dans la base de donnees a provoque une Exception
+     * @throws DAOException
+     *             si la recherche dans la base de donnees a provoque une
+     *             Exception
      */
     @Override
     public boolean existe( Session session ) throws DAOException {
@@ -174,7 +184,9 @@ public class SessionDaoImpl extends Dao implements SessionDao {
      * Liste toutes les sessions existantes dans la Base de Donnees
      * 
      * @return Liste des sessions existantes en BDD
-     * @throws DAOException si la recherche des sessions dans la base de donnees a provoque une Exception
+     * @throws DAOException
+     *             si la recherche des sessions dans la base de donnees a
+     *             provoque une Exception
      */
     @Override
     public List<Session> listerToutes() throws DAOException {

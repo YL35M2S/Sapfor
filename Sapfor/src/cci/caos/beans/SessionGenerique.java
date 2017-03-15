@@ -12,7 +12,7 @@ public class SessionGenerique {
     private String stage;
 
     /* Constructeurs */
-    
+
     /**
      * Constructeur vide
      */
@@ -21,12 +21,19 @@ public class SessionGenerique {
 
     /**
      * Constructeur
-     * @param id Id de la session
-     * @param n Nom de la session
-     * @param dd Date début de la session
-     * @param df Date fin de la session
-     * @param uv Nom de l'UV concernee
-     * @param stage Nom du stage auquel appartient la session
+     * 
+     * @param id
+     *            l'id de la session
+     * @param n
+     *            le nom de la session
+     * @param dd
+     *            la date début de la session
+     * @param df
+     *            la date fin de la session
+     * @param uv
+     *            le nom de l'UV concernee
+     * @param stage
+     *            le nom du stage auquel appartient la session
      */
     public SessionGenerique( int id, String n, String dd, String df, String uv, String stage ) {
         this.id = id;
@@ -38,26 +45,30 @@ public class SessionGenerique {
     }
 
     /* Accesseurs et Modificateurs */
-    
+
     /**
      * Renvoie l'id de la session
+     * 
      * @return id
      */
     public int getId() {
         return id;
     }
-    
+
     /**
      * Change l'id de la session
+     * 
      * @param id
+     *            l'id de la session
      */
     public void setId( int id ) {
         this.id = id;
     }
-    
+
     /**
      * Renvoie le nom de la session
-     * @return nom
+     * 
+     * @return nom le nom de la session
      */
     public String getNom() {
         return nom;
@@ -65,7 +76,9 @@ public class SessionGenerique {
 
     /**
      * Change le nom de la session
+     * 
      * @param nom
+     *            le nom de la session
      */
     public void setNom( String nom ) {
         this.nom = nom;
@@ -73,6 +86,7 @@ public class SessionGenerique {
 
     /**
      * Renvoie la date de debut de la session
+     * 
      * @return Date (format String)
      */
     public String getDateDebut() {
@@ -81,7 +95,9 @@ public class SessionGenerique {
 
     /**
      * Modifie la date de début de la session
+     * 
      * @param dateDebut
+     *            la date de debut de la session
      */
     public void setDateDebut( String dateDebut ) {
         this.dateDebut = dateDebut;
@@ -89,6 +105,7 @@ public class SessionGenerique {
 
     /**
      * Renvoie la date de fin de la session
+     * 
      * @return Date (format String)
      */
     public String getDateFin() {
@@ -97,7 +114,9 @@ public class SessionGenerique {
 
     /**
      * Modifie la date de fin de la session
+     * 
      * @param dateFin
+     *            la date de fin de la session
      */
     public void setDateFin( String dateFin ) {
         this.dateFin = dateFin;
@@ -105,6 +124,7 @@ public class SessionGenerique {
 
     /**
      * Renvoie le nom de l'UV concernee par la session
+     * 
      * @return nom UV
      */
     public String getUv() {
@@ -113,7 +133,9 @@ public class SessionGenerique {
 
     /**
      * Modifie le nom de l'UV concernee par la session
+     * 
      * @param uv
+     *            l'uv concernee par la session
      */
     public void setUv( String uv ) {
         this.uv = uv;
@@ -121,6 +143,7 @@ public class SessionGenerique {
 
     /**
      * Renvoie le stage auquel appartient la session
+     * 
      * @return nom Stage
      */
     public String getStage() {
@@ -129,7 +152,9 @@ public class SessionGenerique {
 
     /**
      * Modifie le nom du stage auquel appartient la session
+     * 
      * @param stage
+     *            le stage concerne par la session
      */
     public void setStage( String stage ) {
         this.stage = stage;

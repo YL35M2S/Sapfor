@@ -17,11 +17,11 @@ public class UvManager {
      * Renvoie une uv selon son id pour une session donnee
      * 
      * @param idUv
+     *            l'id de l'UV recherchee
      * @return l'uv cherchee
      */
     @GET
     @Path( "uvs" )
-    // @Produces( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON } )
     @Produces( { MediaType.APPLICATION_XML } )
     public Uv listeUv( @QueryParam( "Uv" ) String idUv ) {
         int idu = Integer.parseInt( idUv );
@@ -34,11 +34,11 @@ public class UvManager {
      * donnee
      * 
      * @param idUv
+     *            l'id de l'UV pour laquelle on cherche les prerequis
      * @return la liste des prerequis pour l'uv cherchee
      */
     @GET
     @Path( "getPrerequis" )
-    // @Produces( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON } )
     @Produces( { MediaType.APPLICATION_XML } )
     public Collection<Uv> listePreRequis( @QueryParam( "Uv" ) String idUv ) {
         int idu = Integer.parseInt( idUv );

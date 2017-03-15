@@ -32,6 +32,7 @@ public class AgentDaoImpl extends Dao implements AgentDao {
      * Constructeur
      * 
      * @param conn
+     *            La connection generee par le DAOFactory
      */
     public AgentDaoImpl( Connection conn ) {
         super( conn );
